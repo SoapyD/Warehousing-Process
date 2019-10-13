@@ -1,51 +1,97 @@
 CREATE INDEX idx_cre_DETAIL_incident ON DETAIL_incident 
-(
-	
-	createddate_id, lastmoddate_id
+(	
+	createddate_id
 ) 
 INCLUDE (
 recid, number, 
---subject, symptom, resolution, technicalresolution,
 --problemlink, masterincidentlink,
+--subject, symptom, resolution, technicalresolution,
 
-resolveddate_id, closeddate_id,
+--DIMENSION IDS
+system_id,
+company_id,
+businessunit_id, 
+typeofincident_id,  
+status_id, 
+source_id, 
+ownerteam_id, 
+location_id,
+causecode_id,
+service_id, 
+category_id, 
+subcategory_id,
 
-typeofincident_id, system_id, status_id, source_id,
-company_id, businessunit_id, ownerteam_id, 
-service_id, category_id, subcategory_id,
+--DIMENSIONS
+priority,
+isvip,
+breachstatus, L1Passed, L2Passed, L3Passed, 
+breachpassed, response_breachpassed, 
+
+remoteresolution, 
+repeatissue, 
+numberofusersaffected, 
+reopen_check,
+
+fcr, fcr_scoped, fcr_achieved,
+
+--DATE DIMENSIONS
+lastmoddate_id, resolveddate_id, closeddate_id,
+--breachdate_id
+
+--FACTS
+targetclockduration, totalrunningduration,
+response_targetclockduration, response_totalrunningduration, 
+reopencount
 
 --owner_id, createdby_id, resolvedby_id, closedby_id, lastmodby_id,	
-
-fcr, breachstatus, 
-L1Passed, L2Passed, L3Passed, 
-breachpassed, targetclockduration, totalrunningduration, 
-response_breachpassed, response_targetclockduration, response_totalrunningduration, 
-reopencount, remoteresolution, numberofusersaffected, repeatissue
 );
 
 CREATE INDEX idx_res_DETAIL_incident ON DETAIL_incident 
 (
 
-	resolveddate_id, closeddate_id
+	resolveddate_id
 ) 
 INCLUDE (
 recid, number, 
---subject, symptom, resolution, technicalresolution,
 --problemlink, masterincidentlink,
+--subject, symptom, resolution, technicalresolution,
 
-createddate_id, lastmoddate_id,
+--DIMENSION IDS
+system_id,
+company_id,
+businessunit_id, 
+typeofincident_id,  
+status_id, 
+source_id, 
+ownerteam_id, 
+location_id,
+causecode_id,
+service_id, 
+category_id, 
+subcategory_id,
 
-typeofincident_id, system_id, status_id, source_id,
-company_id, businessunit_id, ownerteam_id, 
-service_id, category_id, subcategory_id,
+--DIMENSIONS
+priority,
+isvip,
+breachstatus, L1Passed, L2Passed, L3Passed, 
+breachpassed, response_breachpassed, 
 
---owner_id, createdby_id, resolvedby_id, closedby_id, lastmodby_id,
+remoteresolution, 
+repeatissue, 
+numberofusersaffected, 
+reopen_check,
 
-fcr, breachstatus, 
-L1Passed, L2Passed, L3Passed, 
-breachpassed, targetclockduration, totalrunningduration, 
-response_breachpassed, response_targetclockduration, response_totalrunningduration, 
-reopencount, remoteresolution, numberofusersaffected, repeatissue
+fcr, fcr_scoped, fcr_achieved,
 
+--DATE DIMENSIONS
+createddate_id, lastmoddate_id, closeddate_id,
+--breachdate_id
+
+--FACTS
+targetclockduration, totalrunningduration,
+response_targetclockduration, response_totalrunningduration, 
+reopencount
+
+--owner_id, createdby_id, resolvedby_id, closedby_id, lastmodby_id,	
 );
 /**/

@@ -118,3 +118,5 @@ CREATE INDEX idx_date ON LOOKUP_dates (year, quarter, day, daynumber, month, wee
 	drop_sql = "DROP TABLE LOOKUP_dates"
 	query_database2('Drop Date Table ', drop_sql, db, database, print_details=print_details, ignore_errors=True)
 	query_database2('Create Date Table ', sql, db, database, print_details=print_details) #, ignore_errors=True
+
+	#don't think this index is being used at all

@@ -126,6 +126,7 @@ def setup_warehouse():
 		['ownerteam',"ownerteam",'TEMP_incident_combined'],
 		['system',"system",'TEMP_incident_combined'],
 		['businessunit',"businessunit",'TEMP_incident_combined'],
+		['location',"location",'TEMP_incident_combined'],
 		['causecode',"causecode",'TEMP_incident_combined'],
 		['service',"service",'TEMP_incident_combined'],
 		['category',"category",'TEMP_incident_combined'],
