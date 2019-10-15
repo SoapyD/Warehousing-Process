@@ -141,9 +141,9 @@ def update_warehouse(table_name, temporary_table_name, wh_query, wh_combined_tab
 	query_database2('drop External Table '+temporary_table_name,drop_sql, 
 		output_db, output_database, print_details=print_details, ignore_errors=True)	
 
-	#drop_sql = "DROP TABLE "+wh_combined_table
-	#query_database2('drop Table '+wh_combined_table,drop_sql, 
-	#	output_db, output_database, print_details=print_details, ignore_errors=True)
+	drop_sql = "DROP TABLE "+wh_combined_table
+	query_database2('drop Table '+wh_combined_table,drop_sql, 
+		output_db, output_database, print_details=print_details, ignore_errors=True)
 
 
 	if print_internal == True:
