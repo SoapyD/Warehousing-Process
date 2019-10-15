@@ -68,7 +68,7 @@ SELECT
 	THEN 1 ELSE 0
 	END as fcr_achieved,
 
-	--OWNER DIMENSIONS
+	--NAME DIMENSIONS
 	/*
 	customer
 	ISNULL(own.id,NULL) as owner_id,
@@ -77,6 +77,13 @@ SELECT
 	ISNULL(own_clo.id,NULL) as closedby_id,
 	ISNULL(own_mod.id,NULL) as lastmodby_id,		
 	*/
+	customer,
+	owner,
+	createdby,
+	resolvedby,
+	closedby,
+	lastmodby,
+	
 	--DATE DIMENSIONS	
 	createddatetime,
 	ISNULL(cre_d.id,NULL) as createddate_id,
@@ -96,8 +103,6 @@ SELECT
 	response_totalrunningduration,
 	reopencount
 
-INTO 
-	DETAIL_incident 
 FROM 
 	[TEMP_incident_combined] i
 

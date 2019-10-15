@@ -16,19 +16,20 @@ def setup_warehouse():
 
 	start_time = datetime.datetime.now() #need for process time u_printing
 
+	output_db = 1 #REPORTING DATABASE
+	output_database = 'LF-SQL-WH'
+	source_db = 1 #REPORTING DATABASE
+	source_database = 'LF-SQL-RPT01'
+
+
+	""""""
 	###################################################################################
 	################################SETUP EXTERNAL TABLES
 	###################################################################################
 
 	#FIRST CREATE THE CREDENTIALS AND EXTERNAL TABLES WE'LL BE PULLING DATA FROM
+	
 
-	
-	output_db = 1 #REPORTING DATABASE
-	output_database = 'LF-SQL-WH'
-	source_db = 1 #REPORTING DATABASE
-	source_database = 'LF-SQL-RPT01'
-	
-	
 	table_list = [
 		"heatsm_incident",
 		"heatsm_employee",
@@ -108,7 +109,6 @@ def setup_warehouse():
 
 	u_print("Combined Incident Table Created")
 	u_print("###########################")	
-	''''''
 	
 	###################################################################################
 	################################SETUP LOOKUP TABLES

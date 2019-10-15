@@ -47,14 +47,13 @@ SET
 	fcr_achieved = t2.fcr_achieved,
 
 
-	--OWNER DIMENSIONS
-	/*
-	ISNULL(own.id,NULL as owner_id,
-	ISNULL(own_cre.id,NULL as createdby_id,
-	ISNULL(own_res.id,NULL as resolvedby_id,
-	ISNULL(own_clo.id,NULL as closedby_id,
-	ISNULL(own_mod.id,NULL as lastmodby_id,		
-	*/
+	--NAME DIMENSIONS
+	customer = t2.customer,
+	owner = t2.owner,
+	createdby = t2.createdby,
+	resolvedby = t2.resolvedby,
+	closedby = t2.closedby,
+	lastmodby = t2.lastmodby,
 
 	--DATE DIMENSIONS	
 	createddatetime = t2.createddatetime,
@@ -145,7 +144,7 @@ SELECT
 	THEN 1 ELSE 0
 	END as fcr_achieved,
 
-	--OWNER DIMENSIONS
+	--NAME DIMENSIONS
 	/*
 	customer
 	ISNULL(own.id,NULL) as owner_id,
@@ -154,6 +153,13 @@ SELECT
 	ISNULL(own_clo.id,NULL) as closedby_id,
 	ISNULL(own_mod.id,NULL) as lastmodby_id,		
 	*/
+	customer,
+	owner,
+	createdby,
+	resolvedby,
+	closedby,
+	lastmodby,
+
 	--DATE DIMENSIONS	
 	createddatetime,
 	ISNULL(cre_d.id,NULL) as createddate_id,
@@ -173,6 +179,39 @@ SELECT
 	response_totalrunningduration,
 	reopencount
 
+FROM 
+	[TEMP_incident_combined] i
+
+	--DIMENSIONS
+	LEFT JOIN LOOKUP_status sta ON (sta.status = ISNULL(i.status,''))	
+	LEFT JOIN LOOKUP_source sou ON (sou.source = ISNULL(i.source,''))
+	LEFT JOIN LOOKUP_company com ON (com.company = ISNULL(i.company,''))
+	LEFT JOIN LOOKUP_typeofincident typ ON (typ.typeofincident = ISNULL(i.typeofincident,''))
+	LEFT JOIN LOOKUP_ownerteam owt ON (owt.ownerteam = ISNULL(i.ownerteam,''))
+	LEFT JOIN LOOKUP_system sys ON (sys.system = ISNULL(i.system,''))
+	LEFT JOIN LOOKUP_businessunit bus ON (bus.businessunit = ISNULL(i.businessunit,''))
+	LEFT JOIN LOOKUP_location loc ON (loc.location = ISNULL(i.location,''))
+	LEFT JOIN LOOKUP_causecode cau ON (cau.causecode = ISNULL(i.causecode,''))
+
+	LEFT JOIN LOOKUP_service ser ON (ser.service = ISNULL(i.service,''))
+	LEFT JOIN LOOKUP_category cat ON (cat.category = ISNULL(i.category,''))
+	LEFT JOIN LOOKUP_subcategory sub ON (sub.subcategory = ISNULL(i.subcategory,''))		
+
+	--OWNER DIMENSIONS
+	/*
+	LEFT JOIN LOOKUP_owner own ON (own.owner = i.owner)
+	LEFT JOIN LOOKUP_owner own_cre ON (own_cre.owner = i.createdby)
+	LEFT JOIN LOOKUP_owner own_res ON (own_res.owner = i.resolvedby)
+	LEFT JOIN LOOKUP_owner own_clo ON (own_clo.owner = i.closedby)
+	LEFT JOIN LOOKUP_owner own_mod ON (own_mod.owner = i.lastmodby)			
+	*/
+
+	--DATE DIMENSIONS
+	LEFT JOIN LOOKUP_dates cre_d ON (cre_d.date = CONVERT(DATE,i.createddatetime))
+	LEFT JOIN LOOKUP_dates res_d ON (res_d.date = CONVERT(DATE,ISNULL(resolveddatetime, closeddatetime)))
+	LEFT JOIN LOOKUP_dates clo_d ON (clo_d.date = CONVERT(DATE,closeddatetime))
+	LEFT JOIN LOOKUP_dates upd_d ON (upd_d.date = CONVERT(DATE,lastmoddatetime))
+	LEFT JOIN LOOKUP_dates bre_d ON (bre_d.date = CONVERT(DATE,breachdatetime))
 
     ) T2
     ON (T1.recid = T2.recid AND T1.system_id = T2.system_id)

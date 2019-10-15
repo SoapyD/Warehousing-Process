@@ -4,16 +4,16 @@ def update_warehouse(table_name, temporary_table_name, wh_query, wh_combined_tab
 	
 	if print_details == True:
 		u_print('########################################')
-		u_print('RUNNING WAREHOUSE UPDATE')
+		
+	u_print('RUNNING WAREHOUSE UPDATE')
+	
+	if print_details == True:
 		u_print('########################################')
 
 	"""
 	THE WAREHOUSE SETUP USES THE BASE TABLES IN THE INITIAL DATABASE TO FORMAT THE INITIAL TABLES THAT'LL
 	BE UPDATED HEREAFTER
 	"""
-
-	#print_internal = True
-	#print_details = True
 
 
 	start_time = datetime.datetime.now() #need for process time u_printing
@@ -141,9 +141,9 @@ def update_warehouse(table_name, temporary_table_name, wh_query, wh_combined_tab
 	query_database2('drop External Table '+temporary_table_name,drop_sql, 
 		output_db, output_database, print_details=print_details, ignore_errors=True)	
 
-	drop_sql = "DROP TABLE "+wh_combined_table
-	query_database2('drop Table '+wh_combined_table,drop_sql, 
-		output_db, output_database, print_details=print_details, ignore_errors=True)
+	#drop_sql = "DROP TABLE "+wh_combined_table
+	#query_database2('drop Table '+wh_combined_table,drop_sql, 
+	#	output_db, output_database, print_details=print_details, ignore_errors=True)
 
 
 	if print_internal == True:
