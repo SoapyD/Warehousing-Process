@@ -36,6 +36,12 @@ def setup_warehouse():
 		"heatsm_servicereq",
 		"heatsm_task",
 
+		"enwl_incident",
+		"enwl_employee",
+		"enwl_servicereq",
+		"enwl_task",
+		"enwl_frs_data_escalation_watch",
+
 		"he_incident",
 		"he_sys_user",
 		"he_incident_task",
@@ -86,14 +92,21 @@ def setup_warehouse():
 	#BUILD THE COMBINED TABLE
 	sql_queries = [
 		"heatsm_incident",
-		"he_incident",
-		"fsa_incident",
-		"mhclg_incident",
-		"croydon_incident",
 		"heatsm_request",
+
+		"enwl_incident",
+		"enwl_request",
+
+		"he_incident",
 		"he_request",
+		
+		"fsa_incident",
 		"fsa_request",
+		
+		"mhclg_incident",
 		"mhclg_request",
+		
+		"croydon_incident",
 		"croydon_request",		
 	]
 
