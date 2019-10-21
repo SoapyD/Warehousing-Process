@@ -26,7 +26,7 @@ SELECT
 
 	--DATE DIMENSIONS
 	s.submittedat,
-    submit_d.date AS submitteddate_id
+    submit_d.id AS submitteddate_id
 
 INTO
 	DETAIL_nps
