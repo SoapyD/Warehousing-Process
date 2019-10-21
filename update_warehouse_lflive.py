@@ -1,5 +1,5 @@
 
-def update_warehouse(table_name, temporary_table_name, wh_query, wh_combined_table,
+def update_warehouse_lflive(table_name, temporary_table_name, wh_query, wh_combined_table,
 	print_internal=False, print_details=False):
 	
 	if print_details == True:
@@ -35,22 +35,22 @@ def update_warehouse(table_name, temporary_table_name, wh_query, wh_combined_tab
 	setup_external_tables(source_db, source_database, output_db, output_database, 
 		table_list, create_credential=False, print_details=print_details)		
 
+	type = ''
+	replace_name = ''
+	if wh_query == 'lfliveextract_session':
+		type = 'session'
+		replace_name = 'LFLIVEEXTRACT_session '
+
+	if wh_query == 'lfliveextract_nps':
+		type = 'nps'
+		replace_name = 'LFLIVEEXTRACT_completedsurvey '
 
 	###################################################################################
 	################################CREATE A COMBINED DATA TABLE
 	###################################################################################
 	
 	if print_details == True:
-		u_print("Starting Combined Incident Table Process")
-	
-	#DELETE THE COMBINED TABLE
-	drop_sql = "DROP TABLE "+wh_combined_table
-	query_database2('Drop Incident Combined Table',drop_sql, output_db, output_database, print_details=print_details, ignore_errors=True)
-
-	sql = get_sql_query('_CREATE_temp_incident_combined', warehousing_path+"/sql/incident/")
-	sql = sql.lower() #MAKE THE SQL LOWER CASE IN CASE ANY UPPER CASES HAVE SNUCK THROUGH
-	sql = sql.replace('temp_incident_combined', wh_combined_table) #REPLACE THE COMBINED TABLE NAME WITH THE TEMP WH COMBINED NAME	
-	query_database2('Creating Temp Table', sql, output_db, output_database, print_details=print_details)
+		u_print("Starting Combined "+type+" Table Process")
 	
 
 	#BUILD THE COMBINED TABLE
@@ -59,13 +59,14 @@ def update_warehouse(table_name, temporary_table_name, wh_query, wh_combined_tab
 	for query in sql_queries:
 		process_start_time = datetime.datetime.now()
 
-		sql = get_sql_query(query, warehousing_path+"/sql/incident/")
+		sql = get_sql_query(query, warehousing_path+"/sql/lflive/")
 		
 		#replace table name with temporary field name
 
-		sql = sql.lower() #MAKE THE SQL LOWER CASE IN CASE ANY UPPER CASES HAVE SNUCK THROUGH
-		sql = sql.replace(table_name.lower()+" ", temporary_table_name+" ") #REPLACE THE USUAL TABLE WITH WITH THE TEMPORARY WAREHOUSE NAME
-		sql = sql.replace('temp_incident_combined', wh_combined_table) #REPLACE THE COMBINED TABLE NAME WITH THE TEMP WH COMBINED NAME
+		#sql = sql.lower() #MAKE THE SQL LOWER CASE IN CASE ANY UPPER CASES HAVE SNUCK THROUGH
+		#sql = sql.replace(table_name.lower()+" ", temporary_table_name+" ") #REPLACE THE USUAL TABLE WITH WITH THE TEMPORARY WAREHOUSE NAME
+		sql = sql.replace('TEMP_'+type, wh_combined_table) #REPLACE THE COMBINED TABLE NAME WITH THE TEMP WH COMBINED NAME	
+		sql = sql.replace(replace_name, temporary_table_name+" ")
 
 		if print_details == True:
 			u_print("PROCESSING: "+query)
@@ -79,57 +80,22 @@ def update_warehouse(table_name, temporary_table_name, wh_query, wh_combined_tab
 			u_print('Time Taken: '+str(process_end_time - process_start_time))
 
 	if print_details == True:
-		u_print("Combined Incident Table Created")
+		u_print("Combined LFLive Table Created")
 		u_print("###########################")	
 
-	###################################################################################
-	################################UPDATE LOOKUP TABLES
-	###################################################################################
 	
-	if print_details == True:
-		u_print("Starting Dimension Tables process")
-	
-	process_start_time = datetime.datetime.now()
-
-	dimension_table_list = [
-		['status',"status",wh_combined_table],
-		['source',"source",wh_combined_table],
-		['company',"company", wh_combined_table],
-		['typeofincident',"typeofincident", wh_combined_table],
-		['ownerteam',"ownerteam", wh_combined_table],
-		['system',"system", wh_combined_table],
-		['businessunit',"businessunit", wh_combined_table],
-		['location',"location", wh_combined_table],
-		['causecode',"causecode", wh_combined_table],
-		['service',"service", wh_combined_table],
-		['category',"category", wh_combined_table],
-		['subcategory',"subcategory", wh_combined_table],
-	]
-
-	#CREATE AND POPULATE THE LOOKUP TABLES
-	update_dimension_tables(output_db, output_database, dimension_table_list, print_details)
-	
-	if print_details == True:
-		u_print("Dimension Tables Updated")
-
-	process_end_time = datetime.datetime.now()
-
-	if print_details == True:
-		u_print('Time Taken: '+str(process_end_time - process_start_time))
-		u_print("###########################")	
-
 	###################################################################################
 	################################UPDATE AND INSERT TO DETAILS TABLE
 	###################################################################################
 
-	sql = get_sql_query("_MAIN_incident_detail_UPDATE", warehousing_path+"/sql/incident/")	
-	sql = sql.lower()
-	sql = sql.replace('temp_incident_combined', wh_combined_table) #REPLACE THE COMBINED TABLE NAME WITH THE TEMP WH COMBINED NAME			
+	sql = get_sql_query("_MAIN_"+type+"_detail_UPDATE", warehousing_path+"/sql/lflive/")	
+	#sql = sql.lower()
+	sql = sql.replace('TEMP_'+type, wh_combined_table) #REPLACE THE COMBINED TABLE NAME WITH THE TEMP WH COMBINED NAME			
 	query_database2('UPDATE RECORDS',sql, output_db, output_database, print_details=print_details)
 
-	sql = get_sql_query("_MAIN_incident_detail_INSERT", warehousing_path+"/sql/incident/")	
-	sql = sql.lower()
-	sql = sql.replace('temp_incident_combined', wh_combined_table) #REPLACE THE COMBINED TABLE NAME WITH THE TEMP WH COMBINED NAME			
+	sql = get_sql_query("_MAIN_"+type+"_detail_INSERT", warehousing_path+"/sql/lflive/")	
+	#sql = sql.lower()
+	sql = sql.replace('TEMP_'+type, wh_combined_table) #REPLACE THE COMBINED TABLE NAME WITH THE TEMP WH COMBINED NAME			
 	query_database2('INSERT RECORDS',sql, output_db, output_database, print_details=print_details)
 
 
@@ -144,7 +110,8 @@ def update_warehouse(table_name, temporary_table_name, wh_query, wh_combined_tab
 	drop_sql = "DROP TABLE "+wh_combined_table
 	query_database2('drop Table '+wh_combined_table,drop_sql, 
 		output_db, output_database, print_details=print_details, ignore_errors=True)
-
+	
+	""""""
 
 	if print_internal == True:
 		u_print("Warehousing Complete")

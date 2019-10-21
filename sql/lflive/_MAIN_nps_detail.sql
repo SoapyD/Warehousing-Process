@@ -1,0 +1,42 @@
+
+IF OBJECT_ID(N'DETAIL_nps') IS NOT NULL
+    drop table DETAIL_nps
+
+SELECT
+    s.recid,
+	s.type,
+	s.id,
+	s.rescuesessionid,
+	s.comments,
+    replace(i.resolvedby,'.',' ') as technician,
+	s.nps,
+	s.npstype,
+	s.duplicate_check,
+    ISNULL(i.recid,NULL) AS incident_id,
+	s.incidentnumber,
+    ISNULL(i.customer,'') AS customer,
+    ISNULL(i.isvip,'') AS isvip,
+
+    --DIMENSION IDS
+    ISNULL(sys.id,NULL) as system_id,
+    ISNULL(i.company_id,NULL) AS company_id,
+    ISNULL(i.businessunit_id,NULL) AS businessunit_id,
+    ISNULL(i.ownerteam_id,NULL) AS ownerteam_id,
+	s.databasename,
+
+	--DATE DIMENSIONS
+	s.submittedat,
+    submit_d.date AS submitteddate_id
+
+INTO
+	DETAIL_nps
+FROM
+	TEMP_nps s
+
+    --DIMENSION IDS
+    LEFT JOIN LOOKUP_system sys ON (sys.system = ISNULL(s.system,''))
+    LEFT JOIN DETAIL_incident i ON (sys.id = i.system_id AND i.number = s.incidentnumber)
+
+    --DATE JOINS
+    LEFT JOIN LOOKUP_dates submit_d ON (submit_d.date = CONVERT(DATE,s.submittedat))
+

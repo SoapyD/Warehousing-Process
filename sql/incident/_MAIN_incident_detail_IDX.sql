@@ -1,3 +1,10 @@
+CREATE INDEX idx_id_DETAIL_incident ON DETAIL_incident 
+(	
+	recid,
+	system_id
+);
+
+
 CREATE INDEX idx_cre_DETAIL_incident ON DETAIL_incident 
 (	
 	createddate_id

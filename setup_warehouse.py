@@ -85,7 +85,7 @@ def setup_warehouse():
 	query_database2('Drop Incident Combined Table',drop_sql, output_db, output_database, 
 		print_details=print_details, ignore_errors=True)
 
-	sql = get_sql_query('_CREATE_temp_incident_combined', "sql/")
+	sql = get_sql_query('_CREATE_temp_incident_combined', "sql/incident/")
 	query_database2('Creating Temp Table', sql, output_db, output_database, print_details=print_details)
 	
 
@@ -113,7 +113,7 @@ def setup_warehouse():
 	for query in sql_queries:
 		process_start_time = datetime.datetime.now()
 
-		sql = get_sql_query(query, "sql/")
+		sql = get_sql_query(query, "sql/incident/")
 		u_print("PROCESSING: "+query)
 		query_database2('Run Query: '+query,sql, output_db, output_database, print_details=print_details)
 
@@ -172,7 +172,7 @@ def setup_warehouse():
 	#query_database2('Drop Detail Table', drop_sql, 
 	#	output_db, output_database, print_details=print_details, ignore_errors=True)		
 
-	sql = get_sql_query('_MAIN_incident_detail', "sql/")
+	sql = get_sql_query('_MAIN_incident_detail', "sql/incident/")
 	query_database2('Producing Main Incident Detail Table', sql, 
 		output_db, output_database, print_details=print_details)	
 
@@ -184,7 +184,7 @@ def setup_warehouse():
 	u_print("Starting Details Index process")
 	process_start_time = datetime.datetime.now()
 
-	sql = get_sql_query('_MAIN_incident_detail_IDX', "sql/")
+	sql = get_sql_query('_MAIN_incident_detail_IDX', "sql/incident/")
 	query_database2('Producing Main Incident Detail index', sql, output_db, output_database, print_details=print_details)	
 
 	u_print("Details Index Created")

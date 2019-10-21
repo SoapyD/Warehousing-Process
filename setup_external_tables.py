@@ -67,19 +67,27 @@ def create_external_tables(
 
 		for row in df.iterrows(): 
 		    data = row[1]
+		    data_type = data['DATA_TYPE']
+		    if data_type == '-1':
+		    	data_type = 'MAX'
 		    sql += data['COLUMN_NAME'] + " " + data['DATA_TYPE']
 
 		    #print(data['DATA_TYPE'])
 		    #print(data['CHARACTER_MAXIMUM_LENGTH'])	    
 		    
 		    if math.isnan(data['CHARACTER_MAXIMUM_LENGTH']) == False:
-		    	sql += "(" + str(int(data['CHARACTER_MAXIMUM_LENGTH'])) + "),\n"
+
+		    	val = str(int(data['CHARACTER_MAXIMUM_LENGTH']))
+		    	if val == '-1':
+		    		val = 'MAX'
+
+		    	sql += "(" + val + "),\n"
 		    else:
 		    	sql += ",\n"
 
 		sql += ")\n"
-		sql += "WITH (DATA_SOURCE = RemoteReferenceData)"
-		#print(sql)
+		sql += "WITH (DATA_SOURCE = RemoteReferenceData);"
+		#print(sql+"\n")
 
 		try:
 			drop_sql = "DROP EXTERNAL TABLE "+table
