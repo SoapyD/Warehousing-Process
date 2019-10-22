@@ -11,7 +11,7 @@ SELECT
         WHEN mhclg_ci.sessionid IS NOT NULL OR ISNULL(SPB.mhclg_session,0) = 1  THEN s.recid+'_i_'+ISNULL(mhclg_ci.incidentnumber,LEFT(s.existingticketno,20))+'_s_'+ISNULL(CONVERT(NVARCHAR,cs.id),'')
         WHEN croy_ci.sessionid IS NOT NULL OR ISNULL(SPB.croydon_session,0) = 1  THEN s.recid+'_i_'+ISNULL(croy_ci.incidentnumber,LEFT(s.existingticketno,20))+'_s_'+ISNULL(CONVERT(NVARCHAR,cs.id),'')
         WHEN enwl_ci.sessionid IS NOT NULL OR ISNULL(SPB.enwl_session,0) = 1  THEN s.recid+'_i_'+ISNULL(enwl_ci.incidentnumber,LEFT(s.existingticketno,20))+'_s_'+ISNULL(CONVERT(NVARCHAR,cs.id),'')     
-        ELSE s.recid+'_i_'+ISNULL(ci.incidentnumber,LEFT(s.existingticketno,20))+'_s_'+ISNULL(CONVERT(NVARCHAR,cs.id),'')
+        ELSE s.recid+'_i_'+ISNULL(ci.incidentnumber,ISNULL(LEFT(s.existingticketno,20),''))+'_s_'+ISNULL(CONVERT(NVARCHAR,cs.id),'')
     end as recid,
     s.sessionid,
     --s.sessiontype,
