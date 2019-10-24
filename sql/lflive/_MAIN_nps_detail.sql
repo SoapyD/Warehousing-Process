@@ -8,7 +8,7 @@ SELECT
 	s.id,
 	s.rescuesessionid,
 	s.comments,
-    replace(i.resolvedby,'.',' ') as technician,
+    replace(rdb.owner,'.',' ') as technician,
 	s.nps,
 	s.npstype,
 	s.duplicate_check,
@@ -39,4 +39,7 @@ FROM
 
     --DATE JOINS
     LEFT JOIN LOOKUP_dates submit_d ON (submit_d.date = CONVERT(DATE,s.submittedat))
+
+    --OWNER JOINS 
+    LEFT JOIN LOOKUP_owner rdb ON (rdb.id = i.resolvedby_id)   
 

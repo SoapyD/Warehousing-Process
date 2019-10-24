@@ -11,7 +11,7 @@ def setup_warehouse():
 	"""
 
 	print_internal = True
-	print_details = False
+	print_details = True
 
 
 	start_time = datetime.datetime.now() #need for process time u_printing
@@ -71,7 +71,7 @@ def setup_warehouse():
 	]
 
 	setup_external_tables(source_db, source_database, output_db, output_database, 
-		table_list, create_credential=True, print_details=print_details)
+		table_list, create_credential=False, print_details=print_details)
 	
 
 	###################################################################################
@@ -123,6 +123,7 @@ def setup_warehouse():
 	u_print("Combined Incident Table Created")
 	u_print("###########################")	
 	
+
 	###################################################################################
 	################################SETUP LOOKUP TABLES
 	###################################################################################
@@ -132,24 +133,46 @@ def setup_warehouse():
 	process_start_time = datetime.datetime.now()
 
 	dimension_table_list = [
-		['status',"status",'TEMP_incident_combined'],
-		['source',"source",'TEMP_incident_combined'],
-		['company',"company",'TEMP_incident_combined'],
-		['typeofincident',"typeofincident",'TEMP_incident_combined'],
-		['ownerteam',"ownerteam",'TEMP_incident_combined'],
-		['system',"system",'TEMP_incident_combined'],
-		['businessunit',"businessunit",'TEMP_incident_combined'],
-		['location',"location",'TEMP_incident_combined'],
-		['causecode',"causecode",'TEMP_incident_combined'],
-		['service',"service",'TEMP_incident_combined'],
-		['category',"category",'TEMP_incident_combined'],
-		['subcategory',"subcategory",'TEMP_incident_combined'],
+		['status',"status",'TEMP_incident_combined',"status"],
+		['source',"source",'TEMP_incident_combined',"source"],
+		['company',"company",'TEMP_incident_combined',"company"],
+		['typeofincident',"typeofincident",'TEMP_incident_combined',"typeofincident"],
+		['ownerteam',"ownerteam",'TEMP_incident_combined',"ownerteam"],
+		['system',"system",'TEMP_incident_combined',"system"],
+		['businessunit',"businessunit",'TEMP_incident_combined',"businessunit"],
+		['location',"location",'TEMP_incident_combined',"location"],
+		['causecode',"causecode",'TEMP_incident_combined',"causecode"],
+		['service',"service",'TEMP_incident_combined',"service"],
+		['category',"category",'TEMP_incident_combined',"category"],
+		['subcategory',"subcategory",'TEMP_incident_combined',"subcategory"],
 	]
 
 	#CREATE AND POPULATE THE LOOKUP TABLES
-	create_dimension_tables(output_db, output_database, dimension_table_list, print_details)
+	create_dimension_tables_2(output_db, output_database, dimension_table_list, print_details)
 	
-	#POPULATE THE DATE TABLE
+
+	#NOW WE HAVE TO CREATE THE OWNER DIMENSION TABLE WHICH IS A BIT MORE COMPLICATED
+
+	dimension_table_list = [
+		['owner',"REPLACE(owner,'.',' ')",'TEMP_incident_combined','owner'],
+	]
+
+	#CREATE AND POPULATE THE LOOKUP TABLES
+	create_dimension_tables_2(output_db, output_database, dimension_table_list, print_details)
+
+	#WE THEN HAVE TO RUN THE ABOVE FOR ALL RESOLVER BASED FIELDS, UPDATING THE SAME LOOKUP_OWNER FIELD
+	dimension_table_list = [
+		['owner',"REPLACE(i.createdby,'.',' ')",'TEMP_incident_combined','owner'],
+		['owner',"REPLACE(ISNULL(i.resolvedby,i.closedby),'.',' ')",'TEMP_incident_combined','owner'],
+		['owner',"REPLACE(i.closedby,'.',' ')",'TEMP_incident_combined','owner'],
+		['owner',"REPLACE(i.lastmodby,'.',' ')",'TEMP_incident_combined','owner'],
+	]
+
+	#CREATE AND POPULATE THE LOOKUP TABLES
+	update_dimension_tables_2(output_db, output_database, dimension_table_list, print_details)
+
+
+	#NOW WE NEED TO POPULATE THE DATE TABLE, WHICH SHOULD COVER EVERY DAY FOR THE NEXT FEW YEARS
 	create_date_table(output_db, output_database, print_details)
 
 	u_print("Dimension Tables Created")
@@ -158,7 +181,7 @@ def setup_warehouse():
 	u_print('Time Taken: '+str(process_end_time - process_start_time))
 
 	u_print("###########################")	
-	
+		
 
 	###################################################################################
 	################################SETUP DETAILS TABLE
@@ -168,6 +191,7 @@ def setup_warehouse():
 	u_print("Starting Details Table process")
 	process_start_time = datetime.datetime.now()
 
+	#TABLE DROPPED IN THE MAIN SCRIPT
 	#drop_sql = "DROP TABLE DETAIL_incident"
 	#query_database2('Drop Detail Table', drop_sql, 
 	#	output_db, output_database, print_details=print_details, ignore_errors=True)		
@@ -191,7 +215,7 @@ def setup_warehouse():
 	process_end_time = datetime.datetime.now()
 	u_print('Time Taken: '+str(process_end_time - process_start_time))	
 	u_print("###########################")	
-	
+	""""""
 
 	###################################################################################
 	################################SETUP AGGREGATION TABLE

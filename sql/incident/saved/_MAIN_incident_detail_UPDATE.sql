@@ -5,7 +5,6 @@ SET
 	problem_id = t2.problem_id,
 	parentincident_id = t2.parentincident_id,	
 	
-	customer = t2.customer,
 	subject = t2.subject,
 	symptom = t2.symptom,
 	resolution = t2.resolution,
@@ -48,12 +47,13 @@ SET
 	fcr_achieved = t2.fcr_achieved,
 
 
-	--OWNER DIMENSIONS
-	owner_id = t2.owner_id,
-	createdby_id = t2.createdby_id,
-	resolvedby_id = t2.resolvedby_id,
-	closedby_id = t2.closedby_id,
-	lastmodby_id = t2.lastmodby_id,
+	--NAME DIMENSIONS
+	customer = t2.customer,
+	owner = t2.owner,
+	createdby = t2.createdby,
+	resolvedby = t2.resolvedby,
+	closedby = t2.closedby,
+	lastmodby = t2.lastmodby,
 
 	--DATE DIMENSIONS	
 	createddatetime = t2.createddatetime,
@@ -85,7 +85,6 @@ SELECT
 	i.problem_id,
 	i.parentincident_id,
 
-	i.customer,
 	i.subject,
 	i.symptom,
 	i.resolution,
@@ -145,12 +144,21 @@ SELECT
 	THEN 1 ELSE 0
 	END as fcr_achieved,
 
-	--OWNER DIMENSIONS
-	ISNULL(own1.id,own2.id) as owner_id,
-	ISNULL(cre1.id,cre2.id) as createdby_id,
-	ISNULL(res1.id,res2.id) as resolvedby_id,
-	ISNULL(clo1.id,clo2.id) as closedby_id,
-	ISNULL(las1.id,las2.id) as lastmodby_id,
+	--NAME DIMENSIONS
+	/*
+	customer
+	ISNULL(own.id,NULL) as owner_id,
+	ISNULL(own_cre.id,NULL) as createdby_id,
+	ISNULL(own_res.id,NULL) as resolvedby_id,
+	ISNULL(own_clo.id,NULL) as closedby_id,
+	ISNULL(own_mod.id,NULL) as lastmodby_id,		
+	*/
+	customer,
+	owner,
+	createdby,
+	resolvedby,
+	closedby,
+	lastmodby,
 
 	--DATE DIMENSIONS	
 	createddatetime,
@@ -190,50 +198,13 @@ FROM
 	LEFT JOIN LOOKUP_subcategory sub ON (sub.subcategory = ISNULL(i.subcategory,''))		
 
 	--OWNER DIMENSIONS
-	--OWNER
-	LEFT JOIN LOOKUP_owner own1 ON (
-		SUBSTRING(REPLACE(i.owner,'.',' '), 1, CHARINDEX('@', i.owner)) = own1.owner+'@'
-		)
-
-	LEFT JOIN LOOKUP_owner own2 ON (
-		ISNULL(REPLACE(i.owner,'.',' '),'') = own2.owner
-		)
-
-	--CREATED
-	LEFT JOIN LOOKUP_owner cre1 ON (
-		SUBSTRING(REPLACE(i.createdby,'.',' '), 1, CHARINDEX('@', i.owner)) = cre1.owner+'@'
-		)
-
-	LEFT JOIN LOOKUP_owner cre2 ON (
-		ISNULL(REPLACE(i.createdby,'.',' '),'') = cre2.owner
-		)
-
-	--RESOLVED
-	LEFT JOIN LOOKUP_owner res1 ON (
-		SUBSTRING(REPLACE(ISNULL(i.resolvedby,i.closedby),'.',' '), 1, CHARINDEX('@', i.owner)) = res1.owner+'@'
-		)
-
-	LEFT JOIN LOOKUP_owner res2 ON (
-		ISNULL(REPLACE(ISNULL(i.resolvedby,i.closedby),'.',' '),'') = res2.owner
-		)
-
-	--CLOSED
-	LEFT JOIN LOOKUP_owner clo1 ON (
-		SUBSTRING(REPLACE(i.closedby,'.',' '), 1, CHARINDEX('@', i.owner)) = clo1.owner+'@'
-		)
-
-	LEFT JOIN LOOKUP_owner clo2 ON (
-		ISNULL(REPLACE(i.closedby,'.',' '),'') = clo2.owner
-		)
-
-	--LASTMOD
-	LEFT JOIN LOOKUP_owner las1 ON (
-		SUBSTRING(REPLACE(i.lastmodby,'.',' '), 1, CHARINDEX('@', i.owner)) = las1.owner+'@'
-		)
-
-	LEFT JOIN LOOKUP_owner las2 ON (
-		ISNULL(REPLACE(i.lastmodby,'.',' '),'') = las2.owner
-		)
+	/*
+	LEFT JOIN LOOKUP_owner own ON (own.owner = i.owner)
+	LEFT JOIN LOOKUP_owner own_cre ON (own_cre.owner = i.createdby)
+	LEFT JOIN LOOKUP_owner own_res ON (own_res.owner = i.resolvedby)
+	LEFT JOIN LOOKUP_owner own_clo ON (own_clo.owner = i.closedby)
+	LEFT JOIN LOOKUP_owner own_mod ON (own_mod.owner = i.lastmodby)			
+	*/
 
 	--DATE DIMENSIONS
 	LEFT JOIN LOOKUP_dates cre_d ON (cre_d.date = CONVERT(DATE,i.createddatetime))

@@ -1,73 +1,4 @@
 
-
-
-def create_dimension_tables(db, database, dimension_table_list, print_details=False):
-
-
-	for dimension_table in dimension_table_list:
-		table = dimension_table[0]
-		fields = dimension_table[1]
-		from_table = dimension_table[2]
-
-		sql = """
-IF OBJECT_ID(N'@LOOKUP_TABLE') IS NOT NULL
-	drop table @LOOKUP_TABLE
-
-SELECT DISTINCT
-	ISNULL(@FIELDS,'') AS @FIELDS
-INTO 
-	@LOOKUP_TABLE 
-FROM 
-	@FROM_SQL
-
-ALTER TABLE @LOOKUP_TABLE
-ADD ID INT IDENTITY(1,1) NOT NULL PRIMARY KEY
-
-CREATE INDEX @IDX_NAME ON @LOOKUP_TABLE (id, @FIELDS)			
-			"""
-
-		tablename = "LOOKUP_"+table
-
-		sql = sql.replace("@LOOKUP_TABLE", tablename)
-		sql = sql.replace("@FIELDS", fields)
-		sql = sql.replace("@FROM_SQL", from_table)
-		sql = sql.replace("@IDX_NAME", "IDX_"+table)
-
-		drop_sql = "DROP TABLE "+tablename
-		query_database2('Drop Dimension Table '+table, drop_sql, db, database, print_details=print_details, ignore_errors=True)
-		query_database2('Create Dimension Table '+table, sql, db, database, print_details=print_details) #, ignore_errors=True
-
-
-def update_dimension_tables(db, database, dimension_table_list, print_details=False):
-
-
-	for dimension_table in dimension_table_list:
-		table = dimension_table[0]
-		fields = dimension_table[1]
-		from_table = dimension_table[2]
-
-		sql = """
---INSERT INTO @LOOKUP_TABLE
-SELECT DISTINCT
-	ISNULL(i.@FIELDS,'') @FIELDS
-FROM 
-	@FROM_SQL i
-	LEFT JOIN @LOOKUP_TABLE s ON (s.@FIELDS = i.@FIELDS) 
-WHERE
-	ISNULL(s.@FIELDS,'') = '';	
-			"""
-
-		tablename = "LOOKUP_"+table
-
-		sql = sql.replace("@LOOKUP_TABLE", tablename)
-		sql = sql.replace("@FIELDS", fields)
-		sql = sql.replace("@FROM_SQL", from_table)
-		sql = sql.replace("@IDX_NAME", "IDX_"+table)
-
-		#print(sql)
-		query_database2('Update Dimension Table '+table, sql, db, database, print_details=print_details) #, ignore_errors=True
-
-
 def create_date_table(db, database, print_details=False):
 
 	sql = """
@@ -120,3 +51,174 @@ CREATE INDEX idx_date ON LOOKUP_dates (year, quarter, day, daynumber, month, wee
 	query_database2('Create Date Table ', sql, db, database, print_details=print_details) #, ignore_errors=True
 
 	#don't think this index is being used at all
+
+##########################################################################################################
+##########################################################################################################
+##########################################################################################################
+##########################################################################################################
+##########################################################################################################
+##########################################################################################################
+##########################################################################################################
+
+
+def create_dimension_tables(db, database, dimension_table_list, print_details=False):
+
+
+	for dimension_table in dimension_table_list:
+		table = dimension_table[0]
+		fields = dimension_table[1]
+		from_table = dimension_table[2]
+
+		sql = """
+IF OBJECT_ID(N'@LOOKUP_TABLE') IS NOT NULL
+	drop table @LOOKUP_TABLE
+
+SELECT DISTINCT
+	ISNULL(@FIELDS,'') AS @FIELDS
+INTO 
+	@LOOKUP_TABLE 
+FROM 
+	@FROM_SQL
+
+ALTER TABLE @LOOKUP_TABLE
+ADD ID INT IDENTITY(1,1) NOT NULL PRIMARY KEY
+
+CREATE INDEX @IDX_NAME ON @LOOKUP_TABLE (id, @FIELDS)			
+			"""
+
+		tablename = "LOOKUP_"+table
+
+		sql = sql.replace("@LOOKUP_TABLE", tablename)
+		sql = sql.replace("@FIELDS", fields)
+		sql = sql.replace("@FROM_SQL", from_table)
+		sql = sql.replace("@IDX_NAME", "IDX_"+table)
+
+		drop_sql = "DROP TABLE "+tablename
+		query_database2('Drop Dimension Table '+table, drop_sql, db, database, print_details=print_details, ignore_errors=True)
+		query_database2('Create Dimension Table '+table, sql, db, database, print_details=print_details) #, ignore_errors=True
+
+
+def update_dimension_tables(db, database, dimension_table_list, print_details=False):
+
+
+	for dimension_table in dimension_table_list:
+		table = dimension_table[0]
+		fields = dimension_table[1]
+		from_table = dimension_table[2]
+
+		sql = """
+INSERT INTO @LOOKUP_TABLE
+SELECT DISTINCT
+	ISNULL(i.@FIELDS,'') @FIELDS
+FROM 
+	@FROM_SQL i
+	LEFT JOIN @LOOKUP_TABLE s ON (s.@FIELDS = i.@FIELDS) 
+WHERE
+	ISNULL(s.@FIELDS,'') = '';	
+			"""
+
+		tablename = "LOOKUP_"+table
+
+		sql = sql.replace("@LOOKUP_TABLE", tablename)
+		sql = sql.replace("@FIELDS", fields)
+		sql = sql.replace("@FROM_SQL", from_table)
+
+		#print(sql)
+		query_database2('Update Dimension Table '+table, sql, db, database, print_details=print_details) #, ignore_errors=True
+
+
+##########################################################################################################
+##########################################################################################################
+##########################################################################################################
+##########################################################################################################
+##########################################################################################################
+##########################################################################################################
+##########################################################################################################
+
+
+def create_dimension_tables_2(db, database, dimension_table_list, print_details=False):
+
+
+	for dimension_table in dimension_table_list:
+		table = dimension_table[0]
+		fields = dimension_table[1]
+		from_table = dimension_table[2]
+		alias = dimension_table[3]
+
+		sql = """
+IF OBJECT_ID(N'@LOOKUP_TABLE') IS NOT NULL
+	drop table @LOOKUP_TABLE
+
+SELECT DISTINCT
+	@FIELDS AS @ALIAS
+INTO 
+	@LOOKUP_TABLE 
+FROM 
+	@FROM_SQL
+
+ALTER TABLE @LOOKUP_TABLE
+ADD ID INT IDENTITY(1,1) NOT NULL PRIMARY KEY
+
+CREATE INDEX @IDX_NAME ON @LOOKUP_TABLE (id, @ALIAS)			
+			"""
+
+		tablename = "LOOKUP_"+table
+
+		sql = sql.replace("@LOOKUP_TABLE", tablename)
+		sql = sql.replace("@FIELDS", fields)
+		sql = sql.replace("@ALIAS", alias)		
+		sql = sql.replace("@FROM_SQL", from_table)
+		sql = sql.replace("@IDX_NAME", "IDX_"+table)
+
+		drop_sql = "DROP TABLE "+tablename
+		query_database2('Drop Dimension Table '+table, drop_sql, db, database, print_details=print_details, ignore_errors=True)
+		query_database2('Create Dimension Table '+table, sql, db, database, print_details=print_details) #, ignore_errors=True
+		#print(sql)
+
+#THIS IS ATTEMPTING TO ALLOW FOR A MORE FLEXIBLE INSERT PROCESS
+def update_dimension_tables_2(db, database, dimension_table_list, print_details=False):
+
+
+	for dimension_table in dimension_table_list:
+		table = dimension_table[0]
+		fields = dimension_table[1]
+		from_table = dimension_table[2]
+		alias = dimension_table[3]
+
+		sql = """
+WITH DATA AS (
+SELECT DISTINCT
+    @FIELDS AS @ALIAS
+FROM 
+    @FROM_SQL i
+)
+
+INSERT INTO @LOOKUP_TABLE
+SELECT
+	@ALIAS
+FROM 
+    DATA d
+
+WHERE NOT EXISTS
+    (
+        SELECT
+            @ALIAS
+        FROM
+            @LOOKUP_TABLE s
+        WHERE 
+            s.@ALIAS = d.@ALIAS
+    )
+;	
+			"""
+
+		tablename = "LOOKUP_"+table
+
+		sql = sql.replace("@LOOKUP_TABLE", tablename)
+		sql = sql.replace("@FIELDS", fields)
+		sql = sql.replace("@ALIAS", alias)
+		sql = sql.replace("@FROM_SQL", from_table)
+
+		#print(sql)
+		query_database2('Update Dimension Table '+table, sql, db, database, print_details=print_details) #, ignore_errors=True
+
+

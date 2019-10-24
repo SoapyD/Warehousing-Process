@@ -1,15 +1,16 @@
-CREATE INDEX idx_id_DETAIL_incident ON DETAIL_incident
+CREATE INDEX idx_id_DETAIL_incident ON DETAIL_incident 
 (	
 	recid,
 	system_id
 );
 
 
-CREATE INDEX idx_cre_DETAIL_incident ON DETAIL_incident
+CREATE INDEX idx_cre_DETAIL_incident ON DETAIL_incident 
 (	
 	createddate_id
 ) 
 INCLUDE (
+--recid, number, 
 --problemlink, masterincidentlink,
 --subject, symptom, resolution, technicalresolution,
 
@@ -47,9 +48,9 @@ lastmoddate_id, resolveddate_id, closeddate_id,
 --FACTS
 targetclockduration, totalrunningduration,
 response_targetclockduration, response_totalrunningduration, 
-reopencount,
+reopencount
 
-owner_id, createdby_id, resolvedby_id, closedby_id, lastmodby_id	
+--owner_id, createdby_id, resolvedby_id, closedby_id, lastmodby_id,	
 );
 
 CREATE INDEX idx_res_DETAIL_incident ON DETAIL_incident 
@@ -58,6 +59,7 @@ CREATE INDEX idx_res_DETAIL_incident ON DETAIL_incident
 	resolveddate_id
 ) 
 INCLUDE (
+--recid, number, 
 --problemlink, masterincidentlink,
 --subject, symptom, resolution, technicalresolution,
 
@@ -95,8 +97,8 @@ createddate_id, lastmoddate_id, closeddate_id,
 --FACTS
 targetclockduration, totalrunningduration,
 response_targetclockduration, response_totalrunningduration, 
-reopencount,
+reopencount
 
-owner_id, createdby_id, resolvedby_id, closedby_id, lastmodby_id
+--owner_id, createdby_id, resolvedby_id, closedby_id, lastmodby_id,	
 );
 /**/

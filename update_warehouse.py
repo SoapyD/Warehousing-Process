@@ -1,5 +1,5 @@
 
-def update_warehouse(table_name, temporary_table_name, wh_query, wh_combined_table,
+def update_warehouse(table_name, temporary_table_name, wh_query, wh_combined_table, delete_staging,
 	print_internal=False, print_details=False):
 	
 	if print_details == True:
@@ -92,22 +92,29 @@ def update_warehouse(table_name, temporary_table_name, wh_query, wh_combined_tab
 	process_start_time = datetime.datetime.now()
 
 	dimension_table_list = [
-		['status',"status",wh_combined_table],
-		['source',"source",wh_combined_table],
-		['company',"company", wh_combined_table],
-		['typeofincident',"typeofincident", wh_combined_table],
-		['ownerteam',"ownerteam", wh_combined_table],
-		['system',"system", wh_combined_table],
-		['businessunit',"businessunit", wh_combined_table],
-		['location',"location", wh_combined_table],
-		['causecode',"causecode", wh_combined_table],
-		['service',"service", wh_combined_table],
-		['category',"category", wh_combined_table],
-		['subcategory',"subcategory", wh_combined_table],
+		['status',"ISNULL(status,'')",wh_combined_table,"status"],
+		['source',"ISNULL(source,'')",wh_combined_table,"source"],
+		['company',"ISNULL(company,'')", wh_combined_table,"company"],
+		['typeofincident',"ISNULL(typeofincident,'')", wh_combined_table,"typeofincident"],
+		['ownerteam',"ISNULL(ownerteam,'')", wh_combined_table,"ownerteam"],
+		['system',"ISNULL(system,'')", wh_combined_table,"system"],
+		['businessunit',"ISNULL(businessunit,'')", wh_combined_table,"businessunit"],
+		['location',"ISNULL(location,'')", wh_combined_table,"location"],
+		['causecode',"ISNULL(causecode,'')", wh_combined_table,"causecode"],
+		['service',"ISNULL(service,'')", wh_combined_table,"service"],
+		['category',"ISNULL(category,'')", wh_combined_table,"category"],
+		['subcategory',"ISNULL(subcategory,'')", wh_combined_table,"subcategory"],
+
+		#OWNER DIMENSION TABLE
+		['owner',"REPLACE(i.owner,'.',' ')",wh_combined_table,'owner'],
+		['owner',"REPLACE(i.createdby,'.',' ')",wh_combined_table,'owner'],
+		['owner',"REPLACE(ISNULL(i.resolvedby,i.closedby),'.',' ')",wh_combined_table,'owner'],
+		['owner',"REPLACE(i.closedby,'.',' ')",wh_combined_table,'owner'],
+		['owner',"REPLACE(i.lastmodby,'.',' ')",wh_combined_table,'owner'],		
 	]
 
 	#CREATE AND POPULATE THE LOOKUP TABLES
-	update_dimension_tables(output_db, output_database, dimension_table_list, print_details)
+	update_dimension_tables_2(output_db, output_database, dimension_table_list, print_details)
 	
 	if print_details == True:
 		u_print("Dimension Tables Updated")
@@ -141,9 +148,10 @@ def update_warehouse(table_name, temporary_table_name, wh_query, wh_combined_tab
 	query_database2('drop External Table '+temporary_table_name,drop_sql, 
 		output_db, output_database, print_details=print_details, ignore_errors=True)	
 
-	drop_sql = "DROP TABLE "+wh_combined_table
-	query_database2('drop Table '+wh_combined_table,drop_sql, 
-		output_db, output_database, print_details=print_details, ignore_errors=True)
+	if delete_staging == True:
+		drop_sql = "DROP TABLE "+wh_combined_table
+		query_database2('drop Table '+wh_combined_table,drop_sql, 
+			output_db, output_database, print_details=print_details, ignore_errors=True)
 
 
 	if print_internal == True:

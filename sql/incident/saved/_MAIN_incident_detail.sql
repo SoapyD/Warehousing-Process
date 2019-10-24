@@ -1,83 +1,10 @@
-UPDATE DETAIL_incident
-SET
-	recid = t2.recid,
-	number = t2.number,
-	problem_id = t2.problem_id,
-	parentincident_id = t2.parentincident_id,	
-	
-	customer = t2.customer,
-	subject = t2.subject,
-	symptom = t2.symptom,
-	resolution = t2.resolution,
-	technicalresolution = t2.technicalresolution,
-	--t2.problemlink,
-	--t2.masterincidentlink,
+/*
+########################################################### MAIN
+*/
 
-	--DIMENSION IDS
-	system_id = t2.system_id,
-	company_id = t2.company_id,
-	businessunit_id = t2.businessunit_id,
-	typeofincident_id = t2.typeofincident_id,
-
-	status_id = t2.status_id,
-	source_id = t2.source_id,
-	ownerteam_id = t2.ownerteam_id,
-	location_id = t2.location_id,
-	causecode_id = t2.causecode_id,
-	
-	service_id = t2.service_id,
-	category_id = t2.category_id,
-	subcategory_id = t2.subcategory_id,
-
-	--DIMENSIONS
-	priority = t2.priority,
-	isvip = t2.isvip,
-	breachstatus = t2.breachstatus,
-	l1passed = t2.l1passed,
-	l2passed = t2.l2passed,
-	l3passed = t2.l3passed,		
-	breachpassed = t2.breachpassed,
-	response_breachpassed = t2.response_breachpassed,
-	remoteresolution = t2.remoteresolution,
-	repeatissue = t2.repeatissue,
-	numberofusersaffected = t2.numberofusersaffected,
-	reopen_check = t2.reopen_check,
-	
-	fcr = t2.fcr,
-	fcr_scoped = t2.fcr_scoped,
-	fcr_achieved = t2.fcr_achieved,
-
-
-	--OWNER DIMENSIONS
-	owner_id = t2.owner_id,
-	createdby_id = t2.createdby_id,
-	resolvedby_id = t2.resolvedby_id,
-	closedby_id = t2.closedby_id,
-	lastmodby_id = t2.lastmodby_id,
-
-	--DATE DIMENSIONS	
-	createddatetime = t2.createddatetime,
-	createddate_id = t2.createddate_id,
-	resolveddatetime = t2.resolveddatetime,
-	resolveddate_id = t2.resolveddate_id,
-	closeddatetime = t2.closeddatetime,
-	closeddate_id = t2.closeddate_id,
-	lastmoddatetime = t2.lastmoddatetime,
-	lastmoddate_id = t2.lastmoddate_id,
-	breachdatetime = t2.breachdatetime,
-	breachdate_id = t2.breachdate_id,
-
-	--FACTS
-	targetclockduration = t2.targetclockduration,
-	totalrunningduration = t2.totalrunningduration,
-	response_targetclockduration = t2.response_targetclockduration,
-	response_totalrunningduration = t2.response_totalrunningduration,
-	reopencount = t2.reopencount
-FROM   
-	DETAIL_incident T1
-    JOIN 
-    (
-
+IF OBJECT_ID(N'DETAIL_incident') IS NOT NULL
+    drop table DETAIL_incident
+/**/
 
 SELECT
 	i.recid,
@@ -85,7 +12,6 @@ SELECT
 	i.problem_id,
 	i.parentincident_id,
 
-	i.customer,
 	i.subject,
 	i.symptom,
 	i.resolution,
@@ -145,12 +71,21 @@ SELECT
 	THEN 1 ELSE 0
 	END as fcr_achieved,
 
-	--OWNER DIMENSIONS
-	ISNULL(own1.id,own2.id) as owner_id,
-	ISNULL(cre1.id,cre2.id) as createdby_id,
-	ISNULL(res1.id,res2.id) as resolvedby_id,
-	ISNULL(clo1.id,clo2.id) as closedby_id,
-	ISNULL(las1.id,las2.id) as lastmodby_id,
+	--NAME DIMENSIONS
+	/*
+	customer
+	ISNULL(own.id,NULL) as owner_id,
+	ISNULL(own_cre.id,NULL) as createdby_id,
+	ISNULL(own_res.id,NULL) as resolvedby_id,
+	ISNULL(own_clo.id,NULL) as closedby_id,
+	ISNULL(own_mod.id,NULL) as lastmodby_id,		
+	*/
+	customer,
+	owner,
+	createdby,
+	resolvedby,
+	closedby,
+	lastmodby,
 
 	--DATE DIMENSIONS	
 	createddatetime,
@@ -171,6 +106,8 @@ SELECT
 	response_totalrunningduration,
 	reopencount
 
+INTO 
+	DETAIL_incident 
 FROM 
 	[TEMP_incident_combined] i
 
@@ -190,50 +127,13 @@ FROM
 	LEFT JOIN LOOKUP_subcategory sub ON (sub.subcategory = ISNULL(i.subcategory,''))		
 
 	--OWNER DIMENSIONS
-	--OWNER
-	LEFT JOIN LOOKUP_owner own1 ON (
-		SUBSTRING(REPLACE(i.owner,'.',' '), 1, CHARINDEX('@', i.owner)) = own1.owner+'@'
-		)
-
-	LEFT JOIN LOOKUP_owner own2 ON (
-		ISNULL(REPLACE(i.owner,'.',' '),'') = own2.owner
-		)
-
-	--CREATED
-	LEFT JOIN LOOKUP_owner cre1 ON (
-		SUBSTRING(REPLACE(i.createdby,'.',' '), 1, CHARINDEX('@', i.owner)) = cre1.owner+'@'
-		)
-
-	LEFT JOIN LOOKUP_owner cre2 ON (
-		ISNULL(REPLACE(i.createdby,'.',' '),'') = cre2.owner
-		)
-
-	--RESOLVED
-	LEFT JOIN LOOKUP_owner res1 ON (
-		SUBSTRING(REPLACE(ISNULL(i.resolvedby,i.closedby),'.',' '), 1, CHARINDEX('@', i.owner)) = res1.owner+'@'
-		)
-
-	LEFT JOIN LOOKUP_owner res2 ON (
-		ISNULL(REPLACE(ISNULL(i.resolvedby,i.closedby),'.',' '),'') = res2.owner
-		)
-
-	--CLOSED
-	LEFT JOIN LOOKUP_owner clo1 ON (
-		SUBSTRING(REPLACE(i.closedby,'.',' '), 1, CHARINDEX('@', i.owner)) = clo1.owner+'@'
-		)
-
-	LEFT JOIN LOOKUP_owner clo2 ON (
-		ISNULL(REPLACE(i.closedby,'.',' '),'') = clo2.owner
-		)
-
-	--LASTMOD
-	LEFT JOIN LOOKUP_owner las1 ON (
-		SUBSTRING(REPLACE(i.lastmodby,'.',' '), 1, CHARINDEX('@', i.owner)) = las1.owner+'@'
-		)
-
-	LEFT JOIN LOOKUP_owner las2 ON (
-		ISNULL(REPLACE(i.lastmodby,'.',' '),'') = las2.owner
-		)
+	/*
+	LEFT JOIN LOOKUP_owner own ON (own.owner = i.owner)
+	LEFT JOIN LOOKUP_owner own_cre ON (own_cre.owner = i.createdby)
+	LEFT JOIN LOOKUP_owner own_res ON (own_res.owner = i.resolvedby)
+	LEFT JOIN LOOKUP_owner own_clo ON (own_clo.owner = i.closedby)
+	LEFT JOIN LOOKUP_owner own_mod ON (own_mod.owner = i.lastmodby)			
+	*/
 
 	--DATE DIMENSIONS
 	LEFT JOIN LOOKUP_dates cre_d ON (cre_d.date = CONVERT(DATE,i.createddatetime))
@@ -241,6 +141,4 @@ FROM
 	LEFT JOIN LOOKUP_dates clo_d ON (clo_d.date = CONVERT(DATE,closeddatetime))
 	LEFT JOIN LOOKUP_dates upd_d ON (upd_d.date = CONVERT(DATE,lastmoddatetime))
 	LEFT JOIN LOOKUP_dates bre_d ON (bre_d.date = CONVERT(DATE,breachdatetime))
-
-    ) T2
-    ON (T1.recid = T2.recid AND T1.system_id = T2.system_id)
+	;
