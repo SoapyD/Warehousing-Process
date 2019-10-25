@@ -5,7 +5,6 @@ SET
 	id = T2.id,
 	rescuesessionid = T2.rescuesessionid,
 	comments = T2.comments,
-    technician = T2.technician,
 	nps = T2.nps,
 	npstype = T2.npstype,
 	duplicate_check = T2.duplicate_check,
@@ -19,6 +18,7 @@ SET
     company_id = T2.company_id,
     businessunit_id = T2.businessunit_id,
     ownerteam_id = T2.ownerteam_id,
+    technician_id = T2.technician_id,    
 	databasename = T2.databasename,
 
 	--DATE DIMENSIONS
@@ -37,12 +37,11 @@ SELECT
 	s.id,
 	s.rescuesessionid,
 	s.comments,
-    replace(rdb.owner,'.',' ') as technician,
 	s.nps,
 	s.npstype,
 	s.duplicate_check,
     ISNULL(i.recid,NULL) AS incident_id,
-	s.incidentnumber,
+    REPLACE(s.incidentnumber,'.0','') AS incidentnumber,
     ISNULL(i.customer,'') AS customer,
     ISNULL(i.isvip,'') AS isvip,
 
@@ -51,6 +50,7 @@ SELECT
     ISNULL(i.company_id,NULL) AS company_id,
     ISNULL(i.businessunit_id,NULL) AS businessunit_id,
     ISNULL(i.ownerteam_id,NULL) AS ownerteam_id,
+    ISNULL(i.resolvedby_id,NULL) as technician_id,
 	s.databasename,
 
 	--DATE DIMENSIONS

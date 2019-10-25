@@ -9,7 +9,7 @@ SELECT
 	sur.rescuesessionid,
 	sur.submittedat,
 	CASE WHEN sur.comments = '' THEN NULL ELSE sur.comments END AS comments,
-	--spb.techname as technician,
+	spb.techname as technicianname,
 
 	CASE
 		WHEN fsa_ci.incidentnumber IS NOT NULL THEN fsa_ci.incidentnumber
@@ -71,7 +71,7 @@ SELECT
 	NULL AS rescuesessionid,
 	sur.submittedat,
 	sur.comments,
-	--NULL as technician,
+	NULL as technician,
 
 	sur.incidentnumber,
 	'heat' as system,

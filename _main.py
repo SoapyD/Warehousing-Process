@@ -14,5 +14,6 @@ exec(open(this_dir+"update_warehouse.py").read())
 exec(open(this_dir+"setup_warehouse_lflive.py").read())
 exec(open(this_dir+"update_warehouse_lflive.py").read())
 
+exec(open(this_dir+"setup_dimensions.py").read())
 
 global error_count

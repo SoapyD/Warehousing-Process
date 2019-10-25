@@ -9,12 +9,11 @@ SELECT
 	s.id,
 	s.rescuesessionid,
 	s.comments,
-    replace(rdb.owner,'.',' ') as technician,
 	s.nps,
 	s.npstype,
 	s.duplicate_check,
     ISNULL(i.recid,NULL) AS incident_id,
-	s.incidentnumber,
+	REPLACE(s.incidentnumber,'.0','') AS incidentnumber,
     ISNULL(i.customer,'') AS customer,
     ISNULL(i.isvip,'') AS isvip,
 
@@ -23,6 +22,7 @@ SELECT
     ISNULL(i.company_id,NULL) AS company_id,
     ISNULL(i.businessunit_id,NULL) AS businessunit_id,
     ISNULL(i.ownerteam_id,NULL) AS ownerteam_id,
+    ISNULL(i.resolvedby_id,NULL) as technician_id,
 	s.databasename,
 
 	--DATE DIMENSIONS

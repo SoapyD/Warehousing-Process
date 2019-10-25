@@ -1,5 +1,17 @@
 
+
 def update_warehouse_lflive(table_name, temporary_table_name, wh_query, wh_combined_table, delete_staging,
+	print_internal=False, print_details=False):
+
+	run = False
+	if run == True:
+		update_warehouse_lflive(table_name, temporary_table_name, wh_query, wh_combined_table, delete_staging,
+		print_internal, print_details):
+	else:
+		u_print("WARNING: Warehousing turned of.")
+
+
+def run_update_warehouse_lflive(table_name, temporary_table_name, wh_query, wh_combined_table, delete_staging,
 	print_internal=False, print_details=False):
 	
 	if print_details == True:

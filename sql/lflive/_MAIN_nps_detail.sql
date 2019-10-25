@@ -8,12 +8,11 @@ SELECT
 	s.id,
 	s.rescuesessionid,
 	s.comments,
-    replace(rdb.owner,'.',' ') as technician,
 	s.nps,
 	s.npstype,
 	s.duplicate_check,
     ISNULL(i.recid,NULL) AS incident_id,
-	s.incidentnumber,
+	REPLACE(s.incidentnumber,'.0','') AS incidentnumber,
     ISNULL(i.customer,'') AS customer,
     ISNULL(i.isvip,'') AS isvip,
 
@@ -22,8 +21,9 @@ SELECT
     ISNULL(i.company_id,NULL) AS company_id,
     ISNULL(i.businessunit_id,NULL) AS businessunit_id,
     ISNULL(i.ownerteam_id,NULL) AS ownerteam_id,
-	s.databasename,
+    ISNULL(i.resolvedby_id,NULL) as technician_id,
 
+	s.databasename,
 	--DATE DIMENSIONS
 	s.submittedat,
     submit_d.id AS submitteddate_id
@@ -41,5 +41,5 @@ FROM
     LEFT JOIN LOOKUP_dates submit_d ON (submit_d.date = CONVERT(DATE,s.submittedat))
 
     --OWNER JOINS 
-    LEFT JOIN LOOKUP_owner rdb ON (rdb.id = i.resolvedby_id)   
+    --LEFT JOIN LOOKUP_owner rdb ON (rdb.id = i.resolvedby_id)   
 

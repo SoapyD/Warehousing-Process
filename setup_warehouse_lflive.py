@@ -30,7 +30,6 @@ def setup_warehouse_lflive():
 
 	#FIRST CREATE THE CREDENTIALS AND EXTERNAL TABLES WE'LL BE PULLING DATA FROM
 	
-
 	table_list = [
 		'lfliveextract_session',
 		'lfliveextract_sessionincident',
@@ -55,7 +54,7 @@ def setup_warehouse_lflive():
 
 	#BUILD THE COMBINED TABLE
 	sql_queries = [
-		"lfliveextract_session",
+		#"lfliveextract_session",
 		"lfliveextract_nps",
 	]
 
@@ -73,6 +72,21 @@ def setup_warehouse_lflive():
 		process_end_time = datetime.datetime.now()
 		u_print('Time Taken: '+str(process_end_time - process_start_time))	
 		u_print("###########################")	
+
+		"""
+	###################################################################################
+	################################UPDATE LOOKUP TABLES
+	###################################################################################
+
+	#WE THEN HAVE TO RUN THE ABOVE FOR ALL RESOLVER BASED FIELDS, UPDATING THE SAME LOOKUP_OWNER FIELD
+	dimension_table_list = [
+		['owner',"REPLACE(i.technicianname,'.',' ')",'TEMP_nps','owner'],
+		['owner',"REPLACE(i.technicianname,'.',' ')",'TEMP_session','owner'],
+	]
+
+	#CREATE AND POPULATE THE LOOKUP TABLES
+	update_dimension_tables_2(output_db, output_database, dimension_table_list, print_details)
+
 
 	###################################################################################
 	################################SETUP DETAILS TABLE
@@ -122,6 +136,8 @@ def setup_warehouse_lflive():
 	u_print('End: '+str(finish_time))
 	u_print('Time Taken: '+str(finish_time - start_time))
 	u_print('########################################')
+	"""
+
 	"""
 	#save_process(start_time, finish_time, str(finish_time - start_time), "Web-Service-Reader", 'hourly')
 	"""
