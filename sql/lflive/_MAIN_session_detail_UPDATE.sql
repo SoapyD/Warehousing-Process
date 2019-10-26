@@ -3,10 +3,11 @@ SET
 	recid = T2.recid,
 	sessionid = T2.sessionid,
 	subject = T2.subject,
+    /*
 	technicianid = T2.technicianid,
 	technicianname = T2.technicianname,
 	technicianemail = T2.technicianemail,
-    
+    */
 	[Whats the Status of Your Problem?] = T2.[Whats the Status of Your Problem?],
 	[Please Rate Your Remote Support Experience] = T2.[Please Rate Your Remote Support Experience],
 	[Q2 score] = T2.[Q2 score],    
@@ -24,8 +25,10 @@ SET
 	company_id = T2.company_id,
 	businessunit_id = T2.businessunit_id,
 	ownerteam_id = T2.ownerteam_id,
+    technician_id = T2.technician_id,
 	databasename = T2.databasename,
 
+    --DIMENSIONS
 	status = T2.status,
 	techniciangroup = T2.techniciangroup,
 	he_session = T2.he_session,
@@ -62,9 +65,11 @@ SELECT
     s.recid,
     s.sessionid,
     s.subject,
+    /*
     s.technicianid,
     s.technicianname,
     s.technicianemail,
+    */
     
     s.[Whats the Status of Your Problem?],
     s.[Please Rate Your Remote Support Experience],
@@ -83,9 +88,10 @@ SELECT
     ISNULL(i.company_id,NULL) AS company_id,
     ISNULL(i.businessunit_id,NULL) AS businessunit_id,
     ISNULL(i.ownerteam_id,NULL) AS ownerteam_id,
+    ISNULL(rdb.id,NULL) as technician_id,      
     s.databasename,
 
-    --s.companyname,
+    --DIMENSIONS
     s.status,
     s.techniciangroup,
     he_session,
@@ -124,6 +130,9 @@ FROM
     LEFT JOIN LOOKUP_dates start_d ON (start_d.date = CONVERT(DATE,s.starttime))
     LEFT JOIN LOOKUP_dates end_d ON (end_d.date = CONVERT(DATE,s.endtime))
     LEFT JOIN LOOKUP_dates last_d ON (last_d.date = CONVERT(DATE,s.lastactiontime))
+
+    --OWNER JOINS 
+    LEFT JOIN LOOKUP_owner rdb ON (rdb.owner = s.technicianname) 
 
     ) T2
     ON (T1.recid = T2.recid)-- AND T1.system_id = T2.system_id)

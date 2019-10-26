@@ -114,18 +114,32 @@ def run_update_warehouse(table_name, temporary_table_name, wh_query, wh_combined
 		['service',"ISNULL(service,'')", wh_combined_table,"service"],
 		['category',"ISNULL(category,'')", wh_combined_table,"category"],
 		['subcategory',"ISNULL(subcategory,'')", wh_combined_table,"subcategory"],
-
-		#OWNER DIMENSION TABLE
-		['owner',"REPLACE(i.owner,'.',' ')",wh_combined_table,'owner'],
-		['owner',"REPLACE(i.createdby,'.',' ')",wh_combined_table,'owner'],
-		['owner',"REPLACE(ISNULL(i.resolvedby,i.closedby),'.',' ')",wh_combined_table,'owner'],
-		['owner',"REPLACE(i.closedby,'.',' ')",wh_combined_table,'owner'],
-		['owner',"REPLACE(i.lastmodby,'.',' ')",wh_combined_table,'owner'],		
 	]
 
 	#CREATE AND POPULATE THE LOOKUP TABLES
 	update_dimension_tables_2(output_db, output_database, dimension_table_list, print_details)
 	
+
+	field_string = """
+CASE
+WHEN ISNUMERIC(left(@owner,1)) = 1 THEN ''
+WHEN CHARINDEX('@', @owner) > 0 THEN ISNULL(LOWER(LEFT(REPLACE(@owner,'.',' '), CHARINDEX('@', @owner) - 1)),'')
+ELSE ISNULL(LOWER(REPLACE(@owner,'.',' ')),'')
+END"""
+	
+	#WE THEN HAVE TO RUN THE ABOVE FOR ALL RESOLVER BASED FIELDS, UPDATING THE SAME LOOKUP_OWNER FIELD
+	dimension_table_list = [
+		['owner',field_string.replace("@owner", 'i.owner'),wh_combined_table,'owner'],
+		['owner',field_string.replace("@owner", 'i.createdby'),wh_combined_table,'owner'],
+		['owner',field_string.replace("@owner", 'ISNULL(i.resolvedby,i.closedby)'),wh_combined_table,'owner'],
+		['owner',field_string.replace("@owner", 'i.closedby'),wh_combined_table,'owner'],
+		['owner',field_string.replace("@owner", 'i.lastmodby'),wh_combined_table,'owner'],
+	]
+
+	#CREATE AND POPULATE THE LOOKUP TABLES
+	update_dimension_tables_2(output_db, output_database, dimension_table_list, print_details)
+
+
 	if print_details == True:
 		u_print("Dimension Tables Updated")
 

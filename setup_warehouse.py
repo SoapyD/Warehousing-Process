@@ -133,18 +133,18 @@ def setup_warehouse():
 	process_start_time = datetime.datetime.now()
 
 	dimension_table_list = [
-		['status',"status",'TEMP_incident_combined',"status"],
-		['source',"source",'TEMP_incident_combined',"source"],
-		['company',"company",'TEMP_incident_combined',"company"],
-		['typeofincident',"typeofincident",'TEMP_incident_combined',"typeofincident"],
-		['ownerteam',"ownerteam",'TEMP_incident_combined',"ownerteam"],
-		['system',"system",'TEMP_incident_combined',"system"],
-		['businessunit',"businessunit",'TEMP_incident_combined',"businessunit"],
-		['location',"location",'TEMP_incident_combined',"location"],
-		['causecode',"causecode",'TEMP_incident_combined',"causecode"],
-		['service',"service",'TEMP_incident_combined',"service"],
-		['category',"category",'TEMP_incident_combined',"category"],
-		['subcategory',"subcategory",'TEMP_incident_combined',"subcategory"],
+		['status',"ISNULL(status,'')",'TEMP_incident_combined',"status"],
+		['source',"ISNULL(source,'')",'TEMP_incident_combined',"source"],
+		['company',"ISNULL(company,'')",'TEMP_incident_combined',"company"],
+		['typeofincident',"ISNULL(typeofincident,'')",'TEMP_incident_combined',"typeofincident"],
+		['ownerteam',"ISNULL(ownerteam,'')",'TEMP_incident_combined',"ownerteam"],
+		['system',"ISNULL(system,'')",'TEMP_incident_combined',"system"],
+		['businessunit',"ISNULL(businessunit,'')",'TEMP_incident_combined',"businessunit"],
+		['location',"ISNULL(location,'')",'TEMP_incident_combined',"location"],
+		['causecode',"ISNULL(causecode,'')",'TEMP_incident_combined',"causecode"],
+		['service',"ISNULL(service,'')",'TEMP_incident_combined',"service"],
+		['category',"ISNULL(category,'')",'TEMP_incident_combined',"category"],
+		['subcategory',"ISNULL(subcategory,'')",'TEMP_incident_combined',"subcategory"],
 	]
 
 	#CREATE AND POPULATE THE LOOKUP TABLES
@@ -153,19 +153,27 @@ def setup_warehouse():
 
 	#NOW WE HAVE TO CREATE THE OWNER DIMENSION TABLE WHICH IS A BIT MORE COMPLICATED
 
+	field_string = """
+CASE
+WHEN ISNUMERIC(left(@owner,1)) = 1 THEN ''
+WHEN CHARINDEX('@', @owner) > 0 THEN ISNULL(LOWER(LEFT(REPLACE(@owner,'.',' '), CHARINDEX('@', @owner) - 1)),'')
+ELSE ISNULL(LOWER(REPLACE(@owner,'.',' ')),'')
+END"""
+
 	dimension_table_list = [
-		['owner',"REPLACE(owner,'.',' ')",'TEMP_incident_combined','owner'],
+		['owner',field_string.replace("@owner", 'owner'),'TEMP_incident_combined','owner'],
 	]
 
 	#CREATE AND POPULATE THE LOOKUP TABLES
 	create_dimension_tables_2(output_db, output_database, dimension_table_list, print_details)
 
+	
 	#WE THEN HAVE TO RUN THE ABOVE FOR ALL RESOLVER BASED FIELDS, UPDATING THE SAME LOOKUP_OWNER FIELD
 	dimension_table_list = [
-		['owner',"REPLACE(i.createdby,'.',' ')",'TEMP_incident_combined','owner'],
-		['owner',"REPLACE(ISNULL(i.resolvedby,i.closedby),'.',' ')",'TEMP_incident_combined','owner'],
-		['owner',"REPLACE(i.closedby,'.',' ')",'TEMP_incident_combined','owner'],
-		['owner',"REPLACE(i.lastmodby,'.',' ')",'TEMP_incident_combined','owner'],
+		['owner',field_string.replace("@owner", 'i.createdby'),'TEMP_incident_combined','owner'],
+		['owner',field_string.replace("@owner", 'ISNULL(i.resolvedby,i.closedby)'),'TEMP_incident_combined','owner'],
+		['owner',field_string.replace("@owner", 'i.closedby'),'TEMP_incident_combined','owner'],
+		['owner',field_string.replace("@owner", 'i.lastmodby'),'TEMP_incident_combined','owner'],
 	]
 
 	#CREATE AND POPULATE THE LOOKUP TABLES

@@ -54,7 +54,7 @@ def setup_warehouse_lflive():
 
 	#BUILD THE COMBINED TABLE
 	sql_queries = [
-		#"lfliveextract_session",
+		"lfliveextract_session",
 		"lfliveextract_nps",
 	]
 
@@ -73,15 +73,24 @@ def setup_warehouse_lflive():
 		u_print('Time Taken: '+str(process_end_time - process_start_time))	
 		u_print("###########################")	
 
-		"""
+		
 	###################################################################################
 	################################UPDATE LOOKUP TABLES
 	###################################################################################
 
 	#WE THEN HAVE TO RUN THE ABOVE FOR ALL RESOLVER BASED FIELDS, UPDATING THE SAME LOOKUP_OWNER FIELD
+
+	field_string = """
+CASE
+WHEN ISNUMERIC(left(@owner,1)) = 1 THEN ''
+WHEN CHARINDEX('@', @owner) > 0 THEN ISNULL(LOWER(LEFT(REPLACE(@owner,'.',' '), CHARINDEX('@', @owner) - 1)),'')
+ELSE ISNULL(LOWER(REPLACE(@owner,'.',' ')),'')
+END"""
+	
+	#WE THEN HAVE TO RUN THE ABOVE FOR ALL RESOLVER BASED FIELDS, UPDATING THE SAME LOOKUP_OWNER FIELD
 	dimension_table_list = [
-		['owner',"REPLACE(i.technicianname,'.',' ')",'TEMP_nps','owner'],
-		['owner',"REPLACE(i.technicianname,'.',' ')",'TEMP_session','owner'],
+		['owner',field_string.replace("@owner", 'i.technicianname'),'TEMP_nps','owner'],
+		['owner',field_string.replace("@owner", 'i.technicianname'),'TEMP_session','owner'],
 	]
 
 	#CREATE AND POPULATE THE LOOKUP TABLES
@@ -136,7 +145,7 @@ def setup_warehouse_lflive():
 	u_print('End: '+str(finish_time))
 	u_print('Time Taken: '+str(finish_time - start_time))
 	u_print('########################################')
-	"""
+	""""""
 
 	"""
 	#save_process(start_time, finish_time, str(finish_time - start_time), "Web-Service-Reader", 'hourly')

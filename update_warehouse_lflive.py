@@ -95,6 +95,34 @@ def run_update_warehouse_lflive(table_name, temporary_table_name, wh_query, wh_c
 		u_print("Combined LFLive Table Created")
 		u_print("###########################")	
 
+	###################################################################################
+	################################UPDATE LOOKUP TABLES
+	###################################################################################
+
+	#WE THEN HAVE TO RUN THE ABOVE FOR ALL RESOLVER BASED FIELDS, UPDATING THE SAME LOOKUP_OWNER FIELD
+
+	field_string = """
+CASE
+WHEN ISNUMERIC(left(@owner,1)) = 1 THEN ''
+WHEN CHARINDEX('@', @owner) > 0 THEN ISNULL(LOWER(LEFT(REPLACE(@owner,'.',' '), CHARINDEX('@', @owner) - 1)),'')
+ELSE ISNULL(LOWER(REPLACE(@owner,'.',' ')),'')
+END"""
+	
+	dimension_table_list = None
+
+	if type == 'session':
+		dimension_table_list = [
+			['owner',field_string.replace("@owner", 'i.technicianname'),wh_combined_table,'owner'],
+		]
+
+	if type == 'nps':
+		dimension_table_list = [
+			['owner',field_string.replace("@owner", 'i.technicianname'),wh_combined_table,'owner'],
+		]
+
+	#CREATE AND POPULATE THE LOOKUP TABLES
+	update_dimension_tables_2(output_db, output_database, dimension_table_list, print_details)
+
 	
 	###################################################################################
 	################################UPDATE AND INSERT TO DETAILS TABLE

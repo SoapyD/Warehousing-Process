@@ -70,11 +70,11 @@ SELECT
 	END as fcr_achieved,
 
 	--OWNER DIMENSIONS
-	ISNULL(own1.id,own2.id) as owner_id,
-	ISNULL(cre1.id,cre2.id) as createdby_id,
-	ISNULL(res1.id,res2.id) as resolvedby_id,
-	ISNULL(clo1.id,clo2.id) as closedby_id,
-	ISNULL(las1.id,las2.id) as lastmodby_id,
+	ISNULL(own.id,NULL) as owner_id,
+	ISNULL(cre.id,NULL) as createdby_id,
+	ISNULL(res.id,NULL) as resolvedby_id,
+	ISNULL(clo.id,NULL) as closedby_id,
+	ISNULL(las.id,NULL) as lastmodby_id,
 
 	--DATE DIMENSIONS	
 	createddatetime,
@@ -115,48 +115,24 @@ FROM
 
 	--OWNER DIMENSIONS
 	--OWNER
-	LEFT JOIN LOOKUP_owner own1 ON (
-		SUBSTRING(REPLACE(i.owner,'.',' '), 1, CHARINDEX('@', i.owner)) = own1.owner+'@'
+	LEFT JOIN LOOKUP_owner own ON (
+		SUBSTRING(REPLACE(i.owner,'.',' ')+'@', 1, CHARINDEX('@', i.owner+'@')) = own.owner+'@'
 		)
-
-	LEFT JOIN LOOKUP_owner own2 ON (
-		ISNULL(REPLACE(i.owner,'.',' '),'') = own2.owner
-		)
-
 	--CREATED
-	LEFT JOIN LOOKUP_owner cre1 ON (
-		SUBSTRING(REPLACE(i.createdby,'.',' '), 1, CHARINDEX('@', i.owner)) = cre1.owner+'@'
+	LEFT JOIN LOOKUP_owner cre ON (
+		SUBSTRING(REPLACE(i.createdby,'.',' ')+'@', 1, CHARINDEX('@', i.createdby+'@')) = cre.owner+'@'
 		)
-
-	LEFT JOIN LOOKUP_owner cre2 ON (
-		ISNULL(REPLACE(i.createdby,'.',' '),'') = cre2.owner
-		)
-
 	--RESOLVED
-	LEFT JOIN LOOKUP_owner res1 ON (
-		SUBSTRING(REPLACE(ISNULL(i.resolvedby,i.closedby),'.',' '), 1, CHARINDEX('@', i.owner)) = res1.owner+'@'
+	LEFT JOIN LOOKUP_owner res ON (
+		SUBSTRING(REPLACE(ISNULL(i.resolvedby,i.closedby),'.',' ')+'@', 1, CHARINDEX('@', ISNULL(i.resolvedby,i.closedby)+'@')) = res.owner+'@'
 		)
-
-	LEFT JOIN LOOKUP_owner res2 ON (
-		ISNULL(REPLACE(ISNULL(i.resolvedby,i.closedby),'.',' '),'') = res2.owner
-		)
-
 	--CLOSED
-	LEFT JOIN LOOKUP_owner clo1 ON (
-		SUBSTRING(REPLACE(i.closedby,'.',' '), 1, CHARINDEX('@', i.owner)) = clo1.owner+'@'
+	LEFT JOIN LOOKUP_owner clo ON (
+		SUBSTRING(REPLACE(i.closedby,'.',' ')+'@', 1, CHARINDEX('@', i.closedby+'@')) = clo.owner+'@'
 		)
-
-	LEFT JOIN LOOKUP_owner clo2 ON (
-		ISNULL(REPLACE(i.closedby,'.',' '),'') = clo2.owner
-		)
-
 	--LASTMOD
-	LEFT JOIN LOOKUP_owner las1 ON (
-		SUBSTRING(REPLACE(i.lastmodby,'.',' '), 1, CHARINDEX('@', i.owner)) = las1.owner+'@'
-		)
-
-	LEFT JOIN LOOKUP_owner las2 ON (
-		ISNULL(REPLACE(i.lastmodby,'.',' '),'') = las2.owner
+	LEFT JOIN LOOKUP_owner las ON (
+		SUBSTRING(REPLACE(i.lastmodby,'.',' ')+'@', 1, CHARINDEX('@', i.lastmodby+'@')) = las.owner+'@'
 		)
 
 	--DATE DIMENSIONS

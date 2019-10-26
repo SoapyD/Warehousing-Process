@@ -15,6 +15,7 @@ system_id,
 company_id,
 businessunit_id,
 ownerteam_id,
+technician_id,
 
 --DIMENSIONS
 [Whats the Status of Your Problem?],

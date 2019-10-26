@@ -29,12 +29,10 @@ END"""
 	create_dimension_tables_2(output_db, output_database, dimension_table_list, print_details)
 
 	dimension_table_list = [
-
 		['owner',field_string.replace("@owner", 'i.createdby'),'TEMP_incident_combined','owner'],
 		['owner',field_string.replace("@owner", 'ISNULL(i.resolvedby,i.closedby)'),'TEMP_incident_combined','owner'],
 		['owner',field_string.replace("@owner", 'i.closedby'),'TEMP_incident_combined','owner'],
 		['owner',field_string.replace("@owner", 'i.lastmodby'),'TEMP_incident_combined','owner'],
-
 	]
 
 	#CREATE AND POPULATE THE LOOKUP TABLES

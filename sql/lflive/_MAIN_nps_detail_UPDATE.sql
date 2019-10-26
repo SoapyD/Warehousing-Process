@@ -50,7 +50,7 @@ SELECT
     ISNULL(i.company_id,NULL) AS company_id,
     ISNULL(i.businessunit_id,NULL) AS businessunit_id,
     ISNULL(i.ownerteam_id,NULL) AS ownerteam_id,
-    ISNULL(i.resolvedby_id,NULL) as technician_id,
+    ISNULL(ISNULL(i.resolvedby_id,rdb.id),NULL) as technician_id,
 	s.databasename,
 
 	--DATE DIMENSIONS
@@ -68,7 +68,7 @@ FROM
     LEFT JOIN LOOKUP_dates submit_d ON (submit_d.date = CONVERT(DATE,s.submittedat))
 
     --OWNER JOINS 
-    LEFT JOIN LOOKUP_owner rdb ON (rdb.id = i.resolvedby_id) 
+    LEFT JOIN LOOKUP_owner rdb ON (rdb.owner = s.technicianname)   
 
     ) T2
     ON (T1.recid = T2.recid)-- AND T1.system_id = T2.system_id)
