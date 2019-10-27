@@ -4,7 +4,7 @@
 
 INSERT DETAIL_nps
 SELECT
-    s.recid,
+    s.recid+'_i_'+REPLACE(s.incidentnumber,'.0','') AS recid,
 	s.type,
 	s.id,
 	s.rescuesessionid,
