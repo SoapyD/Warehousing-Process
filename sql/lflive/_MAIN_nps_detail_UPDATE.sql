@@ -32,7 +32,7 @@ FROM
 
 
 SELECT
-    s.recid+'_i_'+REPLACE(s.incidentnumber,'.0','') AS recid,
+    s.recid+'_i_'+ISNULL(REPLACE(s.incidentnumber,'.0',''),'') AS recid,
 	s.type,
 	s.id,
 	s.rescuesessionid,

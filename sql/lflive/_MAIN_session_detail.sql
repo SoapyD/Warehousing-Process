@@ -4,7 +4,8 @@ IF OBJECT_ID(N'DETAIL_session') IS NOT NULL
     drop table DETAIL_session
 
 SELECT 
-    s.recid,
+    --s.recid,
+    s.recid+'_i_'+ISNULL(i.number,'') as recid,
     s.sessionid,
     s.subject,
     /*

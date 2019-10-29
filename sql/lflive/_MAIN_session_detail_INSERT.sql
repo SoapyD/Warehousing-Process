@@ -4,7 +4,8 @@
 
 INSERT DETAIL_session
 SELECT
-    s.recid,
+    --s.recid,
+    s.recid+'_i_'+ISNULL(i.number,'') as recid,
     s.sessionid,
     s.subject,
     /*

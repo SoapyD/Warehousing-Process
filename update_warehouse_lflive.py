@@ -3,7 +3,7 @@
 def update_warehouse_lflive(table_name, temporary_table_name, wh_query, wh_combined_table, delete_staging,
 	print_internal=False, print_details=False):
 
-	run = False
+	run = True
 	if run == True:
 		run_update_warehouse_lflive(table_name, temporary_table_name, wh_query, wh_combined_table, delete_staging,
 		print_internal, print_details)
@@ -131,6 +131,7 @@ END"""
 	sql = get_sql_query("_MAIN_"+type+"_detail_UPDATE", warehousing_path+"/sql/lflive/")	
 	#sql = sql.lower()
 	sql = sql.replace('TEMP_'+type, wh_combined_table) #REPLACE THE COMBINED TABLE NAME WITH THE TEMP WH COMBINED NAME			
+	#print(sql)
 	query_database2('UPDATE RECORDS',sql, output_db, output_database, print_details=print_details)
 
 	sql = get_sql_query("_MAIN_"+type+"_detail_INSERT", warehousing_path+"/sql/lflive/")	

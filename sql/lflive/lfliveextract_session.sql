@@ -4,7 +4,8 @@ IF OBJECT_ID(N'TEMP_session') IS NOT NULL
     drop table TEMP_session
 
 SELECT 
-    --s.recid+'_s_'+ISNULL(CONVERT(NVARCHAR,cs.id),'') AS recid,
+    s.recid+'_s_'+ISNULL(CONVERT(NVARCHAR,cs.id),'') AS recid,
+    /*
     CASE 
         WHEN he_ci.sessionid IS NOT NULL OR ISNULL(SPB.he_session,0) = 1 THEN s.recid+'_i_'+ISNULL(he_ci.incidentnumber,LEFT(s.existingticketno,20))+'_s_'+ISNULL(CONVERT(NVARCHAR,cs.id),'')
         WHEN fsa_ci.sessionid IS NOT NULL OR ISNULL(SPB.fsa_session,0) = 1  THEN s.recid+'_i_'+ISNULL(fsa_ci.incidentnumber,LEFT(s.existingticketno,20))+'_s_'+ISNULL(CONVERT(NVARCHAR,cs.id),'')
@@ -13,6 +14,7 @@ SELECT
         WHEN enwl_ci.sessionid IS NOT NULL OR ISNULL(SPB.enwl_session,0) = 1  THEN s.recid+'_i_'+ISNULL(enwl_ci.incidentnumber,LEFT(s.existingticketno,20))+'_s_'+ISNULL(CONVERT(NVARCHAR,cs.id),'')     
         ELSE s.recid+'_i_'+ISNULL(ci.incidentnumber,ISNULL(LEFT(s.existingticketno,20),''))+'_s_'+ISNULL(CONVERT(NVARCHAR,cs.id),'')
     end as recid,
+    */
     s.sessionid,
     --s.sessiontype,
     s.status,
