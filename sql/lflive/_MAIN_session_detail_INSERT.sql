@@ -86,6 +86,6 @@ WHERE NOT EXISTS
 			DETAIL_session d 
 			--LEFT JOIN LOOKUP_system s ON (s.id = d.system_id)
 		WHERE 
-			d.recid = i.recid --AND s.system = i.system
+			d.recid = s.recid+'_i_'+ISNULL(i.number,'')
 	)
 ;
