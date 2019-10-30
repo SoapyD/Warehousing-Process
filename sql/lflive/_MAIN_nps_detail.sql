@@ -21,7 +21,10 @@ SELECT
     ISNULL(i.company_id,NULL) AS company_id,
     ISNULL(i.businessunit_id,NULL) AS businessunit_id,
     ISNULL(i.ownerteam_id,NULL) AS ownerteam_id,
-    ISNULL(ISNULL(i.resolvedby_id,rdb.id),NULL) as technician_id,
+    CASE
+    WHEN rdb.owner = '' THEN i.resolvedby_id
+    ELSE rdb.id 
+    END as technician_id,
 
 	s.databasename,
 	--DATE DIMENSIONS
