@@ -89,8 +89,8 @@ END"""
 	
 	#WE THEN HAVE TO RUN THE ABOVE FOR ALL RESOLVER BASED FIELDS, UPDATING THE SAME LOOKUP_OWNER FIELD
 	dimension_table_list = [
-		['owner',field_string.replace("@owner", 'i.technicianname'),'TEMP_nps','owner'],
 		['owner',field_string.replace("@owner", 'i.technicianname'),'TEMP_session','owner'],
+		['owner',field_string.replace("@owner", 'i.technicianname'),'TEMP_nps','owner'],
 	]
 
 	#CREATE AND POPULATE THE LOOKUP TABLES

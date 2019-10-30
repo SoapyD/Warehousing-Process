@@ -25,6 +25,7 @@ SELECT
 		WHEN spb.he_session = 1 THEN 'he'
 		WHEN spb.mhclg_session = 1 THEN 'mhclg'
 		WHEN spb.croydon_session = 1 THEN 'croydon'
+		WHEN spb.enwl_session = 1 THEN 'enwl'
 	ELSE 'heat'
 	END as system,
 
