@@ -82,4 +82,4 @@ FROM
     LEFT JOIN LOOKUP_dates last_d ON (last_d.date = CONVERT(DATE,s.lastactiontime))
 
     --OWNER JOINS 
-    LEFT JOIN LOOKUP_owner rdb ON (rdb.owner = s.technicianname)   
+    LEFT JOIN LOOKUP_owner rdb ON (rdb.owner = ISNULL(s.technicianname,''))   

@@ -47,7 +47,7 @@ FROM
     LEFT JOIN LOOKUP_dates submit_d ON (submit_d.date = CONVERT(DATE,s.submittedat))
 
     --OWNER JOINS 
-    LEFT JOIN LOOKUP_owner rdb ON (rdb.owner = s.technicianname)     
+    LEFT JOIN LOOKUP_owner rdb ON (rdb.owner = ISNULL(s.technicianname,''))      
 
 WHERE NOT EXISTS
 	(
