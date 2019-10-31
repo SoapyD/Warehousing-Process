@@ -13,7 +13,7 @@ SELECT
 	s.duplicate_check,
     ISNULL(i.recid,NULL) AS incident_id,
 	REPLACE(s.incidentnumber,'.0','') AS incidentnumber,
-    ISNULL(i.customer,'') AS customer,
+    --ISNULL(i.customer,'') AS customer,
     ISNULL(i.isvip,'') AS isvip,
 
     --DIMENSION IDS

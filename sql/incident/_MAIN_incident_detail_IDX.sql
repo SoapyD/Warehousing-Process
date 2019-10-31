@@ -1,8 +1,11 @@
 CREATE INDEX idx_id_DETAIL_incident ON DETAIL_incident
 (	
 	recid,
+	number,
 	system_id
-);
+)
+INCLUDE (customer,company_id,businessunit_id,ownerteam_id,isvip,resolvedby_id)
+;
 
 
 CREATE INDEX idx_cre_DETAIL_incident ON DETAIL_incident

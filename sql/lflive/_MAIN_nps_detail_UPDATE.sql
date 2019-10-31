@@ -10,7 +10,7 @@ SET
 	duplicate_check = T2.duplicate_check,
     incident_id = T2.incident_id,
 	incidentnumber = T2.incidentnumber,
-    customer = T2.customer,
+    --customer = T2.customer,
     isvip = T2.isvip,
 
     --DIMENSION IDS
@@ -42,7 +42,7 @@ SELECT
 	s.duplicate_check,
     ISNULL(i.recid,NULL) AS incident_id,
     REPLACE(s.incidentnumber,'.0','') AS incidentnumber,
-    ISNULL(i.customer,'') AS customer,
+    --ISNULL(i.customer,'') AS customer,
     ISNULL(i.isvip,'') AS isvip,
 
     --DIMENSION IDS
