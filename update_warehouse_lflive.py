@@ -123,6 +123,9 @@ END"""
 	#CREATE AND POPULATE THE LOOKUP TABLES
 	update_dimension_tables_2(output_db, output_database, dimension_table_list, print_details)
 
+	if print_details == True:
+		u_print("Dimension Updates Complete")
+		u_print("###########################")	
 	
 	###################################################################################
 	################################UPDATE AND INSERT TO DETAILS TABLE
