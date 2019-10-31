@@ -18,7 +18,6 @@ SELECT
     s.[Please Rate Your Remote Support Experience],
     s.[Q2 score],    
     s.comments AS Comments,
-    s.duplicate_check,
 
 
     ISNULL(i.recid,NULL) AS incident_id,
@@ -60,7 +59,12 @@ SELECT
     s.holdtime,
     s.transfertime,
     s.rebootingtime,
-    s.reconnectingtime
+    s.reconnectingtime,
+
+    --s.duplicate_check,
+    ROW_NUMBER() OVER s.[sessionid], s.databasename
+        ORDER BY s.starttime DESC, s.recid+'_i_'+ISNULL(i.number,'zz') --RECID
+        ) AS duplicate_check
 
 FROM 
     TEMP_session s   

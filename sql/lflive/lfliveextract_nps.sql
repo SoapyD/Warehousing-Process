@@ -38,7 +38,7 @@ SELECT
 		WHEN sur.nps between 9 and 10 then 'promotor'
 	END as npstype,
 
-	ROW_NUMBER() OVER (PARTITION BY sur.[rescuesessionid], sur.databasename ORDER BY sur.[submittedat] DESC) AS duplicate_check,
+	--ROW_NUMBER() OVER (PARTITION BY sur.[rescuesessionid], sur.databasename ORDER BY sur.[submittedat] DESC) AS duplicate_check,
 	sur.databasename
 
 INTO
@@ -86,7 +86,7 @@ SELECT
 		WHEN sur.nps between 9 and 10 then 'promotor'
 	END as npstype,
 
-	ROW_NUMBER() OVER (PARTITION BY sur.[incidentnumber], sur.databasename ORDER BY sur.[submittedat] DESC) AS duplicate_check,
+	--ROW_NUMBER() OVER (PARTITION BY sur.[incidentnumber], sur.databasename ORDER BY sur.[submittedat] DESC) AS duplicate_check,
 	sur.databasename
 
 FROM

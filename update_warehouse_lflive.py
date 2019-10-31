@@ -128,14 +128,18 @@ END"""
 	################################UPDATE AND INSERT TO DETAILS TABLE
 	###################################################################################
 
+	#UPDATE RECORDS
 	sql = get_sql_query("_MAIN_"+type+"_detail_UPDATE", warehousing_path+"/sql/lflive/")	
-	#sql = sql.lower()
 	sql = sql.replace('TEMP_'+type, wh_combined_table) #REPLACE THE COMBINED TABLE NAME WITH THE TEMP WH COMBINED NAME			
-	#print(sql)
 	query_database2('UPDATE RECORDS',sql, output_db, output_database, print_details=print_details)
 
+	#INSERT RECORDS
 	sql = get_sql_query("_MAIN_"+type+"_detail_INSERT", warehousing_path+"/sql/lflive/")	
-	#sql = sql.lower()
+	sql = sql.replace('TEMP_'+type, wh_combined_table) #REPLACE THE COMBINED TABLE NAME WITH THE TEMP WH COMBINED NAME			
+	query_database2('INSERT RECORDS',sql, output_db, output_database, print_details=print_details)
+
+	#UPDATE DUPLICATE CHECK NUMBER
+	sql = get_sql_query("_MAIN_"+type+"_detail_UPDATE_DUPLICATES", warehousing_path+"/sql/lflive/")	
 	sql = sql.replace('TEMP_'+type, wh_combined_table) #REPLACE THE COMBINED TABLE NAME WITH THE TEMP WH COMBINED NAME			
 	query_database2('INSERT RECORDS',sql, output_db, output_database, print_details=print_details)
 

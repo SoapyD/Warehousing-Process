@@ -5,7 +5,7 @@ IF OBJECT_ID(N'DETAIL_session') IS NOT NULL
 
 SELECT 
     --s.recid,
-    s.recid+'_i_'+ISNULL(i.number,'') as recid,
+    s.recid+'_i_'+ISNULL(i.number,'zz') as recid,
     s.sessionid,
     s.subject,
     /*
@@ -18,7 +18,6 @@ SELECT
     s.[Please Rate Your Remote Support Experience],
     s.[Q2 score],    
     s.comments AS Comments,
-    s.duplicate_check,
 
 
     ISNULL(i.recid,NULL) AS incident_id,
@@ -60,7 +59,13 @@ SELECT
     s.holdtime,
     s.transfertime,
     s.rebootingtime,
-    s.reconnectingtime
+    s.reconnectingtime,
+
+    --s.duplicate_check,
+    --IF NO INCIDENT NUMBER APPEARS, MARK IT AS ZZ SO IT'LL APPEAR AT THE BOTTOM OF ANY DUPLICATE CORRECTIONS
+    ROW_NUMBER() OVER s.[sessionid], s.databasename
+        ORDER BY s.starttime DESC, s.recid+'_i_'+ISNULL(i.number,'zz') --RECID
+        ) AS duplicate_check
 
 INTO
     DETAIL_session

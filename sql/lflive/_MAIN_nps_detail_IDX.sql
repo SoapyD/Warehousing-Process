@@ -1,8 +1,7 @@
 CREATE INDEX idx_id_DETAIL_nps ON DETAIL_nps
 (	
 	recid
-);
-
+)
 
 
 CREATE INDEX idx_cre_DETAIL_nps ON DETAIL_nps

@@ -32,14 +32,13 @@ FROM
 
 
 SELECT
-    s.recid+'_i_'+ISNULL(REPLACE(s.incidentnumber,'.0',''),'') AS recid,
+    s.recid+'_i_'+ISNULL(REPLACE(s.incidentnumber,'.0',''),'zz') AS recid,
 	s.type,
 	s.id,
 	s.rescuesessionid,
 	s.comments,
 	s.nps,
 	s.npstype,
-	s.duplicate_check,
     ISNULL(i.recid,NULL) AS incident_id,
     REPLACE(s.incidentnumber,'.0','') AS incidentnumber,
     --ISNULL(i.customer,'') AS customer,
@@ -58,7 +57,12 @@ SELECT
 
 	--DATE DIMENSIONS
 	s.submittedat,
-    submit_d.id AS submitteddate_id
+    submit_d.id AS submitteddate_id,
+	
+    --s.duplicate_check,
+    ROW_NUMBER() OVER (PARTITION BY ISNULL(rescuesessionid,s.incidentnumber), s.databasename 
+        ORDER BY s.[submittedat] DESC, s.recid+'_i_'+ISNULL(REPLACE(s.incidentnumber,'.0',''),'zz') --RECID
+        ) AS duplicate_check
 
 FROM
 	TEMP_nps s

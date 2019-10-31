@@ -57,7 +57,7 @@ SELECT
     s.companyname,
     CONVERT(NVARCHAR(100),'') AS sourced_companyname,
     s.databasename,
-    ROW_NUMBER() OVER (PARTITION BY s.[sessionid], s.databasename ORDER BY s.starttime DESC) AS duplicate_check,
+    --ROW_NUMBER() OVER (PARTITION BY s.[sessionid], s.databasename ORDER BY s.starttime DESC) AS duplicate_check,
 
     --DATE DIMENSIONS
     s.starttime,
