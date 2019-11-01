@@ -200,10 +200,16 @@ END"""
 	process_start_time = datetime.datetime.now()
 
 	#TABLE DROPPED IN THE MAIN SCRIPT
-	#drop_sql = "DROP TABLE DETAIL_incident"
-	#query_database2('Drop Detail Table', drop_sql, 
-	#	output_db, output_database, print_details=print_details, ignore_errors=True)		
+	drop_sql = "DROP TABLE DETAIL_incident"
+	query_database2('Drop Detail Table', drop_sql, 
+		output_db, output_database, print_details=print_details, ignore_errors=True)		
 
+	#CREATE THE INCIDENT TABLE
+	sql = get_sql_query('_CREATE_incident_detail', "sql/incident/")
+	query_database2('Creating Main Incident Detail Table', sql, 
+		output_db, output_database, print_details=print_details)	
+
+	#POPULATE THE TABLE
 	sql = get_sql_query('_MAIN_incident_detail', "sql/incident/")
 	query_database2('Producing Main Incident Detail Table', sql, 
 		output_db, output_database, print_details=print_details)	

@@ -1,11 +1,12 @@
 /*
 ########################################################### MAIN
 */
-
+/*
 IF OBJECT_ID(N'DETAIL_incident') IS NOT NULL
     drop table DETAIL_incident
-/**/
+*/
 
+INSERT INTO DETAIL_incident
 SELECT
 	i.recid,
 	i.number,
@@ -98,8 +99,8 @@ SELECT
 	response_totalrunningduration,
 	reopencount
 
-INTO 
-	DETAIL_incident
+--INTO 
+--	DETAIL_incident
 FROM 
 	[TEMP_incident_combined] i
 
