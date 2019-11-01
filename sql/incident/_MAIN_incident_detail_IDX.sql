@@ -4,7 +4,7 @@ CREATE INDEX idx_id_DETAIL_incident ON DETAIL_incident
 	number,
 	system_id
 )
-INCLUDE (customer,company_id,businessunit_id,ownerteam_id,isvip,resolvedby_id)
+INCLUDE (customer,company_id,businessunit_id,ownerteam_id,isvip,resolvedby_id, createddate_id)
 ;
 
 

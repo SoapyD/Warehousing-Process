@@ -93,3 +93,6 @@ FROM
 
     LEFT JOIN dbo.enwl_frs_data_escalation_watch res ON (res.recid = req.resolutionesclink)
     LEFT JOIN dbo.enwl_frs_data_escalation_watch resp ON (resp.recid = req.responseesclink)
+
+WHERE
+    ISNULL(tsk.pos,-1) IN (1,-1)
