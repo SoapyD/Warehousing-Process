@@ -36,7 +36,7 @@ CREATE TABLE DETAIL_incident (
     remoteresolution INT,
     repeatissue INT,
 
-    numberofusersaffected INT,
+    numberofusersaffected NVARCHAR(20),
     reopen_check INT,
     fcr INT,
     fcr_scoped INT,
