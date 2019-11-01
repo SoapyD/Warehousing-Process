@@ -1,10 +1,10 @@
 /*
 ########################################################### MAIN
 */
-/*
+
 IF OBJECT_ID(N'DETAIL_incident') IS NOT NULL
     drop table DETAIL_incident
-*/
+/**/
 
 INSERT INTO DETAIL_incident
 SELECT
@@ -74,6 +74,12 @@ SELECT
 	END as fcr_achieved,
 
 	--OWNER DIMENSIONS
+	SUBSTRING(REPLACE(i.owner,'.',' ')+'@', 1, CHARINDEX('@', i.owner+'@')) as owner,
+	SUBSTRING(REPLACE(i.createdby,'.',' ')+'@', 1, CHARINDEX('@', i.createdby+'@')) as createdby,
+	SUBSTRING(REPLACE(ISNULL(i.resolvedby,i.closedby),'.',' ')+'@', 1, CHARINDEX('@', ISNULL(i.resolvedby,i.closedby)+'@')) as resolvedby,
+	SUBSTRING(REPLACE(i.closedby,'.',' ')+'@', 1, CHARINDEX('@', i.closedby+'@')) as closedby,
+	SUBSTRING(REPLACE(i.lastmodby,'.',' ')+'@', 1, CHARINDEX('@', i.lastmodby+'@')) as lastmodby,
+
 	ISNULL(own.id,NULL) as owner_id,
 	ISNULL(cre.id,NULL) as createdby_id,
 	ISNULL(res.id,NULL) as resolvedby_id,

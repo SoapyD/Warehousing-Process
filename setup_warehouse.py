@@ -22,7 +22,7 @@ def setup_warehouse():
 	source_database = 'LF-SQL-RPT01'
 
 
-	""""""
+	"""
 	###################################################################################
 	################################SETUP EXTERNAL TABLES
 	###################################################################################
@@ -149,7 +149,7 @@ def setup_warehouse():
 
 	#CREATE AND POPULATE THE LOOKUP TABLES
 	create_dimension_tables_2(output_db, output_database, dimension_table_list, print_details)
-	
+	"""
 
 	#NOW WE HAVE TO CREATE THE OWNER DIMENSION TABLE WHICH IS A BIT MORE COMPLICATED
 
@@ -160,6 +160,7 @@ WHEN CHARINDEX('@', @owner) > 0 THEN ISNULL(LOWER(LEFT(REPLACE(@owner,'.',' '), 
 ELSE ISNULL(LOWER(REPLACE(@owner,'.',' ')),'')
 END"""
 
+	"""
 	dimension_table_list = [
 		['owner',field_string.replace("@owner", 'owner'),'TEMP_incident_combined','owner'],
 	]
@@ -194,11 +195,12 @@ END"""
 	###################################################################################
 	################################SETUP DETAILS TABLE
 	###################################################################################
-	
+	"""
 	
 	u_print("Starting Details Table process")
 	process_start_time = datetime.datetime.now()
 
+	"""
 	#TABLE DROPPED IN THE MAIN SCRIPT
 	drop_sql = "DROP TABLE DETAIL_incident"
 	query_database2('Drop Detail Table', drop_sql, 
@@ -208,6 +210,7 @@ END"""
 	sql = get_sql_query('_CREATE_incident_detail', "sql/incident/")
 	query_database2('Creating Main Incident Detail Table', sql, 
 		output_db, output_database, print_details=print_details)	
+	"""
 
 	#POPULATE THE TABLE
 	sql = get_sql_query('_MAIN_incident_detail', "sql/incident/")
