@@ -70,6 +70,12 @@ SELECT
 	END as fcr_achieved,
 
 	--OWNER DIMENSIONS
+	SUBSTRING(REPLACE(i.owner,'.',' ')+'@', 1, CHARINDEX('@', i.owner+'@')-1) as owner,
+	SUBSTRING(REPLACE(i.createdby,'.',' ')+'@', 1, CHARINDEX('@', i.createdby+'@')-1) as createdby,
+	SUBSTRING(REPLACE(ISNULL(i.resolvedby,i.closedby),'.',' ')+'@', 1, CHARINDEX('@', ISNULL(i.resolvedby,i.closedby)+'@')-1) as resolvedby,
+	SUBSTRING(REPLACE(i.closedby,'.',' ')+'@', 1, CHARINDEX('@', i.closedby+'@')-1) as closedby,
+	SUBSTRING(REPLACE(i.lastmodby,'.',' ')+'@', 1, CHARINDEX('@', i.lastmodby+'@')-1) as lastmodby,
+
 	ISNULL(own.id,NULL) as owner_id,
 	ISNULL(cre.id,NULL) as createdby_id,
 	ISNULL(res.id,NULL) as resolvedby_id,

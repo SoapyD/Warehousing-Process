@@ -49,6 +49,12 @@ SET
 
 
 	--OWNER DIMENSIONS
+	owner = t2.owner,
+	createdby = t2.createdby,
+	resolvedby = t2.resolvedby,
+	closedby = t2.closedby,
+	lastmodby = t2.lastmodby,
+
 	owner_id = t2.owner_id,
 	createdby_id = t2.createdby_id,
 	resolvedby_id = t2.resolvedby_id,
@@ -146,6 +152,12 @@ SELECT
 	END as fcr_achieved,
 
 	--OWNER DIMENSIONS
+	SUBSTRING(REPLACE(i.owner,'.',' ')+'@', 1, CHARINDEX('@', i.owner+'@')-1) as owner,
+	SUBSTRING(REPLACE(i.createdby,'.',' ')+'@', 1, CHARINDEX('@', i.createdby+'@')-1) as createdby,
+	SUBSTRING(REPLACE(ISNULL(i.resolvedby,i.closedby),'.',' ')+'@', 1, CHARINDEX('@', ISNULL(i.resolvedby,i.closedby)+'@')-1) as resolvedby,
+	SUBSTRING(REPLACE(i.closedby,'.',' ')+'@', 1, CHARINDEX('@', i.closedby+'@')-1) as closedby,
+	SUBSTRING(REPLACE(i.lastmodby,'.',' ')+'@', 1, CHARINDEX('@', i.lastmodby+'@')-1) as lastmodby,
+
 	ISNULL(own.id,NULL) as owner_id,
 	ISNULL(cre.id,NULL) as createdby_id,
 	ISNULL(res.id,NULL) as resolvedby_id,

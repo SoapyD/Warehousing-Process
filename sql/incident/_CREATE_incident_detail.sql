@@ -1,4 +1,5 @@
 CREATE TABLE DETAIL_incident (
+    ID INT IDENTITY(1,1) NOT NULL PRIMARY KEY,   
     recid CHAR(32),
     number NVARCHAR(30),
     problem_id CHAR(32),
@@ -43,6 +44,12 @@ CREATE TABLE DETAIL_incident (
     fcr_achieved INT,
 
     --OWNER DIMENSIONS
+    owner NVARCHAR(100),
+    createdby NVARCHAR(100),
+    resolvedby NVARCHAR(100),
+    closedby NVARCHAR(100),
+    lastmodby NVARCHAR(100),
+
     owner_id INT,
     createdby_id INT,
     resolvedby_id INT,
@@ -67,6 +74,4 @@ CREATE TABLE DETAIL_incident (
     response_targetclockduration INT,
     response_totalrunningduration INT,
     reopencount INT
-
-    primary key (recid, system_id)
 )

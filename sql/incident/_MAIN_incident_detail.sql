@@ -1,12 +1,90 @@
 /*
 ########################################################### MAIN
 */
-
+/*
 IF OBJECT_ID(N'DETAIL_incident') IS NOT NULL
     drop table DETAIL_incident
-/**/
+*/
 
-INSERT INTO DETAIL_incident
+
+INSERT INTO DETAIL_incident(
+
+    recid,
+    number,
+    problem_id,
+    parentincident_id,
+
+    customer,
+    subject,
+    symptom,
+    resolution,
+    technicalresolution,
+
+    system_id,
+    company_id,
+    businessunit_id,
+    typeofincident_id,
+
+    status_id,
+    source_id,
+    ownerteam_id,
+    location_id, 
+    causecode_id,
+
+    service_id,
+    category_id,
+    subcategory_id,
+
+    priority,
+    isvip,
+    breachstatus,
+    l1passed,
+    l2passed,
+    l3passed,      
+    breachpassed,
+    response_breachpassed,
+    remoteresolution,
+    repeatissue,
+
+    numberofusersaffected,
+    reopen_check,
+    fcr,
+    fcr_scoped,
+    fcr_achieved,
+
+    --OWNER DIMENSIONS
+    owner,
+    createdby,
+    resolvedby,
+    closedby,
+    lastmodby,
+
+    owner_id,
+    createdby_id,
+    resolvedby_id,
+    closedby_id,
+    lastmodby_id,
+
+    --DATE DIMENSIONS   
+    createddatetime,
+    createddate_id,
+    resolveddatetime,
+    resolveddate_id,
+    closeddatetime,
+    closeddate_id,
+    lastmoddatetime,
+    lastmoddate_id,
+    breachdatetime,
+    breachdate_id,
+
+    --FACTS
+    targetclockduration,
+    totalrunningduration,
+    response_targetclockduration,
+    response_totalrunningduration,
+    reopencount
+
+)
 SELECT
 	i.recid,
 	i.number,
@@ -74,11 +152,11 @@ SELECT
 	END as fcr_achieved,
 
 	--OWNER DIMENSIONS
-	SUBSTRING(REPLACE(i.owner,'.',' ')+'@', 1, CHARINDEX('@', i.owner+'@')) as owner,
-	SUBSTRING(REPLACE(i.createdby,'.',' ')+'@', 1, CHARINDEX('@', i.createdby+'@')) as createdby,
-	SUBSTRING(REPLACE(ISNULL(i.resolvedby,i.closedby),'.',' ')+'@', 1, CHARINDEX('@', ISNULL(i.resolvedby,i.closedby)+'@')) as resolvedby,
-	SUBSTRING(REPLACE(i.closedby,'.',' ')+'@', 1, CHARINDEX('@', i.closedby+'@')) as closedby,
-	SUBSTRING(REPLACE(i.lastmodby,'.',' ')+'@', 1, CHARINDEX('@', i.lastmodby+'@')) as lastmodby,
+	SUBSTRING(REPLACE(i.owner,'.',' ')+'@', 1, CHARINDEX('@', i.owner+'@')-1) as owner,
+	SUBSTRING(REPLACE(i.createdby,'.',' ')+'@', 1, CHARINDEX('@', i.createdby+'@')-1) as createdby,
+	SUBSTRING(REPLACE(ISNULL(i.resolvedby,i.closedby),'.',' ')+'@', 1, CHARINDEX('@', ISNULL(i.resolvedby,i.closedby)+'@')-1) as resolvedby,
+	SUBSTRING(REPLACE(i.closedby,'.',' ')+'@', 1, CHARINDEX('@', i.closedby+'@')-1) as closedby,
+	SUBSTRING(REPLACE(i.lastmodby,'.',' ')+'@', 1, CHARINDEX('@', i.lastmodby+'@')-1) as lastmodby,
 
 	ISNULL(own.id,NULL) as owner_id,
 	ISNULL(cre.id,NULL) as createdby_id,
