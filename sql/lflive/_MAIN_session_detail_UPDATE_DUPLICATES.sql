@@ -7,7 +7,7 @@ SET
     duplicate_check = T2.duplicate_check
 
 FROM  
-    DETAIL_nps T1
+    DETAIL_session T1
     JOIN 
     (
 

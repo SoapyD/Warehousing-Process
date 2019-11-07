@@ -13,8 +13,8 @@ CREATE INDEX idx_cre_DETAIL_incident ON DETAIL_incident
 	createddate_id
 ) 
 INCLUDE (
---problemlink, masterincidentlink,
---subject, symptom, resolution, technicalresolution,
+subject, symptom, resolution, technicalresolution,
+problem_id, parentincident_id,
 
 --DIMENSION IDS
 system_id,
@@ -61,8 +61,8 @@ CREATE INDEX idx_res_DETAIL_incident ON DETAIL_incident
 	resolveddate_id
 ) 
 INCLUDE (
---problemlink, masterincidentlink,
---subject, symptom, resolution, technicalresolution,
+subject, symptom, resolution, technicalresolution,
+problem_id, parentincident_id,
 
 --DIMENSION IDS
 system_id,
