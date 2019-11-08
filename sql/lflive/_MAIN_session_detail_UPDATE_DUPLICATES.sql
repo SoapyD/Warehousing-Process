@@ -16,7 +16,7 @@ FROM
     	s.sessionid,
         ROW_NUMBER() OVER (
             PARTITION BY sessionid, databasename 
-            ORDER BY starttime DESC, recid) AS duplicate_check
+            ORDER BY starttime DESC, recid DESC) AS duplicate_check
 
     FROM
     	DETAIL_session s

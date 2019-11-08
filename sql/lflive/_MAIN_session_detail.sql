@@ -64,7 +64,7 @@ SELECT
     --s.duplicate_check,
     --IF NO INCIDENT NUMBER APPEARS, MARK IT AS ZZ SO IT'LL APPEAR AT THE BOTTOM OF ANY DUPLICATE CORRECTIONS
     ROW_NUMBER() OVER (PARTITION BY s.[sessionid], s.databasename
-        ORDER BY s.starttime DESC, s.recid+'_i_'+ISNULL(i.number,'zz') --RECID
+        ORDER BY s.starttime DESC, s.recid+'_i_'+ISNULL(i.number,'zz') DESC --RECID
         ) AS duplicate_check
 
 INTO

@@ -63,7 +63,7 @@ SELECT
 
     --s.duplicate_check,
     ROW_NUMBER() OVER (PARTITION BY s.[sessionid], s.databasename
-        ORDER BY s.starttime DESC, s.recid+'_i_'+ISNULL(i.number,'zz') --RECID
+        ORDER BY s.starttime DESC, s.recid+'_i_'+ISNULL(i.number,'zz') DESC --RECID
         ) AS duplicate_check
 
 FROM 
