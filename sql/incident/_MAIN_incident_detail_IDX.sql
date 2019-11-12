@@ -54,6 +54,7 @@ response_targetclockduration, response_totalrunningduration,
 reopencount,
 
 owner_id, createdby_id, resolvedby_id, closedby_id, lastmodby_id,
+customer,
 owner, createdby, resolvedby, closedby, lastmodby,
 createddatetime, resolveddatetime, closeddatetime, lastmoddatetime	
 );
@@ -64,6 +65,7 @@ CREATE INDEX idx_res_DETAIL_incident ON DETAIL_incident
 	resolveddate_id
 ) 
 INCLUDE (
+number,
 subject, symptom, resolution, technicalresolution,
 problem_id, parentincident_id,
 
@@ -104,6 +106,7 @@ response_targetclockduration, response_totalrunningduration,
 reopencount,
 
 owner_id, createdby_id, resolvedby_id, closedby_id, lastmodby_id,
+customer,
 owner, createdby, resolvedby, closedby, lastmodby,
 createddatetime, resolveddatetime, closeddatetime, lastmoddatetime
 );
