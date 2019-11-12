@@ -18,6 +18,7 @@ def setup_warehouse():
 
 	output_db = 1 #REPORTING DATABASE
 	output_database = 'LF-SQL-WH'
+	#output_database = 'LF-SQL-DEV'
 	source_db = 1 #REPORTING DATABASE
 	source_database = 'LF-SQL-RPT01'
 
@@ -196,6 +197,7 @@ END"""
 	################################SETUP DETAILS TABLE
 	###################################################################################
 	""""""
+
 	
 	u_print("Starting Details Table process")
 	process_start_time = datetime.datetime.now()
