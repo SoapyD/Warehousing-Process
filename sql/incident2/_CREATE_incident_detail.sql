@@ -1,6 +1,6 @@
 IF OBJECT_ID(N'Detail_Incident_v2') IS NOT NULL
     drop table Detail_Incident_v2
-    
+
 
 CREATE TABLE [dbo].[Detail_Incident_v2](
     --[ID] int not NULL,
@@ -40,6 +40,9 @@ CREATE TABLE [dbo].[Detail_Incident_v2](
     [lastmodby_Format] [nvarchar](100) NULL,
     [lastmoddatetime] [datetime] NULL,
     [lastmoddate_Format] [date] NULL,
+    [ResolvedClosedBy_Format] [nvarchar](100) NULL,
+    [ResolvedClosedDate_Format] [datetime] NULL,
+    [ResolvedClosedDatetime] [date] NULL,
     [breachstatus] [int] NULL,
     [l1dateTime] [datetime] NULL,
     [l1passed] [int] NULL,

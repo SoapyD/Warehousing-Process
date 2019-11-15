@@ -1,6 +1,6 @@
 
 
-def setup_warehouse(output_database):
+def setup_warehouse2(output_database):
 	u_print('########################################')
 	u_print('RUNNING WAREHOUSE SETUP')
 	u_print('########################################')
