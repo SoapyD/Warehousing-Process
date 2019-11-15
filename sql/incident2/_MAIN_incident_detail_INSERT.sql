@@ -1,8 +1,4 @@
-SET ANSI_NULLS ON
-GO
 
-SET QUOTED_IDENTIFIER ON
-GO
 
 INSERT Detail_Incident_v2
 SELECT	--row_number() over(order by inc.[createddatetime]) AS ID

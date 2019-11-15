@@ -1,8 +1,6 @@
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
+IF OBJECT_ID(N'Detail_Incident_v2') IS NOT NULL
+    drop table Detail_Incident_v2
+    
 
 CREATE TABLE [dbo].[Detail_Incident_v2](
     --[ID] int not NULL,

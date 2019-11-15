@@ -1,13 +1,7 @@
-
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
+/*
 IF OBJECT_ID(N'Detail_Incident_v2') IS NOT NULL
     drop table Detail_Incident_v2
-
+*/
 
 
 insert into [dbo].[Detail_Incident_v2]
@@ -88,7 +82,7 @@ SELECT	--row_number() over(order by inc.[createddatetime]) AS ID
 FROM	
 	[dbo].[TEMP_incident_combined] inc
 	LEFT JOIN dbo.LOOKUP_company com ON com.company = inc.company
-	
+
 WHERE	
 	inc.createddatetime is not null
 ORDER BY
