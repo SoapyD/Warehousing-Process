@@ -26,7 +26,7 @@ def run_update_warehouse_lflive(table_name, temporary_table_name, wh_query, wh_c
 	THE WAREHOUSE SETUP USES THE BASE TABLES IN THE INITIAL DATABASE TO FORMAT THE INITIAL TABLES THAT'LL
 	BE UPDATED HEREAFTER
 	"""
-
+	project_name = 'lflive2'
 
 	start_time = datetime.datetime.now() #need for process time u_printing
 
@@ -71,7 +71,7 @@ def run_update_warehouse_lflive(table_name, temporary_table_name, wh_query, wh_c
 	for query in sql_queries:
 		process_start_time = datetime.datetime.now()
 
-		sql = get_sql_query(query, warehousing_path+"/sql/lflive/")
+		sql = get_sql_query(query, warehousing_path+"/sql/"+project_name+"/")
 		
 		#replace table name with temporary field name
 
@@ -132,17 +132,17 @@ END"""
 	###################################################################################
 
 	#UPDATE RECORDS
-	sql = get_sql_query("_MAIN_"+type+"_detail_UPDATE", warehousing_path+"/sql/lflive/")	
+	sql = get_sql_query("_MAIN_"+type+"_detail_UPDATE", warehousing_path+"/sql/"+project_name+"/")	
 	sql = sql.replace('TEMP_'+type, wh_combined_table) #REPLACE THE COMBINED TABLE NAME WITH THE TEMP WH COMBINED NAME			
 	query_database2('UPDATE RECORDS',sql, output_db, output_database, print_details=print_details)
 
 	#INSERT RECORDS
-	sql = get_sql_query("_MAIN_"+type+"_detail_INSERT", warehousing_path+"/sql/lflive/")	
+	sql = get_sql_query("_MAIN_"+type+"_detail_INSERT", warehousing_path+"/sql/"+project_name+"/")	
 	sql = sql.replace('TEMP_'+type, wh_combined_table) #REPLACE THE COMBINED TABLE NAME WITH THE TEMP WH COMBINED NAME			
 	query_database2('INSERT RECORDS',sql, output_db, output_database, print_details=print_details)
 
 	#UPDATE DUPLICATE CHECK NUMBER
-	sql = get_sql_query("_MAIN_"+type+"_detail_UPDATE_DUPLICATES", warehousing_path+"/sql/lflive/")	
+	sql = get_sql_query("_MAIN_"+type+"_detail_UPDATE_DUPLICATES", warehousing_path+"/sql/"+project_name+"/")	
 	sql = sql.replace('TEMP_'+type, wh_combined_table) #REPLACE THE COMBINED TABLE NAME WITH THE TEMP WH COMBINED NAME			
 	query_database2('INSERT RECORDS',sql, output_db, output_database, print_details=print_details)
 

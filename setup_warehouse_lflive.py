@@ -2,7 +2,7 @@
 #exec(open("_main.py").read())
 
 
-def setup_warehouse_lflive():
+def setup_warehouse_lflive(output_database):
 	u_print('########################################')
 	u_print('RUNNING WAREHOUSE SETUP')
 	u_print('########################################')
@@ -15,11 +15,12 @@ def setup_warehouse_lflive():
 	print_internal = True
 	print_details = True
 
+	project_name = 'lflive2'
 
 	start_time = datetime.datetime.now() #need for process time u_printing
 
 	output_db = 1 #REPORTING DATABASE
-	output_database = 'LF-SQL-WH'
+	#output_database = 'LF-SQL-WH'
 	source_db = 1 #REPORTING DATABASE
 	source_database = 'LF-SQL-RPT01'
 
@@ -61,7 +62,7 @@ def setup_warehouse_lflive():
 	for query in sql_queries:
 		process_start_time = datetime.datetime.now()
 
-		sql = get_sql_query(query, "sql/lflive/")
+		sql = get_sql_query(query, "sql/"+project_name+"/")
 		u_print("PROCESSING: "+query)
 		query_database2('Run Query: '+query,sql, output_db, output_database, print_details=print_details)
 
@@ -112,7 +113,7 @@ END"""
 		u_print("Starting Detail_Session Table process")
 		process_start_time = datetime.datetime.now()		
 
-		sql = get_sql_query(query, "sql/lflive/")
+		sql = get_sql_query(query, "sql/"+project_name+"/")
 		query_database2('Running Query: '+query, sql, 
 			output_db, output_database, print_details=print_details)	
 
@@ -125,7 +126,7 @@ END"""
 		u_print("Starting Details Index process")
 		process_start_time = datetime.datetime.now()
 
-		sql = get_sql_query(query+'_IDX', "sql/lflive/")
+		sql = get_sql_query(query+'_IDX', "sql/"+project_name+"/")
 		query_database2('Producing Detail index', sql, output_db, output_database, print_details=print_details)	
 
 		u_print("Details Index Created")

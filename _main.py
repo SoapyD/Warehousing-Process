@@ -9,8 +9,11 @@ this_dir = base_path+"Warehousing-Process\\"
 
 exec(open(this_dir+"setup_external_tables.py").read())
 exec(open(this_dir+"setup_dimension_tables.py").read())
-exec(open(this_dir+"setup_warehouse.py").read())
-exec(open(this_dir+"update_warehouse.py").read())
+#exec(open(this_dir+"setup_warehouse.py").read())
+#exec(open(this_dir+"update_warehouse.py").read())
+exec(open(this_dir+"setup_warehouse2.py").read())
+exec(open(this_dir+"update_warehouse2.py").read())
+
 exec(open(this_dir+"setup_warehouse_lflive.py").read())
 exec(open(this_dir+"update_warehouse_lflive.py").read())
 
