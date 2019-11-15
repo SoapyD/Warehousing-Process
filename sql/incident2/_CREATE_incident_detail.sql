@@ -4,6 +4,7 @@ IF OBJECT_ID(N'Detail_Incident_v2') IS NOT NULL
 
 CREATE TABLE [dbo].[Detail_Incident_v2](
     --[ID] int not NULL,
+    ID INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
     [recid] [char](32) NULL,
     [number] [nvarchar](30) NULL,
     [system] [nvarchar](30) NULL,

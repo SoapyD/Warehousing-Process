@@ -91,9 +91,9 @@ ORDER BY
 ;
 
 
-ALTER TABLE [dbo].[Detail_Incident_v2] ADD ID INT IDENTITY(1,1) NOT NULL PRIMARY KEY;
+--ALTER TABLE [dbo].[Detail_Incident_v2] ADD ID INT IDENTITY(1,1) NOT NULL PRIMARY KEY;
 
-ALTER TABLE [dbo].[Detail_Incident_v2] ADD CONSTRAINT PK_ID PRIMARY KEY ([createddate_Format],ID);
+--ALTER TABLE [dbo].[Detail_Incident_v2] ADD CONSTRAINT PK_ID PRIMARY KEY ([createddate_Format],ID);
 
 
 
