@@ -3,7 +3,8 @@ import os
 exec(open("_main.py").read())
 
 
-#setup_dimensions('LF-SQL-WH')
 
-setup_warehouse2('LF-SQL-WH')
-#setup_warehouse_lflive()
+output_database = 'LF-SQL-WH'
+
+setup_warehouse(output_database)
+setup_warehouse_lflive(output_database)

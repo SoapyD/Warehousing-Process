@@ -1,6 +1,6 @@
 
 
-def update_warehouse_lflive(table_name, temporary_table_name, wh_query, wh_combined_table, delete_staging,
+def update_warehouse_lflive2(table_name, temporary_table_name, wh_query, wh_combined_table, delete_staging,
 	print_internal=False, print_details=False):
 
 	run = False
@@ -11,7 +11,7 @@ def update_warehouse_lflive(table_name, temporary_table_name, wh_query, wh_combi
 		u_print("WARNING: Warehousing turned off")
 
 
-def run_update_warehouse_lflive(table_name, temporary_table_name, wh_query, wh_combined_table, delete_staging,
+def run_update_warehouse_lflive2(table_name, temporary_table_name, wh_query, wh_combined_table, delete_staging,
 	print_internal=False, print_details=False):
 	
 	if print_details == True:
@@ -26,7 +26,7 @@ def run_update_warehouse_lflive(table_name, temporary_table_name, wh_query, wh_c
 	THE WAREHOUSE SETUP USES THE BASE TABLES IN THE INITIAL DATABASE TO FORMAT THE INITIAL TABLES THAT'LL
 	BE UPDATED HEREAFTER
 	"""
-	project_name = 'lflive'
+	project_name = 'lflive2'
 
 	start_time = datetime.datetime.now() #need for process time u_printing
 

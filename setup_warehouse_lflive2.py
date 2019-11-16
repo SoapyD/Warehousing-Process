@@ -2,7 +2,7 @@
 #exec(open("_main.py").read())
 
 
-def setup_warehouse_lflive(output_database):
+def setup_warehouse_lflive2(output_database):
 	u_print('########################################')
 	u_print('RUNNING WAREHOUSE SETUP')
 	u_print('########################################')
@@ -15,7 +15,7 @@ def setup_warehouse_lflive(output_database):
 	print_internal = True
 	print_details = True
 
-	project_name = 'lflive'
+	project_name = 'lflive2'
 
 	start_time = datetime.datetime.now() #need for process time u_printing
 

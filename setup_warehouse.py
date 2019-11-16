@@ -9,6 +9,7 @@ def setup_warehouse(output_database):
 	THE WAREHOUSE SETUP USES THE BASE TABLES IN THE INITIAL DATABASE TO FORMAT THE INITIAL TABLES THAT'LL
 	BE UPDATED HEREAFTER
 	"""
+	project = 'incident'
 
 	print_internal = True
 	print_details = True
@@ -86,7 +87,7 @@ def setup_warehouse(output_database):
 	query_database2('Drop Incident Combined Table',drop_sql, output_db, output_database, 
 		print_details=print_details, ignore_errors=True)
 
-	sql = get_sql_query('_CREATE_temp_incident_combined', "sql/incident/")
+	sql = get_sql_query('_CREATE_temp_incident_combined', "sql/"+project+"/")
 	query_database2('Creating Temp Table', sql, output_db, output_database, print_details=print_details)
 	
 
@@ -114,7 +115,7 @@ def setup_warehouse(output_database):
 	for query in sql_queries:
 		process_start_time = datetime.datetime.now()
 
-		sql = get_sql_query(query, "sql/incident/")
+		sql = get_sql_query(query, "sql/"+project+"/")
 		u_print("PROCESSING: "+query)
 		query_database2('Run Query: '+query,sql, output_db, output_database, print_details=print_details)
 
@@ -209,13 +210,13 @@ END"""
 		output_db, output_database, print_details=print_details, ignore_errors=True)		
 
 	#CREATE THE INCIDENT TABLE
-	sql = get_sql_query('_CREATE_incident_detail', "sql/incident/")
+	sql = get_sql_query('_CREATE_incident_detail', "sql/"+project+"/")
 	query_database2('Creating Main Incident Detail Table', sql, 
 		output_db, output_database, print_details=print_details)	
 	
 
 	#POPULATE THE TABLE
-	sql = get_sql_query('_MAIN_incident_detail', "sql/incident/")
+	sql = get_sql_query('_MAIN_incident_detail', "sql/"+project+"/")
 	query_database2('Producing Main Incident Detail Table', sql, 
 		output_db, output_database, print_details=print_details)	
 
@@ -227,7 +228,7 @@ END"""
 	u_print("Starting Details Index process")
 	process_start_time = datetime.datetime.now()
 
-	sql = get_sql_query('_MAIN_incident_detail_IDX', "sql/incident/")
+	sql = get_sql_query('_MAIN_incident_detail_IDX', "sql/"+project+"/")
 	query_database2('Producing Main Incident Detail index', sql, output_db, output_database, print_details=print_details)	
 
 	u_print("Details Index Created")

@@ -20,6 +20,8 @@ def run_update_warehouse(table_name, temporary_table_name, wh_query, wh_combined
 	if print_details == True:
 		u_print('########################################')
 
+	project = 'incident'
+
 	"""
 	THE WAREHOUSE SETUP USES THE BASE TABLES IN THE INITIAL DATABASE TO FORMAT THE INITIAL TABLES THAT'LL
 	BE UPDATED HEREAFTER
@@ -57,7 +59,7 @@ def run_update_warehouse(table_name, temporary_table_name, wh_query, wh_combined
 	drop_sql = "DROP TABLE "+wh_combined_table
 	query_database2('Drop Incident Combined Table',drop_sql, output_db, output_database, print_details=print_details, ignore_errors=True)
 
-	sql = get_sql_query('_CREATE_temp_incident_combined', warehousing_path+"/sql/incident/")
+	sql = get_sql_query('_CREATE_temp_incident_combined', warehousing_path+"/sql/"+project+"/")
 	sql = sql.lower() #MAKE THE SQL LOWER CASE IN CASE ANY UPPER CASES HAVE SNUCK THROUGH
 	sql = sql.replace('temp_incident_combined', wh_combined_table) #REPLACE THE COMBINED TABLE NAME WITH THE TEMP WH COMBINED NAME	
 	query_database2('Creating Temp Table', sql, output_db, output_database, print_details=print_details)
@@ -69,7 +71,7 @@ def run_update_warehouse(table_name, temporary_table_name, wh_query, wh_combined
 	for query in sql_queries:
 		process_start_time = datetime.datetime.now()
 
-		sql = get_sql_query(query, warehousing_path+"/sql/incident/")
+		sql = get_sql_query(query, warehousing_path+"/sql/"+project+"/")
 		
 		#replace table name with temporary field name
 
@@ -153,12 +155,12 @@ END"""
 	################################UPDATE AND INSERT TO DETAILS TABLE
 	###################################################################################
 
-	sql = get_sql_query("_MAIN_incident_detail_UPDATE", warehousing_path+"/sql/incident/")	
+	sql = get_sql_query("_MAIN_incident_detail_UPDATE", warehousing_path+"/sql/"+project+"/")	
 	sql = sql.lower()
 	sql = sql.replace('temp_incident_combined', wh_combined_table) #REPLACE THE COMBINED TABLE NAME WITH THE TEMP WH COMBINED NAME			
 	query_database2('UPDATE RECORDS',sql, output_db, output_database, print_details=print_details)
 
-	sql = get_sql_query("_MAIN_incident_detail_INSERT", warehousing_path+"/sql/incident/")	
+	sql = get_sql_query("_MAIN_incident_detail_INSERT", warehousing_path+"/sql/"+project+"/")	
 	sql = sql.lower()
 	sql = sql.replace('temp_incident_combined', wh_combined_table) #REPLACE THE COMBINED TABLE NAME WITH THE TEMP WH COMBINED NAME			
 	query_database2('INSERT RECORDS',sql, output_db, output_database, print_details=print_details)
