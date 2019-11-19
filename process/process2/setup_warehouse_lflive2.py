@@ -2,7 +2,7 @@
 #exec(open("_main.py").read())
 
 
-def setup_warehouse_lflive2(output_database):
+def setup_warehouse_lflive(output_database):
 	u_print('########################################')
 	u_print('RUNNING WAREHOUSE SETUP')
 	u_print('########################################')
@@ -11,6 +11,9 @@ def setup_warehouse_lflive2(output_database):
 	THE WAREHOUSE SETUP USES THE BASE TABLES IN THE INITIAL DATABASE TO FORMAT THE INITIAL TABLES THAT'LL
 	BE UPDATED HEREAFTER
 	"""
+
+	u_print("Running LFLive v2 Setup Method")
+	u_print("")
 
 	print_internal = True
 	print_details = True
@@ -56,7 +59,7 @@ def setup_warehouse_lflive2(output_database):
 	#BUILD THE COMBINED TABLE
 	sql_queries = [
 		"lfliveextract_session",
-		"lfliveextract_nps",
+		#"lfliveextract_nps",
 	]
 
 	for query in sql_queries:
@@ -74,39 +77,28 @@ def setup_warehouse_lflive2(output_database):
 		u_print('Time Taken: '+str(process_end_time - process_start_time))	
 		u_print("###########################")	
 
-		
-	###################################################################################
-	################################UPDATE LOOKUP TABLES
-	###################################################################################
-
-	#WE THEN HAVE TO RUN THE ABOVE FOR ALL RESOLVER BASED FIELDS, UPDATING THE SAME LOOKUP_OWNER FIELD
-
-	field_string = """
-CASE
-WHEN ISNUMERIC(left(@owner,1)) = 1 THEN ''
-WHEN CHARINDEX('@', @owner) > 0 THEN ISNULL(LOWER(LEFT(REPLACE(@owner,'.',' '), CHARINDEX('@', @owner) - 1)),'')
-ELSE ISNULL(LOWER(REPLACE(@owner,'.',' ')),'')
-END"""
-	
-	#WE THEN HAVE TO RUN THE ABOVE FOR ALL RESOLVER BASED FIELDS, UPDATING THE SAME LOOKUP_OWNER FIELD
-	dimension_table_list = [
-		['owner',field_string.replace("@owner", 'i.technicianname'),'TEMP_session','owner'],
-		['owner',field_string.replace("@owner", 'i.technicianname'),'TEMP_nps','owner'],
-	]
-
-	#CREATE AND POPULATE THE LOOKUP TABLES
-	update_dimension_tables_2(output_db, output_database, dimension_table_list, print_details)
-
 
 	###################################################################################
 	################################SETUP DETAILS TABLE
 	###################################################################################
 	
+
+	sql_queries = [
+		"_CREATE_session_detail",
+		"_CREATE_nps_detail",
+	]
+
+	for query in sql_queries:
+		#RECREATE THE TABLE
+		sql = get_sql_query(query, "sql/"+project+"/")
+		query_database2('Creating Main Incident Detail Table', sql, 
+			output_db, output_database, print_details=print_details)	
+
 		
 	#BUILD THE COMBINED TABLE
 	sql_queries = [
 		"_MAIN_session_detail",
-		"_MAIN_nps_detail",
+		#"_MAIN_nps_detail",
 	]
 
 	for query in sql_queries:	
@@ -122,7 +114,7 @@ END"""
 		u_print('Time Taken: '+str(process_end_time - process_start_time))	
 		u_print("###########################")	
 
-
+		"""
 		u_print("Starting Details Index process")
 		process_start_time = datetime.datetime.now()
 
@@ -133,7 +125,7 @@ END"""
 		process_end_time = datetime.datetime.now()
 		u_print('Time Taken: '+str(process_end_time - process_start_time))	
 		u_print("###########################")	
-
+		"""
 
 	
 	finish_time = datetime.datetime.now()

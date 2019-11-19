@@ -1,8 +1,8 @@
-IF OBJECT_ID(N'Detail_Incident_v2') IS NOT NULL
-    drop table Detail_Incident_v2
+IF OBJECT_ID(N'DETAIL_incident') IS NOT NULL
+    drop table DETAIL_incident
 
 
-CREATE TABLE [dbo].[Detail_Incident_v2](
+CREATE TABLE [dbo].[DETAIL_incident](
     --[ID] int not NULL,
     ID INT IDENTITY(1,1) NOT NULL,-- PRIMARY KEY,
     [recid] [char](32) NULL,
