@@ -4,56 +4,46 @@
 
 INSERT DETAIL_nps
 SELECT
-    s.recid,
-	s.type,
-	s.id,
-	s.rescuesessionid,
-	s.comments,
-	s.nps,
-	s.npstype,
-    ISNULL(i.id,NULL) AS incident_id,
-	REPLACE(s.incidentnumber,'.0','') AS incidentnumber,
+    NULLIF(s.recid+'_i_'+ISNULL(REPLACE(s.incidentnumber,'.0',''),'zz'),'') AS recid
+    ,NULLIF(s.databasename,'') AS databasename
+    ,NULLIF(s.type,'') AS type
+	,NULLIF(s.id,'') AS surveyid
+	,NULLIF(s.rescuesessionid,'') AS rescuesessionid
+	,NULLIF(LEFT(s.comments,250),'') AS comments
+	,NULLIF(s.nps,'') AS nps
+	,NULLIF(s.npstype,'') AS npstype
 
-    --DIMENSION IDS
-    ISNULL(sys.id,NULL) as system_id,
-	
-    CASE
-    WHEN rdb.owner = '' THEN NULL
-    ELSE rdb.id 
-    END as technician_id,
-	s.databasename,
+    ,replace(LEFT(s.technicianname,len(s.technicianname)-charindex('@',reverse(s.technicianname))),'.',' ') AS [technicianname_Format]
 
 	--DATE DIMENSIONS
-	s.submittedat,
-    submit_d.id AS submitteddate_id,
+	,NULLIF(s.submittedat,'') AS submittedat
+    ,NULLIF(CONVERT(DATE,s.submittedat),'') AS submittedat_Format
+
+    ,NULLIF(s.system,'') AS system    
+    ,NULLIF(REPLACE(LEFT(s.incidentnumber,30),'.0',''),'') AS nps_incidentnumber
+    ,ISNULL(i.id,NULL) AS incident_id
 
 	--s.duplicate_check,
-    ROW_NUMBER() OVER (PARTITION BY ISNULL(rescuesessionid,s.incidentnumber), s.databasename 
-        ORDER BY s.[submittedat] DESC, s.recid+'_i_'+ISNULL(REPLACE(s.incidentnumber,'.0',''),'zz') --RECID
+    --IF NO INCIDENT NUMBER APPEARS, MARK IT AS ZZ SO IT'LL APPEAR AT THE BOTTOM OF ANY NPS CORRECTIONS
+    ,ROW_NUMBER() OVER (PARTITION BY ISNULL(rescuesessionid,s.incidentnumber), s.databasename 
+        ORDER BY s.[submittedat] DESC, s.recid --RECID
         ) AS duplicate_check
 
 FROM
 	TEMP_nps s
 
-    --DIMENSION IDS
-    LEFT JOIN LOOKUP_system sys ON (sys.system = ISNULL(s.system,''))
-    LEFT JOIN DETAIL_incident i ON (sys.id = i.system_id AND i.number = s.incidentnumber)
-
-    --DATE JOINS
-    LEFT JOIN LOOKUP_dates submit_d ON (submit_d.date = CONVERT(DATE,s.submittedat))
-
-    --OWNER JOINS 
-    LEFT JOIN LOOKUP_owner rdb ON (rdb.owner = ISNULL(s.technicianname,''))      
+    LEFT JOIN DETAIL_incident i ON (i.system = s.system AND i.number = s.incidentnumber)    
 
 WHERE NOT EXISTS
 	(
 		SELECT 
-			recid--, 
-			--system 
+			recid
 		FROM 
 			DETAIL_nps d 
-			--LEFT JOIN LOOKUP_system s ON (s.id = d.system_id)
 		WHERE 
-			d.recid = s.recid
+			d.recid = NULLIF(s.recid+'_i_'+ISNULL(REPLACE(s.incidentnumber,'.0',''),'zz'),'')
 	)
+
+ORDER BY
+    s.submittedat
 ;

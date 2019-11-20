@@ -14,10 +14,10 @@ FROM
     SELECT
         recid,
     	s.rescuesessionid,
-    	REPLACE(s.incidentnumber,'.0','') AS incidentnumber,
+    	REPLACE(s.nps_incidentnumber,'.0','') AS nps_incidentnumber,
         --duplicate_check,
         ROW_NUMBER() OVER (
-            PARTITION BY ISNULL(rescuesessionid,incidentnumber), databasename 
+            PARTITION BY ISNULL(rescuesessionid,nps_incidentnumber), databasename 
             ORDER BY submittedat DESC, recid) AS duplicate_check
 
     FROM
@@ -31,7 +31,7 @@ FROM
             FROM 
                 TEMP_nps d 
             WHERE 
-                ISNULL(s.rescuesessionid,s.incidentnumber) = ISNULL(d.rescuesessionid,d.incidentnumber)
+                ISNULL(s.rescuesessionid,s.nps_incidentnumber) = ISNULL(d.rescuesessionid,d.incidentnumber)
                 AND s.databasename = d.databasename
         )
     ) T2

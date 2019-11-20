@@ -14,7 +14,8 @@ CREATE TABLE [dbo].[DETAIL_nps](
     ,npstype VARCHAR(9) NULL
     ,technicianname_Format NVARCHAR(100) NULL
     ,submittedat DATETIME NULL
-    ,submittedat_Format DATE NULL
+    ,submittedat_Format DATE NOT NULL
+    ,system NVARCHAR(30) NULL 
     ,nps_incidentnumber NVARCHAR(30) NULL
     ,incident_id INT NULL
     ,duplicate_check INT NULL

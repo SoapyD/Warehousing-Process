@@ -1,8 +1,6 @@
 
-
+INSERT INTO DETAIL_session
 SELECT 
-    --s.recid,
-    --NULLIF(s.recid,'') AS recid
     NULLIF(s.recid+'_i_'+ISNULL(s.incidentnumber,'zz'),'') as recid
     ,NULLIF(s.sessionid,'') AS sessionid
     ,NULLIF(s.databasename,'') AS databasename
@@ -41,6 +39,7 @@ SELECT
     ,NULLIF(s.lastactiontime,'') AS lastactiontime
     ,NULLIF(CONVERT(DATE,s.lastactiontime),'') AS lastactiondate_Format 
 
+    ,NULLIF(s.system,'') AS system
     ,NULLIF(s.incidentnumber,'') AS session_incidentnumber
     ,ISNULL(i.id,NULL) AS incident_id
 
@@ -50,14 +49,10 @@ SELECT
 
     --WILL PROBABLY NEED TO INC ID ADDED BACK INTO THE ROW NUMBER CHECKER? MAYBE
 
-INTO
-    DETAIL_session
 FROM 
     TEMP_session s   
 
-    --DIMENSION IDS
-    --LEFT JOIN LOOKUP_system sys ON (sys.system = ISNULL(s.system,''))
-    LEFT JOIN DETAIL_incident i ON (sys.id = i.system_id AND i.number = s.incidentnumber)
+    LEFT JOIN DETAIL_incident i ON (i.system = s.system AND i.number = s.incidentnumber)
 
 ORDER BY
     s.starttime
@@ -65,3 +60,5 @@ ORDER BY
 
 
 ALTER TABLE [dbo].[DETAIL_session] ADD CONSTRAINT PK_session_ID PRIMARY KEY ([startdate_Format],ID);
+
+CREATE NONCLUSTERED INDEX IDX_session_check ON [dbo].[DETAIL_session] ([recid]); --TO GET WHEN UPDATING RECORDS

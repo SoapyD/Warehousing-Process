@@ -5,16 +5,6 @@ IF OBJECT_ID(N'TEMP_session') IS NOT NULL
 
 SELECT 
     s.recid+'_s_'+ISNULL(CONVERT(NVARCHAR,cs.id),'') AS recid,
-    /*
-    CASE 
-        WHEN he_ci.sessionid IS NOT NULL OR ISNULL(SPB.he_session,0) = 1 THEN s.recid+'_i_'+ISNULL(he_ci.incidentnumber,LEFT(s.existingticketno,20))+'_s_'+ISNULL(CONVERT(NVARCHAR,cs.id),'')
-        WHEN fsa_ci.sessionid IS NOT NULL OR ISNULL(SPB.fsa_session,0) = 1  THEN s.recid+'_i_'+ISNULL(fsa_ci.incidentnumber,LEFT(s.existingticketno,20))+'_s_'+ISNULL(CONVERT(NVARCHAR,cs.id),'')
-        WHEN mhclg_ci.sessionid IS NOT NULL OR ISNULL(SPB.mhclg_session,0) = 1  THEN s.recid+'_i_'+ISNULL(mhclg_ci.incidentnumber,LEFT(s.existingticketno,20))+'_s_'+ISNULL(CONVERT(NVARCHAR,cs.id),'')
-        WHEN croy_ci.sessionid IS NOT NULL OR ISNULL(SPB.croydon_session,0) = 1  THEN s.recid+'_i_'+ISNULL(croy_ci.incidentnumber,LEFT(s.existingticketno,20))+'_s_'+ISNULL(CONVERT(NVARCHAR,cs.id),'')
-        WHEN enwl_ci.sessionid IS NOT NULL OR ISNULL(SPB.enwl_session,0) = 1  THEN s.recid+'_i_'+ISNULL(enwl_ci.incidentnumber,LEFT(s.existingticketno,20))+'_s_'+ISNULL(CONVERT(NVARCHAR,cs.id),'')     
-        ELSE s.recid+'_i_'+ISNULL(ci.incidentnumber,ISNULL(LEFT(s.existingticketno,20),''))+'_s_'+ISNULL(CONVERT(NVARCHAR,cs.id),'')
-    end as recid,
-    */
     s.sessionid,
     --s.sessiontype,
     s.status,
@@ -35,7 +25,7 @@ SELECT
     t1.answertext AS "Whats the Status of Your Problem?",
     t2.answertext AS "Please Rate Your Remote Support Experience",
     t2.score AS [Q2 score],
-    cs.comments,
+    LEFT(cs.comments,255) AS comments,
 
     NULL AS incident_id,
     CASE 

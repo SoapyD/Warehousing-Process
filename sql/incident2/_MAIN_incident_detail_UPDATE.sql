@@ -40,7 +40,7 @@ SET
 	lastmoddatetime = T2.lastmoddatetime,
 	lastmoddate_Format = T2.lastmoddate_Format,
 	ResolvedClosedBy_Format = T2.ResolvedClosedBy_Format,
-	ResolvedClosedBy_Format = T2.ResolvedClosedBy_Format,
+	ResolvedClosedDate_Format = T2.ResolvedClosedDate_Format,
 	ResolvedClosedDatetime = T2.ResolvedClosedDatetime,
 	breachstatus = T2.breachstatus,
 	l1dateTime = T2.l1dateTime,
@@ -153,4 +153,4 @@ FROM
 	LEFT JOIN dbo.LOOKUP_company com ON com.company = inc.company
 
     ) T2
-    ON (T1.recid = T2.recid AND T1.system_id = T2.system_id)
+    ON (T1.recid = T2.recid AND T1.system = T2.system)

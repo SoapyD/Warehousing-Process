@@ -2,7 +2,7 @@
 def update_warehouse(table_name, temporary_table_name, wh_query, wh_combined_table, delete_staging,
 	print_internal=False, print_details=False):
 
-	run = False
+	run = True
 	if run == True:
 		run_update_warehouse(table_name, temporary_table_name, wh_query, wh_combined_table, delete_staging,
 		print_internal, print_details)
@@ -21,15 +21,15 @@ def run_update_warehouse(table_name, temporary_table_name, wh_query, wh_combined
 		u_print('########################################')
 
 
+	u_print("Running Incident v2 Update Method")
+	u_print("")
+
 	project = 'incident2'
 
 	"""
 	THE WAREHOUSE SETUP USES THE BASE TABLES IN THE INITIAL DATABASE TO FORMAT THE INITIAL TABLES THAT'LL
 	BE UPDATED HEREAFTER
 	"""
-
-	u_print("Running Incident v2 Update Method")
-	u_print("")
 
 
 	start_time = datetime.datetime.now() #need for process time u_printing

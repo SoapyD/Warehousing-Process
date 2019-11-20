@@ -1,10 +1,10 @@
 
-
+INSERT INTO DETAIL_nps
 SELECT
     NULLIF(s.recid+'_i_'+ISNULL(REPLACE(s.incidentnumber,'.0',''),'zz'),'') AS recid
     ,NULLIF(s.databasename,'') AS databasename
     ,NULLIF(s.type,'') AS type
-	,NULLIF(s.id,'') AS id
+	,NULLIF(s.id,'') AS surveyid
 	,NULLIF(s.rescuesessionid,'') AS rescuesessionid
 	,NULLIF(LEFT(s.comments,250),'') AS comments
 	,NULLIF(s.nps,'') AS nps
@@ -16,6 +16,7 @@ SELECT
 	,NULLIF(s.submittedat,'') AS submittedat
     ,NULLIF(CONVERT(DATE,s.submittedat),'') AS submittedat_Format
 
+    ,NULLIF(s.system,'') AS system    
     ,NULLIF(REPLACE(LEFT(s.incidentnumber,30),'.0',''),'') AS nps_incidentnumber
     ,ISNULL(i.id,NULL) AS incident_id
 
@@ -25,15 +26,15 @@ SELECT
         ORDER BY s.[submittedat] DESC, s.recid --RECID
         ) AS duplicate_check
 
-INTO
-	DETAIL_nps
 FROM
 	TEMP_nps s
 
-    LEFT JOIN DETAIL_incident i ON (sys.id = i.system_id AND i.number = s.incidentnumber) 
+    LEFT JOIN DETAIL_incident i ON (i.system = s.system AND i.number = s.incidentnumber) 
 ORDER BY
     s.submittedat
 
 
 
 ALTER TABLE [dbo].[DETAIL_nps] ADD CONSTRAINT PK_nps_ID PRIMARY KEY ([submittedat_Format],ID);
+
+CREATE NONCLUSTERED INDEX IDX_nps_check ON [dbo].[DETAIL_nps] ([recid]); --TO GET WHEN UPDATING RECORDS

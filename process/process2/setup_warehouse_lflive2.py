@@ -56,10 +56,11 @@ def setup_warehouse_lflive(output_database):
 	################################CREATE A COMBINED DATA TABLE
 	###################################################################################
 
+	
 	#BUILD THE COMBINED TABLE
 	sql_queries = [
 		"lfliveextract_session",
-		#"lfliveextract_nps",
+		"lfliveextract_nps",
 	]
 
 	for query in sql_queries:
@@ -76,7 +77,7 @@ def setup_warehouse_lflive(output_database):
 		process_end_time = datetime.datetime.now()
 		u_print('Time Taken: '+str(process_end_time - process_start_time))	
 		u_print("###########################")	
-
+	""""""
 
 	###################################################################################
 	################################SETUP DETAILS TABLE
@@ -91,14 +92,14 @@ def setup_warehouse_lflive(output_database):
 	for query in sql_queries:
 		#RECREATE THE TABLE
 		sql = get_sql_query(query, "sql/"+project_name+"/")
-		query_database2('Creating Main Incident Detail Table', sql, 
+		query_database2('Creating Detail Table', sql, 
 			output_db, output_database, print_details=print_details)	
 
 		
 	#BUILD THE COMBINED TABLE
 	sql_queries = [
 		"_MAIN_session_detail",
-		#"_MAIN_nps_detail",
+		"_MAIN_nps_detail",
 	]
 
 	for query in sql_queries:	

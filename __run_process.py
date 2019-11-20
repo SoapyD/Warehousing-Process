@@ -1,6 +1,6 @@
 import os
 
-exec(open("_main.py").read())
+exec(open("process\\process1\\_main.py").read())
 
 
 

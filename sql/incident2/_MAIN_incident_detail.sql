@@ -92,3 +92,8 @@ ORDER BY
 
 
 ALTER TABLE [dbo].[DETAIL_incident] ADD CONSTRAINT PK_inc_ID PRIMARY KEY ([createddate_Format],ID);
+
+
+CREATE NONCLUSTERED INDEX IDX_inc_check ON [dbo].[DETAIL_incident] ([recid],[system]); --TO GET WHEN UPDATING RECORDS
+
+CREATE NONCLUSTERED INDEX IDX_inc_lookup ON [dbo].[DETAIL_incident] ([number],[system]); --TO GET CORE INC DATA

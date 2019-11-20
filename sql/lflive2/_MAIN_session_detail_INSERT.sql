@@ -3,78 +3,59 @@
 */
 
 INSERT DETAIL_session
-SELECT
-    --s.recid,
-    s.recid as recid,
-    s.sessionid,
-    s.subject,
-    /*
-    s.technicianid,
-    s.technicianname,
-    s.technicianemail,
-    */
-    
-    s.[Whats the Status of Your Problem?],
-    s.[Please Rate Your Remote Support Experience],
-    s.[Q2 score],    
-    s.comments AS Comments,
-
-
-    ISNULL(i.id,NULL) AS incident_id,
-    --ISNULL(i.number,NULL) AS incident_number,
-
-    --DIMENSION IDS
-    ISNULL(sys.id,NULL) as system_id,
-    ISNULL(rdb.id,NULL) as technician_id,  
-    s.databasename,
-
+SELECT 
+    NULLIF(s.recid+'_i_'+ISNULL(s.incidentnumber,'zz'),'') as recid
+    ,NULLIF(s.sessionid,'') AS sessionid
+    ,NULLIF(s.databasename,'') AS databasename
+    ,NULLIF(s.subject,'') AS subject
+    ,NULLIF(s.[Whats the Status of Your Problem?],'') AS [Whats the Status of Your Problem?]
+    ,NULLIF(s.[Please Rate Your Remote Support Experience],'') AS [Please Rate Your Remote Support Experience]
+    ,NULLIF(s.[Q2 score],'') AS [Q2 score]
+    ,NULLIF(s.comments,'') AS Comments
     --DIMENSIONS
-    s.status,
-    s.techniciangroup,
-    he_session,
-    fsa_session,
-    mhclg_session,
-    croydon_session,
-    enwl_session,
-
-    --DATE DIMENSIONS
-    s.starttime,
-    start_d.id AS startdate_id,
-    s.endtime,
-    end_d.id AS enddate_id,    
-    s.lastactiontime,
-    last_d.id AS lastactiondate_id,
+    ,NULLIF(s.status,'') AS status
+    ,NULLIF(s.techniciangroup,'') AS techniciangroup
+    ,NULLIF(he_session,'') AS he_session
+    ,NULLIF(fsa_session,'') AS fsa_session
+    ,NULLIF(mhclg_session,'') AS mhclg_session
+    ,NULLIF(croydon_session,'') AS croydon_session
+    ,NULLIF(enwl_session,'') AS enwl_session
 
     --FACTS
-    s.connectingtime,
-    s.waitingtime,
-    s.totaltime,
-    s.activetime,
-    s.worktime,
-    s.holdtime,
-    s.transfertime,
-    s.rebootingtime,
-    s.reconnectingtime,
+    ,NULLIF(s.connectingtime,'') AS connectingtime
+    ,NULLIF(s.waitingtime,'') AS waitingtime
+    ,NULLIF(s.totaltime,'') AS totaltime
+    ,NULLIF(s.activetime,'') AS activetime
+    ,NULLIF(s.worktime,'') AS worktime
+    ,NULLIF(s.holdtime,'') AS holdtime
+    ,NULLIF(s.transfertime,'') AS transfertime
+    ,NULLIF(s.rebootingtime,'') AS rebootingtime
+    ,NULLIF(s.reconnectingtime,'') AS reconnectingtime
 
-    --s.duplicate_check,
-    ROW_NUMBER() OVER (PARTITION BY s.[sessionid], s.databasename
+    ,replace(LEFT(s.technicianname,len(s.technicianname)-charindex('@',reverse(s.technicianname))),'.',' ') AS [technicianname_Format]
+
+    --DATE DIMENSIONS
+    ,NULLIF(s.starttime,'') AS starttime
+    ,NULLIF(CONVERT(DATE,s.starttime),'') AS startdate_Format
+    ,NULLIF(s.endtime,'') AS endtime
+    ,NULLIF(CONVERT(DATE,s.endtime),'') AS enddate_Format    
+    ,NULLIF(s.lastactiontime,'') AS lastactiontime
+    ,NULLIF(CONVERT(DATE,s.lastactiontime),'') AS lastactiondate_Format 
+
+    ,NULLIF(s.system,'') AS system
+    ,NULLIF(s.incidentnumber,'') AS session_incidentnumber
+    ,ISNULL(i.id,NULL) AS incident_id
+
+    ,ROW_NUMBER() OVER (PARTITION BY s.[sessionid], s.databasename
         ORDER BY s.starttime DESC, s.recid DESC --RECID
         ) AS duplicate_check
+
+    --WILL PROBABLY NEED TO INC ID ADDED BACK INTO THE ROW NUMBER CHECKER? MAYBE
 
 FROM 
     TEMP_session s   
 
-    --DIMENSION IDS
-    LEFT JOIN LOOKUP_system sys ON (sys.system = ISNULL(s.system,''))
-    LEFT JOIN DETAIL_incident i ON (sys.id = i.system_id AND i.number = s.incidentnumber)
-
-    --DATE JOINS
-    LEFT JOIN LOOKUP_dates start_d ON (start_d.date = CONVERT(DATE,s.starttime))
-    LEFT JOIN LOOKUP_dates end_d ON (end_d.date = CONVERT(DATE,s.endtime))
-    LEFT JOIN LOOKUP_dates last_d ON (last_d.date = CONVERT(DATE,s.lastactiontime))
-
-    --OWNER JOINS 
-    LEFT JOIN LOOKUP_owner rdb ON (rdb.owner = ISNULL(s.technicianname,'')) 
+    LEFT JOIN DETAIL_incident i ON (i.system = s.system AND i.number = s.incidentnumber)
 
 WHERE NOT EXISTS
 	(
@@ -85,6 +66,9 @@ WHERE NOT EXISTS
 			DETAIL_session d 
 			--LEFT JOIN LOOKUP_system s ON (s.id = d.system_id)
 		WHERE 
-			d.recid = s.recid
+			d.recid = NULLIF(s.recid+'_i_'+ISNULL(s.incidentnumber,'zz'),'')
 	)
+
+ORDER BY
+    s.starttime
 ;

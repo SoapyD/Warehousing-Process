@@ -4,9 +4,9 @@ exec(open("process\\process2\\_main2.py").read())
 
 
 
-output_database = 'LF-SQL-WH'
+output_database = 'LF-SQL-DEV'
 
-#setup_warehouse(output_database)
+setup_warehouse(output_database)
 setup_warehouse_lflive(output_database)
 
 

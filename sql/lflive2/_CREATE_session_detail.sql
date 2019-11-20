@@ -5,7 +5,7 @@ IF OBJECT_ID(N'DETAIL_session') IS NOT NULL
 CREATE TABLE [dbo].[DETAIL_session](
     ID INT IDENTITY(1,1) NOT NULL
 
-    recid NVARCHAR(200) NULL
+    ,recid NVARCHAR(200) NULL
     ,sessionid BIGINT NULL
     ,databasename TINYINT NULL
     ,subject NVARCHAR(255) NULL
@@ -36,12 +36,13 @@ CREATE TABLE [dbo].[DETAIL_session](
 
     --DATE DIMENSIONS
     ,starttime DATETIME NULL
-    ,startdate_Format DATE NULL
+    ,startdate_Format DATE NOT NULL
     ,endtime DATETIME NULL
     ,enddate_Format DATE NULL    
     ,lastactiontime DATETIME NULL
     ,lastactiondate_Format DATE NULL 
 
+    ,system NVARCHAR(30) NULL
     ,session_incidentnumber NVARCHAR(100) NULL
     ,incident_id INT NULL
 

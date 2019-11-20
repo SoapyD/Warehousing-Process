@@ -87,9 +87,9 @@ WHERE NOT EXISTS
 			system 
 		FROM 
 			DETAIL_incident d 
-			LEFT JOIN LOOKUP_system s ON (s.id = d.system_id)
+
 		WHERE 
-			d.recid = inc.recid AND s.system = inc.system
+			d.recid = inc.recid AND d.system = inc.system
 	)
 
 ORDER BY
