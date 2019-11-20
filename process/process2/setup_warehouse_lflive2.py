@@ -90,7 +90,7 @@ def setup_warehouse_lflive(output_database):
 
 	for query in sql_queries:
 		#RECREATE THE TABLE
-		sql = get_sql_query(query, "sql/"+project+"/")
+		sql = get_sql_query(query, "sql/"+project_name+"/")
 		query_database2('Creating Main Incident Detail Table', sql, 
 			output_db, output_database, print_details=print_details)	
 
