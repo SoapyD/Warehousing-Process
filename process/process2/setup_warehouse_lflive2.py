@@ -2,7 +2,7 @@
 #exec(open("_main.py").read())
 
 
-def setup_warehouse_lflive(output_database):
+def setup_warehouse_lflive2(output_database):
 	u_print('########################################')
 	u_print('RUNNING WAREHOUSE SETUP')
 	u_print('########################################')

@@ -1,15 +1,15 @@
 
-def update_warehouse(table_name, temporary_table_name, wh_query, wh_combined_table, delete_staging,
+def update_warehouse2(table_name, temporary_table_name, wh_query, wh_combined_table, delete_staging,
 	print_internal=False, print_details=False):
 
 	run = True
 	if run == True:
-		run_update_warehouse(table_name, temporary_table_name, wh_query, wh_combined_table, delete_staging,
+		run_update_warehouse2(table_name, temporary_table_name, wh_query, wh_combined_table, delete_staging,
 		print_internal, print_details)
 	else:
 		u_print("WARNING: Warehousing turned off")
 
-def run_update_warehouse(table_name, temporary_table_name, wh_query, wh_combined_table, delete_staging,
+def run_update_warehouse2(table_name, temporary_table_name, wh_query, wh_combined_table, delete_staging,
 	print_internal=False, print_details=False):
 	
 	if print_details == True:
