@@ -5,7 +5,7 @@
 INSERT DETAIL_nps
 SELECT
     NULLIF(s.recid+'_i_'+ISNULL(REPLACE(s.incidentnumber,'.0',''),'zz'),'') AS recid
-    ,NULLIF(s.databasename,'') AS databasename
+    ,s.databasename AS databasename --DON'T AMEND AS NULLIF REMOVES ZEROES WHICH ARE NEEDED
     ,NULLIF(s.type,'') AS type
 	,NULLIF(s.id,'') AS surveyid
 	,NULLIF(s.rescuesessionid,'') AS rescuesessionid

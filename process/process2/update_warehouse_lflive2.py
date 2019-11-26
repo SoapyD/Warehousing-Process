@@ -120,7 +120,8 @@ def run_update_warehouse_lflive2(table_name, temporary_table_name, wh_query, wh_
 
 	#UPDATE DUPLICATE CHECK NUMBER
 	sql = get_sql_query("_MAIN_"+type+"_detail_UPDATE_DUPLICATES", warehousing_path+"/sql/"+project_name+"/")	
-	sql = sql.replace('TEMP_'+type, wh_combined_table) #REPLACE THE COMBINED TABLE NAME WITH THE TEMP WH COMBINED NAME			
+	sql = sql.replace('TEMP_'+type, wh_combined_table) #REPLACE THE COMBINED TABLE NAME WITH THE TEMP WH COMBINED NAME	
+	#print(sql)		
 	query_database2('UPDATE DUPLICATE CHECK',sql, output_db, output_database, print_details=print_details)
 
 

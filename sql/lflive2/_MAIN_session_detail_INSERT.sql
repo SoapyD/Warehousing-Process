@@ -6,7 +6,7 @@ INSERT DETAIL_session
 SELECT 
     NULLIF(s.recid+'_i_'+ISNULL(s.incidentnumber,'zz'),'') as recid
     ,NULLIF(s.sessionid,'') AS sessionid
-    ,NULLIF(s.databasename,'') AS databasename
+    ,s.databasename AS databasename
     ,NULLIF(s.subject,'') AS subject
     ,NULLIF(s.[Whats the Status of Your Problem?],'') AS [Whats the Status of Your Problem?]
     ,NULLIF(s.[Please Rate Your Remote Support Experience],'') AS [Please Rate Your Remote Support Experience]
@@ -22,15 +22,15 @@ SELECT
     ,NULLIF(enwl_session,'') AS enwl_session
 
     --FACTS
-    ,NULLIF(s.connectingtime,'') AS connectingtime
-    ,NULLIF(s.waitingtime,'') AS waitingtime
-    ,NULLIF(s.totaltime,'') AS totaltime
-    ,NULLIF(s.activetime,'') AS activetime
-    ,NULLIF(s.worktime,'') AS worktime
-    ,NULLIF(s.holdtime,'') AS holdtime
-    ,NULLIF(s.transfertime,'') AS transfertime
-    ,NULLIF(s.rebootingtime,'') AS rebootingtime
-    ,NULLIF(s.reconnectingtime,'') AS reconnectingtime
+    ,s.connectingtime AS connectingtime
+    ,s.waitingtime AS waitingtime
+    ,s.totaltime AS totaltime
+    ,s.activetime AS activetime
+    ,s.worktime AS worktime
+    ,s.holdtime AS holdtime
+    ,s.transfertime AS transfertime
+    ,s.rebootingtime AS rebootingtime
+    ,s.reconnectingtime AS reconnectingtime
 
     ,replace(LEFT(s.technicianname,len(s.technicianname)-charindex('@',reverse(s.technicianname))),'.',' ') AS [technicianname_Format]
 
