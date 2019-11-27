@@ -91,9 +91,31 @@ ORDER BY
 ;
 
 
-ALTER TABLE [dbo].[DETAIL_incident] ADD CONSTRAINT PK_inc_ID PRIMARY KEY ([createddate_Format],ID);
+ALTER TABLE [dbo].[DETAIL_incident] ADD CONSTRAINT PK_inc_ID PRIMARY KEY (ID);
+
+CREATE NONCLUSTERED INDEX IDX_created ON [dbo].[DETAIL_incident] (createddate_Format);
 
 
 CREATE NONCLUSTERED INDEX IDX_inc_check ON [dbo].[DETAIL_incident] ([recid],[system]); --TO GET WHEN UPDATING RECORDS
 
 CREATE NONCLUSTERED INDEX IDX_inc_lookup ON [dbo].[DETAIL_incident] ([number],[system]); --TO GET CORE INC DATA
+
+
+
+
+
+CREATE NONCLUSTERED INDEX IDX_com
+ON [dbo].[DETAIL_incident] (Company)
+INCLUDE (createddate_Format,ResolvedClosedDate_Format, customer,businessunit,status,source,typeofincident,ownerteam)
+
+CREATE NONCLUSTERED INDEX IDX_cre
+ON [dbo].[DETAIL_incident] (createddate_Format)
+INCLUDE (Company,customer,businessunit,status,source,typeofincident,ownerteam)
+
+CREATE NONCLUSTERED INDEX IDX_res
+ON [dbo].[DETAIL_incident] (ResolvedClosedDate_Format)
+INCLUDE (Company,customer,businessunit,status,source,typeofincident,ownerteam)
+
+CREATE NONCLUSTERED INDEX IDX_detail
+ON [dbo].[DETAIL_incident] (id)
+INCLUDE (priority, fcr, isvip, subject)

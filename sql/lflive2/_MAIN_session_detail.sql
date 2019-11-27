@@ -59,6 +59,6 @@ ORDER BY
 
 
 
-ALTER TABLE [dbo].[DETAIL_session] ADD CONSTRAINT PK_session_ID PRIMARY KEY ([startdate_Format],ID);
+ALTER TABLE [dbo].[DETAIL_session] ADD CONSTRAINT PK_session_ID PRIMARY KEY (ID);
 
 CREATE NONCLUSTERED INDEX IDX_session_check ON [dbo].[DETAIL_session] ([recid]); --TO GET WHEN UPDATING RECORDS
