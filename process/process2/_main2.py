@@ -10,19 +10,16 @@ this_dir = base_path+"Warehousing-Process\\"
 exec(open(this_dir+"setup_external_tables.py").read())
 exec(open(this_dir+"setup_dimension_tables.py").read())
 
-#exec(open(this_dir+"setup_warehouse.py").read())
-#exec(open(this_dir+"update_warehouse.py").read())
 exec(open(this_dir+"process\\process2\\setup_warehouse2.py").read())
 exec(open(this_dir+"process\\process2\\update_warehouse2.py").read())
 
-#exec(open(this_dir+"setup_warehouse_lflive.py").read())
-#exec(open(this_dir+"update_warehouse_lflive.py").read())
 exec(open(this_dir+"process\\process2\\setup_warehouse_lflive2.py").read())
 exec(open(this_dir+"process\\process2\\update_warehouse_lflive2.py").read())
-
 
 exec(open(this_dir+"process\\process2\\setup_warehouse_telephony2.py").read())
 exec(open(this_dir+"process\\process2\\update_warehouse_telephony2.py").read())
 
+exec(open(this_dir+"process\\process2\\setup_warehouse_problem2.py").read())
+exec(open(this_dir+"process\\process2\\update_warehouse_problem2.py").read())
 
 global error_count
