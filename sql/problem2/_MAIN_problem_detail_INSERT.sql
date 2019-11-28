@@ -35,9 +35,6 @@ FROM
 	[dbo].[TEMP_problem_combined] prb
 	LEFT JOIN dbo.LOOKUP_company com ON com.company = prb.company
 
-WHERE	
-	prb.createddatetime is not null
-
 
 WHERE NOT EXISTS
 	(
