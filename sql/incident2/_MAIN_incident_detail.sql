@@ -93,29 +93,78 @@ ORDER BY
 
 ALTER TABLE [dbo].[DETAIL_incident] ADD CONSTRAINT PK_inc_ID PRIMARY KEY (ID);
 
-CREATE NONCLUSTERED INDEX IDX_created ON [dbo].[DETAIL_incident] (createddate_Format);
+--CREATE NONCLUSTERED INDEX IDX_created ON [dbo].[DETAIL_incident] (createddate_Format);
 
 
-CREATE NONCLUSTERED INDEX IDX_inc_check ON [dbo].[DETAIL_incident] ([recid],[system]); --TO GET WHEN UPDATING RECORDS
-
-CREATE NONCLUSTERED INDEX IDX_inc_lookup ON [dbo].[DETAIL_incident] ([number],[system]); --TO GET CORE INC DATA
-
+CREATE NONCLUSTERED INDEX IDX_check_inc ON [dbo].[DETAIL_incident] ([recid],[system]); --CHECKED WHEN UPDATING RECORDS
 
 
 
+CREATE NONCLUSTERED INDEX IDX_lookup_inc ON [dbo].[DETAIL_incident] ([number],[system]); --TO GET CORE INC DATA for sessions and nps
 
-CREATE NONCLUSTERED INDEX IDX_com
+
+
+
+
+CREATE NONCLUSTERED INDEX IDX_org_inc
 ON [dbo].[DETAIL_incident] (Company)
-INCLUDE (createddate_Format,ResolvedClosedDate_Format, customer,businessunit,status,source,typeofincident,ownerteam)
+INCLUDE (createddate_Format, ResolvedClosedDate_Format, customer,businessunit,status,source,typeofincident,ownerteam)
 
-CREATE NONCLUSTERED INDEX IDX_cre
+CREATE NONCLUSTERED INDEX IDX_created_inc
 ON [dbo].[DETAIL_incident] (createddate_Format)
 INCLUDE (Company,customer,businessunit,status,source,typeofincident,ownerteam)
 
-CREATE NONCLUSTERED INDEX IDX_res
+CREATE NONCLUSTERED INDEX IDX_resolved_inc
 ON [dbo].[DETAIL_incident] (ResolvedClosedDate_Format)
 INCLUDE (Company,customer,businessunit,status,source,typeofincident,ownerteam)
 
-CREATE NONCLUSTERED INDEX IDX_detail
+CREATE NONCLUSTERED INDEX IDX_detail_inc
 ON [dbo].[DETAIL_incident] (id)
-INCLUDE (priority, fcr, isvip, subject)
+INCLUDE (
+
+number,
+subject, symptom, resolution, technicalresolution,
+problem_id, parentincident_id,
+
+--DIMENSION IDS
+system,
+company,
+businessunit, 
+typeofincident,  
+status, 
+source, 
+ownerteam, 
+location,
+causecode,
+service, 
+category, 
+subcategory,
+
+--DIMENSIONS
+priority,
+isvip,
+breachstatus, L1Passed, L2Passed, L3Passed, 
+breachpassed, response_breachpassed, 
+
+remoteresolution, 
+repeatissue, 
+numberofusersaffected, 
+--reopen_check, #missing
+
+fcr, 
+--fcr_scoped, #missing
+--fcr_achieved, #missing
+
+--DATE DIMENSIONS
+createddatetime, resolveddatetime, closeddatetime, lastmoddatetime,
+--lastmoddate_Format, resolveddate_Format, closeddate_Format,
+
+--FACTS
+targetclockduration, totalrunningduration,
+response_targetclockduration, response_totalrunningduration, 
+reopencount,
+
+customer,
+owner_Format, createdby_Format, resolvedby_Format, closedby_Format, lastmodby_Format
+
+)

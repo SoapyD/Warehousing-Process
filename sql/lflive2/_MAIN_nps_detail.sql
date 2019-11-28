@@ -37,4 +37,34 @@ ORDER BY
 
 ALTER TABLE [dbo].[DETAIL_nps] ADD CONSTRAINT PK_nps_ID PRIMARY KEY (ID);
 
-CREATE NONCLUSTERED INDEX IDX_nps_check ON [dbo].[DETAIL_nps] ([recid]); --TO GET WHEN UPDATING RECORDS
+CREATE NONCLUSTERED INDEX IDX_check_nps ON [dbo].[DETAIL_nps] ([recid]) 
+INCLUDE([databasename],[rescuesessionid],[npstype],[technicianname_Format],[submittedat_Format],[nps_incidentnumber],[incident_id],[duplicate_check]); --CHECKED WHEN UPDATING RECORDS
+
+
+
+CREATE NONCLUSTERED INDEX IDX_created_nps
+ON [dbo].[DETAIL_nps] (duplicate_check, submittedat_Format)
+INCLUDE (npstype,technicianname_Format,incident_id)
+
+CREATE NONCLUSTERED INDEX IDX_org_nps
+ON [dbo].[DETAIL_nps] (incident_id, duplicate_check)
+INCLUDE (npstype,technicianname_Format, submittedat_Format)
+
+
+CREATE NONCLUSTERED INDEX IDX_detail_nps
+ON [dbo].[DETAIL_nps] (id)
+INCLUDE (
+    [recid]
+    ,databasename
+    ,type
+    ,surveyid 
+    ,rescuesessionid
+    ,comments
+    ,nps
+    ,npstype
+    ,technicianname_Format
+    ,submittedat
+    ,submittedat_Format
+    ,system 
+    ,nps_incidentnumber
+)

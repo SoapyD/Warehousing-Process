@@ -43,32 +43,19 @@ ORDER BY
 
 
 ALTER TABLE [dbo].[DETAIL_problem] ADD CONSTRAINT PK_prb_ID PRIMARY KEY (ID);
-/*
 
-CREATE NONCLUSTERED INDEX IDX_created ON [dbo].[DETAIL_incident] (createddate_Format);
-
-
-CREATE NONCLUSTERED INDEX IDX_inc_check ON [dbo].[DETAIL_incident] ([recid],[system]); --TO GET WHEN UPDATING RECORDS
-
-CREATE NONCLUSTERED INDEX IDX_inc_lookup ON [dbo].[DETAIL_incident] ([number],[system]); --TO GET CORE INC DATA
+CREATE NONCLUSTERED INDEX IDX_check_prb ON [dbo].[DETAIL_problem] ([recid],[system]); --CHECKED WHEN UPDATING RECORDS
 
 
 
-
-
-CREATE NONCLUSTERED INDEX IDX_com
+CREATE NONCLUSTERED INDEX IDX_org_prb
 ON [dbo].[DETAIL_incident] (Company)
-INCLUDE (createddate_Format,ResolvedClosedDate_Format, customer,businessunit,status,source,typeofincident,ownerteam)
+INCLUDE (createddate_Format, ResolvedClosedDate_Format, customer,businessunit,status,source,typeofincident,ownerteam)
 
-CREATE NONCLUSTERED INDEX IDX_cre
+CREATE NONCLUSTERED INDEX IDX_created_prb
 ON [dbo].[DETAIL_incident] (createddate_Format)
 INCLUDE (Company,customer,businessunit,status,source,typeofincident,ownerteam)
 
-CREATE NONCLUSTERED INDEX IDX_res
+CREATE NONCLUSTERED INDEX IDX_resolved_prb
 ON [dbo].[DETAIL_incident] (ResolvedClosedDate_Format)
 INCLUDE (Company,customer,businessunit,status,source,typeofincident,ownerteam)
-
-CREATE NONCLUSTERED INDEX IDX_detail
-ON [dbo].[DETAIL_incident] (id)
-INCLUDE (priority, fcr, isvip, subject)
-*/

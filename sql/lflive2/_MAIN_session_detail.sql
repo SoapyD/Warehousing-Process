@@ -61,4 +61,63 @@ ORDER BY
 
 ALTER TABLE [dbo].[DETAIL_session] ADD CONSTRAINT PK_session_ID PRIMARY KEY (ID);
 
-CREATE NONCLUSTERED INDEX IDX_session_check ON [dbo].[DETAIL_session] ([recid]); --TO GET WHEN UPDATING RECORDS
+CREATE NONCLUSTERED INDEX IDX_check_session ON [dbo].[DETAIL_session] ([recid]) 
+INCLUDE ([sessionid],[databasename],[technicianname_Format],[startdate_Format],[incident_id],[duplicate_check]); --CHECKED WHEN UPDATING RECORDS
+
+
+CREATE NONCLUSTERED INDEX IDX_created_session
+ON [dbo].[DETAIL_session] ([duplicate_check],[startdate_Format])
+INCLUDE ([technicianname_Format])
+
+CREATE NONCLUSTERED INDEX IDX_org_session
+ON [dbo].[DETAIL_session] (incident_id, duplicate_check)
+INCLUDE (technicianname_Format, startdate_Format)
+
+CREATE NONCLUSTERED INDEX IDX_detail_session
+ON [dbo].[DETAIL_session] (id)
+INCLUDE (
+    recid
+    ,sessionid
+    ,databasename
+    ,subject
+    ,[Whats the Status of Your Problem?]
+    ,[Please Rate Your Remote Support Experience]
+    ,[Q2 score]
+    ,Comments
+    --DIMENSIONS
+    ,status
+    ,techniciangroup
+    ,he_session
+    ,fsa_session
+    ,mhclg_session
+    ,croydon_session
+    ,enwl_session
+
+    --FACTS
+    ,connectingtime
+    ,waitingtime
+    ,totaltime
+    ,activetime
+    ,worktime
+    ,holdtime
+    ,transfertime
+    ,rebootingtime
+    ,reconnectingtime
+
+    --DATE DIMENSIONS
+    ,starttime
+    ,startdate_Format
+    ,endtime
+    ,enddate_Format    
+    ,lastactiontime
+    ,lastactiondate_Format 
+
+    ,system
+    ,session_incidentnumber
+)
+
+
+
+
+
+
