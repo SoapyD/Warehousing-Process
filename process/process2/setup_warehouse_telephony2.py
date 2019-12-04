@@ -38,7 +38,7 @@ def setup_warehouse_telephony2(output_database):
 		"TELEPHONYEXTRACT_call",
 		"RINGCENTRAL_completedcontacts",
 		"RINGCENTRAL_agents",
-		"DDI_link"							
+		#"DDI_link"							
 	]
 
 	setup_external_tables(source_db, source_database, output_db, output_database, 
