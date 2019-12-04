@@ -22,13 +22,23 @@ FROM
 	LEFT JOIN ddi_link d ON (d.ringcentralname = c.campaignname)
 
 WHERE
-	c.isoutbound = 'False'
-	AND c.mediatypename = 'Call'
-	AND c.totaldurationseconds - prequeueseconds > 0
-	--FILTER OUT TESTERS
+    c.isoutbound = 'False'
+    AND c.mediatypename = 'Call'
+    --AND c.totaldurationseconds - prequeueseconds > 0
+    --FILTER OUT TESTERS
+    
+    AND c.fromaddr NOT IN (
+    '+447833252408', '+7833252408',--KAREN,
+    '+447399572805', '+7399572805',--DANI,
+    '+447971501924', '+7971501924',--DANI WORK 
+    '+447715373031', '+7715373031', --JAMIE WORK, 
+    '+447538136431', '+7538136431', --JAMIE PERSONAL,
+    '+447894492827','+7894492827', --ALEC WORK
+    '+447854086419', '+7854086419', --ALEC PERSONAL, 
+    '+447973935894', '+7973935894',--BECKY
+    '+447970973665', '+7970973665', --JAMIE
+    '+447833252408', '+7833252408' --KAREN
+    ) --TESTING 
 
-	AND c.fromaddr NOT IN (
-	'+7833252408','+7399572805','+7971501924', --KAREN, DANI, DANI WORK
-	'+7715373031','+7538136431','+7894492827', --JAMIE WORK, JAMIE PERSONAL, ALEC WORK
-	'+7854086419', '+7973935894' --ALEC PERSONAL, BECKY
-	) --TESTING
+    AND d.ringcentral_activationdatetime IS NOT NULL
+    AND d.ringcentral_activationdatetime < contactstart
