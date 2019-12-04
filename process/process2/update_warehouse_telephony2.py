@@ -44,8 +44,8 @@ def run_update_warehouse_telephony2(table_name, temporary_table_name, wh_query, 
 	source_db = 1 #REPORTING DATABASE
 	source_database = 'LF-SQL-RPT01'
 	output_db = 3 #WAREHOUSE DATABASE
-	#output_database = 'LF-SQL-WH'
-	output_database = 'LF-SQL-DEV'
+	output_database = 'LF-SQL-WH'
+	#output_database = 'LF-SQL-DEV'
 
 	table_list = [temporary_table_name]
 	#THEN CONNECT TO THE TEMPORARY TABLES WE'VE JUST PULLED FROM
