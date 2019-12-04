@@ -50,7 +50,7 @@ CREATE NONCLUSTERED INDEX IDX_org_nps
 ON [dbo].[DETAIL_nps] (incident_id, duplicate_check)
 INCLUDE (npstype,technicianname_Format, submittedat_Format)
 
-
+/*
 CREATE NONCLUSTERED INDEX IDX_detail_nps
 ON [dbo].[DETAIL_nps] (id)
 INCLUDE (
@@ -68,3 +68,4 @@ INCLUDE (
     ,system 
     ,nps_incidentnumber
 )
+*/

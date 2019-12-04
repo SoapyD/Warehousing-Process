@@ -73,6 +73,8 @@ CREATE NONCLUSTERED INDEX IDX_org_session
 ON [dbo].[DETAIL_session] (incident_id, duplicate_check)
 INCLUDE (technicianname_Format, startdate_Format)
 
+
+/*
 CREATE NONCLUSTERED INDEX IDX_detail_session
 ON [dbo].[DETAIL_session] (id)
 INCLUDE (
@@ -116,7 +118,7 @@ INCLUDE (
     ,session_incidentnumber
 )
 
-
+*/
 
 
 

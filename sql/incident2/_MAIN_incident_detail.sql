@@ -118,6 +118,8 @@ CREATE NONCLUSTERED INDEX IDX_resolved_inc
 ON [dbo].[DETAIL_incident] (ResolvedClosedDate_Format)
 INCLUDE (Company,customer,businessunit,status,source,typeofincident,ownerteam)
 
+
+/*
 CREATE NONCLUSTERED INDEX IDX_detail_inc
 ON [dbo].[DETAIL_incident] (id)
 INCLUDE (
@@ -128,12 +130,12 @@ problem_id, parentincident_id,
 
 --DIMENSION IDS
 system,
-company,
-businessunit, 
-typeofincident,  
-status, 
-source, 
-ownerteam, 
+--Company,
+--businessunit, 
+--typeofincident,  
+--status, 
+--source, 
+--ownerteam, 
 location,
 causecode,
 service, 
@@ -168,3 +170,19 @@ customer,
 owner_Format, createdby_Format, resolvedby_Format, closedby_Format, lastmodby_Format
 
 )
+
+
+
+CREATE NONCLUSTERED INDEX IDX_detail_inc
+ON [dbo].[DETAIL_incident] (id)
+INCLUDE (
+
+priority,
+isvip,
+breachstatus, L1Passed, L2Passed, L3Passed, 
+breachpassed, response_breachpassed,
+
+fcr
+
+)
+*/

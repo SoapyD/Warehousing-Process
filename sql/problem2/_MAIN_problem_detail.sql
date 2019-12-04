@@ -49,13 +49,13 @@ CREATE NONCLUSTERED INDEX IDX_check_prb ON [dbo].[DETAIL_problem] ([recid],[syst
 
 
 CREATE NONCLUSTERED INDEX IDX_org_prb
-ON [dbo].[DETAIL_incident] (Company)
-INCLUDE (createddate_Format, ResolvedClosedDate_Format, customer,businessunit,status,source,typeofincident,ownerteam)
+ON [dbo].[DETAIL_problem] (Company)
+INCLUDE (createddate_Format, closeddate_Format, businessunit, status, ownerteam)
 
 CREATE NONCLUSTERED INDEX IDX_created_prb
-ON [dbo].[DETAIL_incident] (createddate_Format)
-INCLUDE (Company,customer,businessunit,status,source,typeofincident,ownerteam)
+ON [dbo].[DETAIL_problem] (createddate_Format)
+INCLUDE (Company,businessunit,status,ownerteam)
 
 CREATE NONCLUSTERED INDEX IDX_resolved_prb
-ON [dbo].[DETAIL_incident] (ResolvedClosedDate_Format)
-INCLUDE (Company,customer,businessunit,status,source,typeofincident,ownerteam)
+ON [dbo].[DETAIL_problem] (closeddate_Format)
+INCLUDE (Company,businessunit,status,ownerteam)
