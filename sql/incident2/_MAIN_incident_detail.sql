@@ -73,7 +73,7 @@ SELECT	--row_number() over(order by inc.[createddatetime]) AS ID
 		,NULLIF(inc.[typeofincident],'') AS [typeofincident]
 		,inc.[reopencount]
 		,CASE WHEN inc.[reopencount] = 0 THEN NULL ELSE 1 END AS [reopencount_Flag]
-		,NULLIF(inc.[remoteresolution],'') AS [remoteresolution]
+		,inc.[remoteresolution] AS [remoteresolution] --NOT NULLIF AS WE NEED TO KNOW WHEN IT'S JUST NULL OR NOT REMOTE
 		,NULLIF(inc.[resolution],'') AS [resolution]
 		,NULLIF(inc.[technicalresolution],'') AS [technicalresolution]
 		,NULLIF(inc.[numberofusersaffected],'') AS [numberofusersaffected]
