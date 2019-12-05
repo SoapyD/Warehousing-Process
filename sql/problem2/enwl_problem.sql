@@ -1,7 +1,8 @@
+INSERT INTO TEMP_problem_combined
 SELECT
 	prb.recid as recid,
 	prb.number AS number,
-	'ENWL' AS system, --[system],
+	'enwl' AS system, --[system],
 	'Electricity North West' AS company, --prb.company,
 	NULL AS location, --ISNULL(e.[location],NULL) AS location,
 	NULL AS customer, --ISNULL(e.name,NULL) AS customer,
