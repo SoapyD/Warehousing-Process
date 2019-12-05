@@ -17,7 +17,7 @@ SELECT
     NULL AS category,
     NULL AS subcategory,
     NULL AS fcr,
-    req.ownerteam,
+    CASE WHEN req.ownerteam = 'Service Desk' THEN 'ENWL Service Desk' ELSE req.ownerteam END as ownerteam,
     REPLACE(req.owner,'.',' ') as owner,  
     NULL AS causecode,
     req.createdby,

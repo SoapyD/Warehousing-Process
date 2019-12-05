@@ -17,7 +17,7 @@ SELECT
     inc.category,
     inc.subcategory,
     inc.fcr,
-    inc.ownerteam,
+    CASE WHEN inc.ownerteam = 'Service Desk' THEN 'ENWL Service Desk' ELSE inc.ownerteam END as ownerteam,
     REPLACE(inc.owner,'.',' ') as owner,
     --owneremail,    
     inc.causecode,

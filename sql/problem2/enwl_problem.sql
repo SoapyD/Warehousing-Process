@@ -11,7 +11,7 @@ SELECT
 	NULL AS [source],
     prb.[category],
     NULL AS subcategory, --prb.[subcategory],
-	prb.[ownerteam],
+    CASE WHEN prb.ownerteam = 'Service Desk' THEN 'ENWL Service Desk' ELSE prb.ownerteam END as ownerteam,
 	prb.[owner],
 	--NULL AS [owneremail],
 	prb.[source] AS problemsource,
