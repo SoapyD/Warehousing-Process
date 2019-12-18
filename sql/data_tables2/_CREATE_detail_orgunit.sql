@@ -14,6 +14,7 @@ CREATE TABLE [dbo].[DETAIL_orgunit](
     createddatetime DATETIME NULL,
     lastmoddatetime DATETIME NULL,
     grouping NVARCHAR(100) NULL,
+    draw_order INT NULL,
     ddi NVARCHAR(100) NULL,
     ringcentralname NVARCHAR(100) NULL,
     ringcentral_activationdatetime DATETIME NULL,
