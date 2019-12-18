@@ -27,7 +27,7 @@ SELECT
 		ELSE name
 	END AS grouping,
 	CASE 
-		WHEN d.ddi IS NULL and d.ringcentralname IS NULL THEN 1
+		WHEN d.ddi IS NOT NULL and d.ringcentralname IS NOT NULL THEN 1
 		ELSE 2
 	END AS draw_order,	
 	d.ddi,
