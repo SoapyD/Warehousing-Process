@@ -13,12 +13,20 @@ DECLARE @Temp_Table TABLE(
     ringcentralname NVARCHAR(100) NULL,
     ringcentral_activationdatetime DATETIME NULL,
     telephony_active NVARCHAR(100) NULL,
+    telephony_printname NVARCHAR(100) NULL,
+    telephony_answertime FLOAT NULL,
     telephony_target FLOAT NULL
 )
 INSERT INTO @Temp_Table
 SELECT
 	name,
-	supportingsite,
+	--supportingsite,
+	CASE
+	WHEN SupportingSite = 'Rochdale' THEN 'Manchester'
+	WHEN SupportingSite = 'Hybrid' THEN 'Manchester'	
+	WHEN SupportingSite = '' THEN 'No Supporting Site'
+	ELSE supportingsite
+	END AS supportingsite, 
 	accountmanagername,
 	createddatetime,
 	lastmoddatetime,
@@ -34,6 +42,8 @@ SELECT
 	d.ringcentralname,
 	d.ringcentral_activationdatetime,
 	d.active as telephony_active,
+	d.printname as telephony_printname,
+	d.answer_time as telephony_answertime,
 	d.target as telephony_target
 FROM
 	HEATSM_organizationalunit o
@@ -53,6 +63,8 @@ SELECT
 	d.ringcentralname,
 	d.ringcentral_activationdatetime,
 	d.active as telephony_active,
+	d.printname as telephony_printname,
+	d.answer_time as telephony_answertime,
 	d.target as telephony_target
 FROM 
 	DDI_Link d 
@@ -98,6 +110,8 @@ TARGET.ddi = SOURCE.ddi,
 TARGET.ringcentralname = SOURCE.ringcentralname,
 TARGET.ringcentral_activationdatetime = SOURCE.ringcentral_activationdatetime,
 TARGET.telephony_active = SOURCE.telephony_active,
+TARGET.telephony_printname = SOURCE.telephony_printname,
+TARGET.telephony_answertime = SOURCE.telephony_answertime,
 TARGET.telephony_target = SOURCE.telephony_target
 WHEN NOT MATCHED BY TARGET
 THEN INSERT 
@@ -113,6 +127,8 @@ ddi,
 ringcentralname,
 ringcentral_activationdatetime,
 telephony_active,
+telephony_printname,
+telephony_answertime,
 telephony_target
 )
 VALUES (
@@ -127,5 +143,7 @@ SOURCE.ddi,
 SOURCE.ringcentralname,
 SOURCE.ringcentral_activationdatetime,
 SOURCE.telephony_active,
+SOURCE.telephony_printname,
+SOURCE.telephony_answertime,
 SOURCE.telephony_target
 );

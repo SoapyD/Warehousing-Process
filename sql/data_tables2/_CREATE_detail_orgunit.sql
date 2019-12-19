@@ -19,6 +19,8 @@ CREATE TABLE [dbo].[DETAIL_orgunit](
     ringcentralname NVARCHAR(100) NULL,
     ringcentral_activationdatetime DATETIME NULL,
     telephony_active NVARCHAR(100) NULL,
+    telephony_printname NVARCHAR(100) NULL,
+    telephony_answertime FLOAT NULL,
     telephony_target FLOAT NULL
 
 ) ON [PRIMARY]
