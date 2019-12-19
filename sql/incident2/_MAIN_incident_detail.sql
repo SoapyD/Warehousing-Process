@@ -108,15 +108,18 @@ CREATE NONCLUSTERED INDEX IDX_lookup_inc ON [dbo].[DETAIL_incident] ([number],[s
 
 CREATE NONCLUSTERED INDEX IDX_org_inc
 ON [dbo].[DETAIL_incident] (Company)
-INCLUDE (createddate_Format, ResolvedClosedDate_Format, customer,businessunit,status,source,typeofincident,ownerteam)
+INCLUDE (createddate_Format, ResolvedClosedDate_Format, customer,businessunit,status,source,typeofincident,ownerteam, 
+	priority, BreachPassed, breachstatus, fcr)
 
 CREATE NONCLUSTERED INDEX IDX_created_inc
 ON [dbo].[DETAIL_incident] (createddate_Format)
-INCLUDE (Company,customer,businessunit,status,source,typeofincident,ownerteam)
+INCLUDE (Company,customer,businessunit,status,source,typeofincident,ownerteam, 
+	priority, BreachPassed, breachstatus, fcr)
 
 CREATE NONCLUSTERED INDEX IDX_resolved_inc
 ON [dbo].[DETAIL_incident] (ResolvedClosedDate_Format)
-INCLUDE (Company,customer,businessunit,status,source,typeofincident,ownerteam)
+INCLUDE (Company,customer,businessunit,status,source,typeofincident,ownerteam, 
+	priority, BreachPassed, breachstatus, fcr)
 
 
 /*

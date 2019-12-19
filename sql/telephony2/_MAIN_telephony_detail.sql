@@ -34,7 +34,7 @@ ALTER TABLE [dbo].[DETAIL_telephony] ADD CONSTRAINT PK_tel_ID PRIMARY KEY (ID);
 
 CREATE NONCLUSTERED INDEX IDX_created_tel
 ON [dbo].[DETAIL_telephony] ([date_Format])
-INCLUDE ([ddi],[ringtime],[agentname],[calltype])
+INCLUDE ([ddi],[ringtime], totalduration,[agentname],[calltype])
 
 /*
 CREATE NONCLUSTERED INDEX IDX_inc_check ON [dbo].[DETAIL_telephony] ([recid],[system]); --TO GET WHEN UPDATING RECORDS
