@@ -7,7 +7,7 @@ SELECT
 	,NULLIF(s.id,'') AS surveyid
 	,NULLIF(s.rescuesessionid,'') AS rescuesessionid
 	,NULLIF(LEFT(s.comments,250),'') AS comments
-	,NULLIF(s.nps,'') AS nps
+	,s.nps AS nps
 	,NULLIF(s.npstype,'') AS npstype
 
     ,replace(LEFT(s.technicianname,len(s.technicianname)-charindex('@',reverse(s.technicianname))),'.',' ') AS [technicianname_Format]
