@@ -40,8 +40,8 @@ SET
 	lastmoddatetime = T2.lastmoddatetime,
 	lastmoddate_Format = T2.lastmoddate_Format,
 	ResolvedClosedBy_Format = T2.ResolvedClosedBy_Format,
-	ResolvedClosedDate_Format = T2.ResolvedClosedDate_Format,
 	ResolvedClosedDatetime = T2.ResolvedClosedDatetime,
+	ResolvedClosedDate_Format = T2.ResolvedClosedDate_Format,
 	breachstatus = T2.breachstatus,
 	l1dateTime = T2.l1dateTime,
 	l1passed = T2.l1passed,
@@ -122,8 +122,8 @@ SELECT	--row_number() over(order by inc.[createddatetime]) AS ID
 		,NULLIF(inc.[lastmoddatetime],'') AS [lastmoddatetime]
 		,CONVERT(DATE,inc.[lastmoddatetime]) AS [lastmoddate_Format]
 		,replace(LEFT(NULLIF(COALESCE(inc.[resolvedby],inc.[closedby]),''),len(COALESCE(inc.[resolvedby],inc.[closedby]))-charindex('@',reverse(COALESCE(inc.[resolvedby],inc.[closedby])))),'.',' ') AS [ResolvedClosedBy_Format]	
-		,CONVERT(DATE,COALESCE(inc.[resolveddatetime],inc.[closeddatetime])) AS ResolvedClosedDate_Format
 		,COALESCE(inc.[resolveddatetime],inc.[closeddatetime]) AS ResolvedClosedDatetime
+		,CONVERT(DATE,COALESCE(inc.[resolveddatetime],inc.[closeddatetime])) AS ResolvedClosedDate_Format
 		,NULLIF(inc.[breachstatus],'') AS [breachstatus]
 		,NULLIF(inc.[l1dateTime],'') AS [l1dateTime]
 		,NULLIF(inc.[l1passed],'') AS [l1passed]

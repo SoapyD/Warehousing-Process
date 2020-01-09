@@ -42,3 +42,16 @@ WHERE
 
     AND d.ringcentral_activationdatetime IS NOT NULL
     AND d.ringcentral_activationdatetime < contactstart
+
+    AND NOT EXISTS( --FILTER OUT PRE-QUEUE ONLY CALLS
+
+  	SELECT
+  		contactid
+  	FROM
+  		dbo.RINGCENTRAL_completedcontacts sc
+  	WHERE
+  		sc.contactid = c.contactid
+  		AND totaldurationseconds - prequeueseconds - inqueueseconds = 0 
+  		AND inqueueseconds = 0
+  		AND abandoned = 'False'
+  	)

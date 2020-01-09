@@ -6,6 +6,7 @@ base_path = path[:string_pos]+'Python\\' #create a base filepath string
 exec(open(base_path+"Functions\\functions.py").read()) #load the master password file
 
 this_dir = base_path+"Warehousing-Process\\"
+warehousing_path = base_path+"Warehousing-Process"
 
 exec(open(this_dir+"setup_external_tables.py").read())
 exec(open(this_dir+"setup_dimension_tables.py").read())
