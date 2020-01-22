@@ -23,6 +23,9 @@ exec(open(this_dir+"process\\process2\\update_warehouse_telephony2.py").read())
 exec(open(this_dir+"process\\process2\\setup_warehouse_problem2.py").read())
 exec(open(this_dir+"process\\process2\\update_warehouse_problem2.py").read())
 
+exec(open(this_dir+"process\\process2\\setup_warehouse_problem_task2.py").read())
+exec(open(this_dir+"process\\process2\\update_warehouse_problem_task2.py").read())
+
 exec(open(this_dir+"process\\process2\\update_warehouse_data_tables2.py").read())
 
 global error_count

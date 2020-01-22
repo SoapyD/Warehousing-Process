@@ -121,7 +121,8 @@ SELECT	--row_number() over(order by inc.[createddatetime]) AS ID
 		,replace(LEFT(NULLIF(inc.[lastmodby],''),len(inc.[lastmodby])-charindex('@',reverse(inc.[lastmodby]))),'.',' ') AS [lastmodby_Format]
 		,NULLIF(inc.[lastmoddatetime],'') AS [lastmoddatetime]
 		,CONVERT(DATE,inc.[lastmoddatetime]) AS [lastmoddate_Format]
-		,replace(LEFT(NULLIF(COALESCE(inc.[resolvedby],inc.[closedby]),''),len(COALESCE(inc.[resolvedby],inc.[closedby]))-charindex('@',reverse(COALESCE(inc.[resolvedby],inc.[closedby])))),'.',' ') AS [ResolvedClosedBy_Format]	
+		--,replace(LEFT(NULLIF(COALESCE(inc.[resolvedby],inc.[closedby]),''),len(COALESCE(inc.[resolvedby],inc.[closedby]))-charindex('@',reverse(COALESCE(inc.[resolvedby],inc.[closedby])))),'.',' ') AS [ResolvedClosedBy_Format]	
+		,replace(left(coalesce(nullif([resolvedby],''),nullif([closedby],'')),len(coalesce(nullif([resolvedby],''),nullif([closedby],'')))-charindex('@',reverse(coalesce(nullif([resolvedby],''),nullif([closedby],''))))),'.',' ') as [ResolvedClosedBy_format]		
 		,COALESCE(inc.[resolveddatetime],inc.[closeddatetime]) AS ResolvedClosedDatetime
 		,CONVERT(DATE,COALESCE(inc.[resolveddatetime],inc.[closeddatetime])) AS ResolvedClosedDate_Format
 		,NULLIF(inc.[breachstatus],'') AS [breachstatus]
