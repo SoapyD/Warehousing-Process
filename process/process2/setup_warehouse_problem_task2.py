@@ -77,7 +77,7 @@ def setup_warehouse_problem_task2(output_database):
 	sql_queries = [
 		"heatsm_problem_task",
 
-		#"enwl_problem_task",
+		"enwl_problem_task",
 
 		"he_problem_task",
 		

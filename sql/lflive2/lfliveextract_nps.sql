@@ -72,7 +72,7 @@ SELECT
 	NULL AS rescuesessionid,
 	sur.submittedat,
 	sur.comments,
-	NULL as technician,
+	i.resolvedby_Format as technician,
 
 	sur.incidentnumber,
 	'heat' as system,
@@ -91,6 +91,7 @@ SELECT
 
 FROM
 	LFLIVEEXTRACT_completedsurvey sur
+	LEFT JOIN DETAIL_incident i ON (i.number = sur.incidentnumber and i.system = 'heat')
 
 WHERE
 	sur.incidentnumber <> ''
