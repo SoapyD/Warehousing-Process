@@ -50,6 +50,9 @@ CREATE TABLE TEMP_incident_combined (
     technicalresolution NVARCHAR(255),
     numberofusersaffected NVARCHAR(20),
     repeatissue INT,
+    breachreason NVARCHAR(255),        
+    cancellationreason NVARCHAR(255),
+    prioritychangecount INT,
     problem_id CHAR(32),
     parentincident_id CHAR(32)
 )

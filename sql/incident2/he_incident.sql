@@ -75,7 +75,10 @@ SELECT
     NULL AS resolution,
     NULL AS technicalresolution,
     NULL AS numberofusersaffected,
-    NULL AS repeatissue,        
+    NULL AS repeatissue,      
+    NULL AS breachreason,
+    NULL AS cancellationreason,      
+    NULL AS prioritychangecount,        
     problem_id,
     parentincident_id
 

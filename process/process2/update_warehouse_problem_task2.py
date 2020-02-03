@@ -2,7 +2,7 @@
 def update_warehouse_problem_task2(table_name, temporary_table_name, wh_query, wh_combined_table, delete_staging,
 	print_internal=False, print_details=False):
 
-	run = True
+	run = False
 	if run == True:
 		run_update_warehouse_problem_task2(table_name, temporary_table_name, wh_query, wh_combined_table, delete_staging,
 		print_internal, print_details)

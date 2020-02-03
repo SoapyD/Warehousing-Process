@@ -66,6 +66,9 @@ CREATE TABLE [dbo].[DETAIL_incident](
     [technicalresolution] [nvarchar](255) NULL,
     [numberofusersaffected] [nvarchar](20) NULL,
     [repeatissue] [int] NULL,
+    [breachreason] [nvarchar](255) NULL, 
+    [cancellationreason] [nvarchar](255) NULL,    
+    [prioritychangecount] [int] NULL,
     [problem_id] [char](32) NULL,
     [parentincident_id] [char](32) NULL
 ) ON [PRIMARY]

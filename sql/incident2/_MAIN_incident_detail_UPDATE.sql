@@ -64,6 +64,9 @@ SET
 	technicalresolution = T2.technicalresolution,
 	numberofusersaffected = T2.numberofusersaffected,
 	repeatissue = T2.repeatissue,
+	breachreason = T2.breachreason,
+	cancellationreason = T2.cancellationreason,
+	prioritychangecount = T2.prioritychangecount,
 	problem_id = T2.problem_id,
 	parentincident_id = T2.parentincident_id
 
@@ -147,6 +150,9 @@ SELECT	--row_number() over(order by inc.[createddatetime]) AS ID
 		,NULLIF(inc.[technicalresolution],'') AS [technicalresolution]
 		,NULLIF(inc.[numberofusersaffected],'') AS [numberofusersaffected]
 		,NULLIF(inc.[repeatissue],'') AS [repeatissue]
+		,NULLIF(inc.[breachreason],'') AS [breachreason]
+		,NULLIF(inc.[cancellationreason],'') AS [cancellationreason]	
+		,NULLIF(inc.[prioritychangecount],'') AS prioritychangecount	
 		,NULLIF(inc.[problem_id],'') AS [problem_id]
 		,NULLIF(inc.[parentincident_id],'') AS [parentincident_id]
 FROM	

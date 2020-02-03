@@ -59,6 +59,9 @@ SELECT
     inc.technicalresolution,
     inc.numberofusersaffected,
     CASE WHEN inc.repeatissue = 'Yes' THEN 1 ELSE 0 END as repeatissue,
+    inc.breachreason,
+    inc.cancellationreason,
+    inc.prioritychangecount,        
     inc.problemlink AS problem_id,
     inc.masterincidentlink as parentincident_id
 FROM
